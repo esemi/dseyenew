@@ -1,0 +1,28 @@
+<?php $this->WorldList(); ?>
+
+<h2 class="title inline"><?php echo $this->title; ?></h2>
+
+<?php $this->printMessage($this->messType, $this->messText); ?>
+
+<div class="mrg-left-157 mrg-top-13 mrg-right-42">
+	<p>
+		Для подтверждения адреса электронной почты Вашего аккаунта введите в форму ниже код активации, высланный на почтовый ящик, указаный при регистрации.
+	</p>
+	<p>
+		<a href="<?php echo $this->url(array(), 'staticEmailApproveRetry', true); ?>">Не пришло письмо с подтверждением?</a>
+	</p>
+
+	<form class="mrg-top-21 mrg-left-13" name="loginform" action="" method="get">
+		<table class="inline-block text-bottom mrg-right-21">
+			<tbody>
+				<tr>
+					<td><label for="token">Код активации: </label></td>
+					<td><input name="token" id="token" class="mrg-left-5 w-157" placeholder="Введите код активации" type="text" value="<?php echo $this->escape($this->token); ?>"/></td>
+				</tr>
+			</tbody>
+		</table>
+		<input type="submit" value="Подтвердить" />
+	</form>
+</div>
+
+

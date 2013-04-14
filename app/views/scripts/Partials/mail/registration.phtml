@@ -1,0 +1,23 @@
+Здравствуйте!
+<br><br>
+Вы получили это письмо, поскольку ваш адрес <b><?php echo $this->escape($this->email); ?></b> был указан при регистрации нового пользователя <b><?php echo $this->escape($this->login); ?></b> на сайте <a href='<?php echo $this->url(array(), 'staticIndex', true); ?>' target='_blank'><?php echo $this->url(array(), 'staticIndex', true); ?></a>.
+<br><br>
+Если вы не регистрировали данного пользователя, просто проигнорируйте это сообщение.
+<br><br>
+Если же вы в самом деле желаете подтвердить, что данный почтовый ящик связан с аккаунтом <b><?php echo $this->escape($this->login); ?></b>, вам необходимо перейти по следующей <a href="<?php echo $this->url(array(), 'staticEmailApprove', true) . "?token={$this->token}"; ?>" target='_blank'>ссылке</a>.
+Подтверждение произойдёт автоматически.
+<br><br>
+Если по каким то причинам таким способом подтвердить адрес не удалось, попробуйте сделать это вручную.
+Пройдите по <a href="<?php echo $this->url(array(), 'staticEmailApprove', true); ?>" target='_blank'>ссылке</a> и введите указанный ниже код активации (не пароль!) в соответствующее поле.
+<br>
+===================================<br>
+Код активации: <b><?php echo $this->token; ?></b><br>
+===================================<br>
+<br>
+(IP адрес отправителя: <?php echo $this->ip; ?>)
+<br><br>
+--
+<br>
+С уважением, Администрация DSeye.ru
+<br>
+<a href='<?php echo $this->url(array(), 'staticIndex', true); ?>' target='_blank'><?php echo $this->url(array(), 'staticIndex', true); ?></a>

@@ -1,0 +1,226 @@
+<?php $this->headScript()->captureStart() ?>
+var minDate = "<?php echo $this->minDate; ?>";
+var worldID = <?php echo $this->idWorld; ?>;
+<?php $this->headScript()->captureEnd(); ?>
+
+<?php
+$this->breadCrumb( array(sprintf('<a href="%s">%s</a>',$this->url(array( 'idW' => $this->idWorld ), 'worldIndex', true), $this->nameWorld),'История изменений') );
+?>
+<div class="text-center">
+	<div class="arrow inline-block">
+	<?php if( isset($this->prevDate) ): ?>
+			<a class="block arrow arrow-left pos-fix" href="<?php echo $this->url(array('idW' => $this->idWorld, 'date' => $this->prevDate), 'worldHistory', true) ?>"></a>
+	<?php else:?>
+			<span class="block arrow arrow-left-off pos-fix"></span>
+	<?php endif;?>
+	</div>
+
+	<table class="inline-block rubber-block table text-center border text-top">
+		<caption class="text-center mrg-bottom-8">
+			<h3 class="subtitle">Изменения мира за <input type="text" name="date" id="js-datepicker" class=" w-123 color-logo text-center bold" value="<?php echo $this->curDate; ?>"></h3>
+		</caption>
+		<thead>
+			<tr>
+				<th>
+					пришли<br>
+					<?php if( count($this->input['players']) > 0 ) echo '('.count($this->input['players']).')'; ?>
+				</th>
+				<th>
+					ушли<br>
+					<?php if( count($this->output['players']) > 0 ) echo '('.count($this->output['players']).')'; ?>
+				</th>
+				<th>
+					статус&nbsp;ворот<br>
+					<?php if( count($this->transGate['transes']) > 0 ) echo '('.count($this->transGate['transes']).')'; ?>
+				</th>
+				<th>
+					переходы&nbsp;по&nbsp;альянсам<br>
+					<?php if( count($this->transAlliance['transes']) > 0 ) echo '('.count($this->transAlliance['transes']).')'; ?>
+				</th>
+				<th>
+					переезды<br>
+					<?php if( count($this->transSots['transes']) > 0 ) echo '('.count($this->transSots['transes']).')'; ?>
+				</th>
+				<th>
+					max&nbsp;изменения&nbsp;рейтинга<br>
+					<?php if( count($this->maxRankDelts['delts']) > 0 ) echo '('.count($this->maxRankDelts['delts']).')'; ?>
+				</th>
+				<th>
+					max&nbsp;рост&nbsp;БО<br>
+					<?php if( count($this->maxBoDelts['delts']) > 0 ) echo '('.count($this->maxBoDelts['delts']).')'; ?>
+				</th>
+			</tr>
+		</thead>
+		<tbody class="pad-td">
+			<tr>
+				<td>
+				<?php if( count($this->input['players']) > 0 ): ?>
+					<ul class="mrg-bottom-13">
+					<?php foreach($this->input['players'] as $value): ?>
+						<li>
+							<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $value['id'] ), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+						</li>
+					<?php endforeach; ?>
+					</ul>
+				<?php else: ?>
+					<span class="empty-td">Никого нет</span>
+				<?php endif; ?>
+				</td>
+				<td>
+					<?php if( count($this->output['players']) > 0 ): ?>
+					<ul class="mrg-bottom-13">
+						<?php foreach($this->output['players'] as $value): ?>
+						<li>
+							<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $value['id'] ), 'playerStat', true); ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+						</li>
+						<?php endforeach; ?>
+					</ul>
+					<?php else: ?>
+						<span class="empty-td">Никого нет</span>
+					<?php endif; ?>
+				</td>
+				<td>
+				   <?php if (count($this->transGate['transes']) > 0):?>
+					<ul>
+						<?php
+						$dateHead = '';
+						foreach ($this->transGate['transes'] as $value):
+						if ( $value['date'] != $dateHead )
+						{
+							$dateHead = $value['date'];
+							echo "<div class='time-separation'>{$value['date']}</div>";
+						}
+						?>
+						<li>
+							<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+							<div class="rubber-block mrg-top-2">
+								<?php echo $this->GateIcon($value['old_gate']) .' &rarr; '. $this->GateIcon($value['new_gate']); ?>
+							</div>
+						</li>
+					   <?php endforeach; ?>
+					</ul>
+					<?php if ($this->transGate['count'] > 0):?>
+						<a href="<?php echo $this->url(array('idW' => $this->idWorld), 'worldHistory', true) ?>">остальные (<?php echo $this->transGate['count']?>)</a>
+					<?php endif;?>
+					<?php else:?>
+						<span class="empty-td">Всё как прежде</span>
+					<?php endif;?>
+				</td>
+				<td>
+				<?php if( count($this->transAlliance['transes']) > 0 ): ?>
+					<ul>
+					<?php  $dateHead = ''; foreach($this->transAlliance['transes'] as $value): ?>
+							<?php
+							if ( $value['date'] != $dateHead )
+							{
+								$dateHead = $value['date'];
+								echo "<div class='time-separation'>{$value['date']}</div>";
+							}
+							?>
+						<li>
+							<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $value['id'] ), 'playerStat', true) ?>">
+								 <?php echo $value['nik'] ?>
+							</a>
+							<br>
+							<?php echo $this->allianceLink($this->idWorld, $value['old_id'], $value['old_name']); ?>
+							&rarr;
+							<?php echo $this->allianceLink($this->idWorld, $value['new_id'], $value['new_name']); ?>
+						</li>
+					<?php endforeach; ?>
+					</ul>
+					<?php else: ?>
+					<span class="empty-td">Всё как прежде</span>
+				<?php endif; ?>
+				</td>
+				<td>
+					<?php if (count($this->transSots['transes']) > 0):?>
+						 <ul>
+							 <?php  $dateHead = ''; foreach ($this->transSots['transes'] as $value): ?>
+									<?php
+									if ( $value['date'] != $dateHead )
+									{
+										$dateHead = $value['date'];
+										echo "<div class='time-separation'>{$value['date']}</div>";
+									}
+									?>
+								  <li>
+									  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+									  <br>
+									  <?php
+									  if( is_null($value['old_adr']) )
+										  echo "{$value['new_adr']} <span class='color-green'>new</span>";
+									  elseif( is_null($value['new_adr']) )
+										  echo "{$value['old_adr']} <span class='color-red'>del</span>";
+									  else
+										  echo "{$value['old_adr']} &rarr; {$value['new_adr']}";
+									  ?>
+								  </li>
+							 <?php endforeach; ?>
+						 </ul>
+					 <?php else:?>
+						 <span class="empty-td">Всё как прежде</span>
+					 <?php endif;?>
+				</td>
+				<td>
+					 <?php if (count($this->maxRankDelts['delts']) > 0):?>
+					 <ul>
+						 <?php  $dateHead = ''; foreach ($this->maxRankDelts['delts'] as $value): ?>
+								<?php
+								if ( $value['date'] != $dateHead )
+								{
+									$dateHead = $value['date'];
+									echo "<div class='time-separation'>{$value['date']}</div>";
+								}
+								?>
+								  <li>
+									  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+									  <br>
+									  <?php $this->printDelta($value['delta']); ?>
+								  </li>
+						 <?php endforeach; ?>
+					 </ul>
+					 <?php else:?>
+						 <span class="empty-td">Всё как прежде</span>
+					 <?php endif;?>
+				</td>
+				<td>
+					 <?php if (count($this->maxBoDelts['delts']) > 0):?>
+					 <ul>
+						 <?php  $dateHead = ''; foreach ($this->maxBoDelts['delts'] as $value): ?>
+								<?php
+								if ( $value['date'] != $dateHead )
+								{
+									$dateHead = $value['date'];
+									echo "<div class='time-separation'>{$value['date']}</div>";
+								}
+								?>
+								  <li>
+									  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+									  <br>
+									  <?php $this->printDelta($value['delta']); ?>
+								  </li>
+						 <?php endforeach; ?>
+					 </ul>
+					 <?php else:?>
+						 <span class="empty-td">Всё как прежде</span>
+					 <?php endif;?>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="arrow inline-block">
+	<?php if( isset($this->nextDate) ): ?>
+		<a class="block arrow arrow-right pos-fix"  href="<?php echo $this->url(array('idW' => $this->idWorld, 'date' => $this->nextDate), 'worldHistory', true) ?>"></a>
+	<?php else: ?>
+		<span class="block arrow arrow-right-off pos-fix"></span>
+	<?php endif; ?>
+	</div>
+
+	<div class="mrg-top-13 mrg-bottom-8 main-width rubber-block">
+	<?php if( !is_null($this->limit) ): ?>
+			<?php $this->printWarning(); ?> &mdash; в каждой графе выводится максимум <?php echo $this->limit; ?> строк.
+	<?php endif; ?>
+	</div>
+	<span class="js-get-top finger color-logo hover-underline font-17">наверх</span>
+</div>

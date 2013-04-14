@@ -1,0 +1,100 @@
+<?php
+
+//создаём промежуток комплексов для линейки снизу/сверху данных
+$compls = array();
+if($this->first < $this->last)
+{
+    for($compl=$this->first; $compl<=$this->last; $compl++)
+    {
+        $compls[] = $compl;
+    }
+}else{
+    for($compl=$this->first; $compl<=$this->max; $compl++)
+    {
+        $compls[] = $compl;
+    }
+    for($compl=1; $compl<=$this->last; $compl++)
+    {
+        $compls[] = $compl;
+    }
+}
+
+$cellColors = array(
+    'voran-cell',
+    'liens-cell',
+    'psol-cell');
+
+
+?>
+
+<table class="map-table rubber-block">
+    <thead>
+        <tr>
+            <td class="no-border"></td>
+            <?php
+            foreach ($compls as $compl)
+                echo "<th  class='bold'>$compl</th>";
+            ?>
+            <td class="no-border"></td>
+        </tr>
+    </thead>
+    <tfoot>
+        <tr>
+            <td class="no-border no-background "></td>
+            <?php
+            foreach ($compls as $compl)
+                echo "<td class='bold'>$compl</td>";
+            ?>
+            <td class="no-border no-background "></td>
+        </tr>
+    </tfoot>
+    <tbody>
+    <?php for($sota = 1;$sota<=6;$sota++) : ?>
+        <tr>
+            <th class="pad-lr-5 bold">
+                <?php echo $sota; ?>
+            </th>
+            <?php
+            foreach ($compls as $compl):
+                if(!isset($this->map[$compl][$sota]))
+                {
+                    echo "<td class='empty-cell'>&nbsp</td>";
+                }else{
+                    $item = $this->map[$compl][$sota];
+                    ?>
+                    <td class="<?php echo $cellColors[$item['id_rase']-1]; ?> js-map-cell" idP="<?php echo $item['id']; ?>">
+                        <div class=" mrg-top-3 mrg-bottom-3 text-center">
+                            <?php
+                            if($this->ring != 4)
+                                echo $this->GateIcon($item['gate'], 'block-12-12');
+                            ?>
+                            <div  name="Рейтинг (старый)" value="<?php echo $this->NumFormat($item['rank_old']); ?>" class="map-icons js-map-icon <?php echo $this->MapIcon($item['rank_old'], 'rank', $this->ranks['rank_old']['min'], $this->ranks['rank_old']['mid']); ?>"></div>
+                            <div  name="БО" value="<?php echo $this->NumFormat($item['bo'], true); ?>"class="map-icons js-map-icon <?php echo $this->MapIcon($item['bo'], 'bo', $this->ranks['bo']['min'], $this->ranks['bo']['mid']); ?>"></div>
+                            <div  name="Археология" value="<?php echo $this->NumFormat($item['arch']); ?>"class="map-icons js-map-icon <?php echo $this->MapIcon($item['arch'], 'arch', $this->ranks['arch']['min'], $this->ranks['arch']['mid']); ?>"></div>
+                            <div  name="Наука" value="<?php echo $this->NumFormat($item['scien']); ?>"class="map-icons js-map-icon <?php echo $this->MapIcon($item['scien'], 'scien', $this->ranks['scien']['min'], $this->ranks['scien']['mid']); ?>"></div>
+                            <div  name="Строительство" value="<?php echo $this->NumFormat($item['build']); ?>"class="map-icons js-map-icon <?php echo $this->MapIcon($item['build'], 'build', $this->ranks['build']['min'], $this->ranks['build']['mid']); ?>"></div>
+                            <div  name="Уровень (лига)" value="<?php echo $item['level']; ?>(<?php echo $item['liga']; ?>)" class="map-icons js-map-icon" style="width: 39px">
+                                <?php echo $item['level']; ?>(<?php echo $item['liga']; ?>)
+                            </div>
+                        </div>
+                        <a target="_blank" class="<?php echo $this->RaseColor($item['id_rase'], true); ?> no-underline hover-underline font-14" href="<?php echo $this->url(array( 'idW' => $this->idW, 'idP' => $item['id'] ), 'playerStat', true) ?>">
+                            <?php echo $item['nik']; ?>
+                        </a>
+                        <br>
+                        <?php echo $this->allianceLink($this->idW, $item['id_alliance'], $item['alliance'], true); ?>
+                        <div class="mrg-top-5">
+                             НРА: <span class="w-50pr bold"><?php echo $item['nra']; ?></span>
+                             РА: <span class="w-50pr bold"><?php echo $item['ra']; ?></span>
+                        </div>
+                    </td>
+                    <?php
+                }
+             endforeach;
+             ?>
+            <th class="pad-lr-5 bold">
+                <?php echo $sota; ?>
+            </th>
+        </tr>
+    <?php endfor; ?>
+    </tbody>
+</table>

@@ -1,0 +1,67 @@
+DROP TRIGGER IF EXISTS `players_increment_stat`//
+CREATE TRIGGER `players_increment_stat` AFTER UPDATE ON `players`
+ FOR EACH ROW BEGIN
+
+	IF OLD.`gate` != NEW.`gate`
+		THEN INSERT DELAYED INTO players_trans_gate (`id_player`, `old_gate`, `new_gate`, `date`) VALUES (OLD.id, OLD.`gate`, NEW.`gate`,  now() );
+	END IF;
+
+	IF OLD.`status` != NEW.`status`
+	THEN
+		IF NEW.status = 'active'
+			THEN	INSERT INTO players_input (`id_world`, `id_player`, `date`) VALUES (OLD.`id_world`, OLD.`id`, now());
+			ELSE	INSERT INTO players_output (`id_world`, `id_player`, `date`) VALUES (OLD.`id_world`, OLD.`id`, now());
+		END IF;
+	END IF;
+
+	IF OLD.`id_alliance` != NEW.`id_alliance`
+	THEN INSERT DELAYED INTO players_trans_alliance (`id_player`, `old_alliance`, `new_alliance`, `date`) VALUES (OLD.id, OLD.`id_alliance`, NEW.`id_alliance`,  now() );
+	END IF;
+
+	IF OLD.`compl` != NEW.`compl` OR OLD.`sota` != NEW.`sota`
+	THEN INSERT DELAYED INTO players_trans_dom (`id_player`, `old_compl`, `old_sota`, `new_compl`, `new_sota`, `date`) VALUES (OLD.id, OLD.`compl`, OLD.`sota`, NEW.`compl`, NEW.`sota`, now() );
+	END IF;
+
+	IF OLD.`mesto` != NEW.`mesto`
+	THEN INSERT DELAYED INTO stat_players_mesto( `id_player`, `date`, `value`, `delta` ) VALUES (OLD.id, now(), NEW.mesto, CAST(NEW.mesto AS SIGNED) - CAST(OLD.mesto AS SIGNED));
+	END IF;
+
+	IF OLD.`rank_old` != NEW.`rank_old`
+	THEN INSERT INTO stat_players_rank_old( `id_player`, `date`, `value`, `delta` ) VALUES (OLD.id, now(), NEW.rank_old, CAST(NEW.rank_old AS SIGNED) - CAST(OLD.rank_old AS SIGNED));
+	END IF;
+
+	IF OLD.`rank_new` != NEW.`rank_new`
+	THEN INSERT DELAYED INTO stat_players_rank_new( `id_player`, `date`, `value`, `delta` ) VALUES (OLD.id, now(), NEW.rank_new, CAST(NEW.rank_new AS SIGNED) - CAST(OLD.rank_new AS SIGNED));
+	END IF;
+
+	IF OLD.`bo` != NEW.`bo`
+	THEN INSERT INTO stat_players_bo( `id_player`, `date`, `value`, `delta` ) VALUES (OLD.id, now(), NEW.bo, CAST(NEW.bo AS DECIMAL(11,2)) - CAST(OLD.bo AS DECIMAL(11,2)));
+	END IF;
+
+	IF OLD.`nra` != NEW.`nra`
+	THEN INSERT DELAYED INTO stat_players_nra( `id_player`, `date`, `value`, `delta` ) VALUES (OLD.id, now(), NEW.nra, CAST(NEW.nra AS DECIMAL(5,2)) - CAST(OLD.nra AS DECIMAL(5,2)));
+	END IF;
+
+	IF OLD.`ra` != NEW.`ra`
+	THEN INSERT DELAYED INTO stat_players_ra( `id_player`, `date`, `value`, `delta` ) VALUES (OLD.id, now(), NEW.ra, CAST(NEW.ra AS DECIMAL(5,2)) - CAST(OLD.ra AS DECIMAL(5,2)));
+	END IF;
+
+	IF OLD.`level` != NEW.`level`
+	THEN INSERT DELAYED INTO stat_players_level( `id_player`, `date`, `value`, `delta` ) VALUES (OLD.id, now(), NEW.level, CAST(NEW.level AS SIGNED) - CAST(OLD.level AS SIGNED));
+	END IF;
+
+	IF OLD.`archeology` != NEW.`archeology`
+	THEN INSERT DELAYED INTO stat_players_archeology( `id_player`, `date`, `value`, `delta` ) VALUES (OLD.id, now(), NEW.archeology, CAST(NEW.archeology AS SIGNED) - CAST(OLD.archeology AS SIGNED));
+	END IF;
+
+	IF OLD.`building` != NEW.`building`
+	THEN INSERT DELAYED INTO stat_players_building( `id_player`, `date`, `value`, `delta` ) VALUES (OLD.id, now(), NEW.building, CAST(NEW.building AS SIGNED) - CAST(OLD.building AS SIGNED));
+	END IF;
+
+	IF OLD.`science` != NEW.`science`
+	THEN INSERT DELAYED INTO stat_players_science( `id_player`, `date`, `value`, `delta` ) VALUES (OLD.id, now(), NEW.science, CAST(NEW.science AS SIGNED) - CAST(OLD.science AS SIGNED));
+	END IF;
+END
+//
+
+

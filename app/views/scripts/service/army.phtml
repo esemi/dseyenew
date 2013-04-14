@@ -1,0 +1,44 @@
+<?php $this->WorldList(); ?>
+
+<h2 class="title">Рассчёт времени раунда</h2>
+
+<div class=" mrg-right-42 mrg-left-157 text-just">
+	<p>
+		С помощью данного калькулятора вы можете рассчитать время раунда между двумя армиями известного продовеса.<br>
+		В форме ниже введите <strong class="bold">значения веса армий в продовом эквиваленте</strong> и выберите мир (в различных мирах установлены различные настройки минимального/максимального времени боя).
+	</p>
+
+	<table class="inline-block text-bottom mrg-right-21">
+		<tbody>
+			<tr>
+				<td>Мир:</td>
+				<td>
+					<select class="js-army-weight-compute js-army-world mrg-left-5">
+						<?php
+						foreach($this->listWorlds as $world)
+							if( in_array($world['id'], $this->worldIds) )
+								echo "<option value='{$world['id']}'>{$world['name']}</option>";
+						?>
+					</select>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="first-weight">Вес первой армии: </label></td>
+				<td><input type="number" min="1" class="js-army-weight1 mrg-top-7 mrg-left-5" value="1" id="first-weight" name="first-weight" placeholder="Введите вес первой армии"/>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="second-weight">Вес второй армии: </label></td>
+				<td><input type="number" min="1" class="js-army-weight2 mrg-top-7 mrg-left-5" value="1" id="second-weight" name="second-weight" placeholder="Введите вес второй армии"/>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<input type="submit" value="рассчитать" class="js-army-weight-compute"/>
+	<div class="mrg-top-21">
+		<div class="bold inline-block text-top">Предполагаемое время:</div> <div class="js-army-weight-result inline-block"></div>
+	</div>
+</div>
+
+

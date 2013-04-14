@@ -1,0 +1,36 @@
+<?php
+
+$this->WorldList();
+
+$this->addGraph('indexPie');
+
+?>
+
+<div class="w-234 float-right text-right mrg-top-38 mrg-right-42 mrg-left-21">
+    <h3 class="subtitle mrg-bottom-21 color-main">последние новости <a href="<?php echo $this->url(array(), 'newsRss', true); ?>" target="_blank"><div class="rss inline-block"></div></a></h3>
+    <?php for($i=0; $i<5; $i++): ?>
+        <?php $news = $this->lastNews->getRow($i); ?>
+        <div class="mrg-bottom-13">
+            <span class="font-11">
+                <?php echo $news->date ?>
+              </span><br>
+
+            <a href="<?php echo $this->url(array('idN' => $news->id), 'newsView', true) ?>"  class="underline">
+              <?php echo $news->title ?>
+            </a>
+        </div>
+    <?php endfor; ?>
+</div>
+
+<h2 class="title" >Добро пожаловать!</h2>
+<div class="text-just mrg-left-157">
+    <p>
+        Вы зашли на ресурс по сбору и анализу статистики для онлайн игры <a target="_blank" href="http://destinysphere.ru"  rel="nofollow">DestinySphere</a>.<br>
+        Мы создали множество инструментов для удобной и успешной игры и будем рады, если вы найдёте что-то полезное для себя =)
+    </p>
+    <p>
+        Для эффективного использования всех возможностей системы рекомендуем изучить краткую <a href="<?php echo $this->url(array('id'=>'introdution'), 'helpView', true); ?>">справку по использованию</a>.
+    </p>
+    <p>
+</div>
+<div class="graph-block-main mrg-top-21 mrg-left-226 text-center" id="graph-container-pie"></div>

@@ -1,0 +1,391 @@
+<?php
+$this->breadCrumb( array(
+		sprintf('<a href="%s">%s</a>',
+				$this->url(array( 'idW' => $this->idWorld ), 'worldIndex', true), $this->nameWorld),
+		'О мире') );
+?>
+<div class="main-width rubber-block clearfix">
+	<div class="float-left mrg-left-21 w-239">
+		<h3 class="subtitle mrg-bottom-13">Текущие показатели</h3>
+		<?php if( is_null($this->propData) ): ?>
+			@TODO Empty Property
+		<?php else: ?>
+			<ul class="indicators">
+				<li>
+					<?php echo $this->formatItemCounters('Игроков',
+							$this->propData['count'],
+							$this->propData['count_voran'],
+							$this->propData['count_liens'],
+							$this->propData['count_psol']) ?>
+				</li>
+
+				<li>
+					<?php echo $this->formatItemCounters('Альянсов',
+							$this->propData['count_alliance']) ?>
+				</li>
+
+				<li>
+					<?php echo $this->formatItemCounters('Колоний',
+							$this->propData['count_colony'],
+							$this->propData['count_colony_voran'],
+							$this->propData['count_colony_liens'],
+							$this->propData['count_colony_psol']) ?>
+				</li>
+
+				<li>
+					<?php echo $this->formatItemCounters('Ср. уровень',
+							$this->propData['avg_level'],
+							$this->propData['avg_level_voran'],
+							$this->propData['avg_level_liens'],
+							$this->propData['avg_level_psol']) ?>
+				</li>
+
+				<li>
+					<?php echo $this->formatItemCounters('Ср. рейтинг (стар.)',
+							$this->propData['avg_rank_old'],
+							$this->propData['avg_rank_old_voran'],
+							$this->propData['avg_rank_old_liens'],
+							$this->propData['avg_rank_old_psol']) ?>
+				</li>
+
+				<li>
+					<?php echo $this->formatItemCounters('Ср. рейтинг (нов.)',
+							$this->propData['avg_rank_new'],
+							$this->propData['avg_rank_new_voran'],
+							$this->propData['avg_rank_new_liens'],
+							$this->propData['avg_rank_new_psol']) ?>
+				</li>
+
+				<li>
+					<?php echo $this->formatItemCounters('Ср. <acronym title="Боевые очки">БО</acronym>',
+							$this->propData['avg_bo'],
+							$this->propData['avg_bo_voran'],
+							$this->propData['avg_bo_liens'],
+							$this->propData['avg_bo_psol']) ?>
+				</li>
+
+				<li>
+					<?php echo $this->formatItemCounters('Ср. <acronym title="Новый рейтинг активности">НРА</acronym>',
+							$this->propData['avg_nra'],
+							$this->propData['avg_nra_voran'],
+							$this->propData['avg_nra_liens'],
+							$this->propData['avg_nra_psol'],
+							false) ?>
+				</li>
+
+				<li>
+					<?php echo $this->formatItemCounters('Ср. <acronym title="Рейтинг активности">РА</acronym>',
+							$this->propData['avg_ra'],
+							$this->propData['avg_ra_voran'],
+							$this->propData['avg_ra_liens'],
+							$this->propData['avg_ra_psol'],
+							false) ?>
+				</li>
+
+				<li>
+					<?php echo $this->formatItemCounters('Ср. археология',
+							$this->propData['avg_arch'],
+							$this->propData['avg_arch_voran'],
+							$this->propData['avg_arch_liens'],
+							$this->propData['avg_arch_psol']) ?>
+				</li>
+
+				<li>
+					<?php echo $this->formatItemCounters('Ср. строительство',
+							$this->propData['avg_build'],
+							$this->propData['avg_build_voran'],
+							$this->propData['avg_build_liens'],
+							$this->propData['avg_build_psol']) ?>
+				</li>
+
+				<li>
+					<?php echo $this->formatItemCounters('Ср. наука',
+							$this->propData['avg_scien'],
+							$this->propData['avg_scien_voran'],
+							$this->propData['avg_scien_liens'],
+							$this->propData['avg_scien_psol']) ?>
+				</li>
+			</ul>
+		<?php endif; ?>
+	</div>
+	<div class=" mrg-right-21 mrg-left-269">
+		 <h3 class="subtitle mrg-bottom-13">Общие данные</h3>
+		 <div class=" float-left">
+			 <ul class="indicators mrg-left-13">
+				 <li>
+					 <strong class="bold">Версия игры:</strong> <?php echo $this->mainData['version']; ?>
+					 <strong class="bold">Тип:</strong> <?php echo $this->mainData['type'] ?>
+				 </li>
+				 <li>
+					 <strong class="bold">Добавлен в систему:</strong> <?php echo $this->mainData['date_create'] ?>
+				 </li>
+				 <li>
+					 <strong class="bold">День рождения:</strong> <?php echo $this->mainData['date_birth'] ?>
+				 </li>
+				 <li>
+					 <strong class="bold">Обновление:</strong> <?php echo ( !is_null($this->mainData['date_main_upd']) ) ? $this->mainData['date_main_upd'] : 'Не обновляется'; ?>
+				 </li>
+				 <li>
+					 <strong class="bold">Обновление <acronym title="Основные (старые) рейтинги">ОР</acronym>:</strong> <?php echo ( !is_null($this->mainData['date_old_ranks']) ) ? $this->mainData['date_old_ranks'] : 'Не обновляется'; ?>
+				 </li>
+				 <li>
+					 <strong class="bold">Обновление <acronym title="Новые рейтинги">НР</acronym>:</strong> <?php echo ( !is_null($this->mainData['date_new_ranks']) ) ? $this->mainData['date_new_ranks'] : 'Не обновляется'; ?>
+				 </li>
+				 <li>
+					 <strong class="bold">Обновление <acronym title="Рейтинг активности">РА</acronym>:</strong> <?php echo ( !is_null($this->mainData['date_dshelp']) ) ? $this->mainData['date_dshelp'] : 'Не обновляется'; ?>
+				 </li>
+			</ul>
+		 </div>
+		 <div class=" text-center float-right">
+			 <strong class="bold">Заселённость колец:</strong>
+			 <?php if( is_null($this->propData) ): ?>
+				@TODO Empty Property
+			 <?php else: ?>
+				<ul class="indicators">
+					<li class='<?php echo $this->RaseColor(1) ?>'>
+						Ворания <?php echo $this->propData['people_voran'] ?>%
+					</li>
+					<li class='<?php echo $this->RaseColor(2) ?>'>
+						Лиенсорд <?php echo $this->propData['people_liens'] ?>%
+					</li>
+					<li class='<?php echo $this->RaseColor(3) ?>'>
+						Псолеон <?php echo $this->propData['people_psol'] ?>%
+					</li>
+					<li>
+						Мельсион <?php echo $this->propData['people_mels'] ?>%
+					</li>
+				</ul>
+			 <?php endif; ?>
+		 </div>
+		 <div class=" mrg_left_190 text-center ">
+			<strong class="bold">Количество комплексов:</strong>
+			 <?php if( is_null($this->propData) ): ?>
+				@TODO Empty Property
+			 <?php else: ?>
+				<ul class="indicators">
+					<li class='<?php echo $this->RaseColor(1)  ?>'>
+						Ворания <?php echo $this->propData['compls_voran'] ?>
+					</li>
+					<li class='<?php echo $this->RaseColor(2)  ?>'>
+						Лиенсорд <?php echo $this->propData['compls_liens'] ?>
+					</li>
+					<li class='<?php echo $this->RaseColor(3)  ?>'>
+						Псолеон <?php echo $this->propData['compls_psol'] ?>
+					</li>
+					<li>
+						Мельсион <?php echo $this->propData['compls_mels'] ?>
+					</li>
+				</ul>
+			<?php endif; ?>
+		 </div>
+		 <h3 class=" subtitle mrg-top-98">Описание от разработчиков</h3>
+		   <p class="mrg-left-13 text-just">
+			  <?php echo $this->mainData['intro'] ?>
+		   </p>
+	</div>
+</div>
+<div>
+	   <table class="rubber-block table text-center border main-min-width">
+		   <caption><h3 class="subtitle text-center mrg-bottom-13">Последние изменения</h3></caption>
+		   <thead>
+			   <tr>
+					<th>пришли</th>
+					<th>ушли</th>
+					<th>статус ворот</th>
+					<th>переходы&nbsp;по&nbsp;альянсам</th>
+					<th>переезды</th>
+					<th>max&nbsp;изменения&nbsp;рейтинга</th>
+					<th>max&nbsp;рост&nbsp;БО</th>
+				</tr>
+			</thead>
+			<tfoot>
+			  <tr>
+				 <td colspan="8">
+					<a href="<?php echo $this->url(array('idW' => $this->idWorld), 'worldHistory', true) ?>">История изменений</a>
+				 </td>
+			   </tr>
+			</tfoot>
+			<tbody class="pad-td">
+			<tr>
+				 <td>
+					 <?php if (count($this->input['players']) > 0):?>
+						<ul class="mrg-bottom-13">
+						 <?php foreach ($this->input['players'] as $value): ?>
+							  <li>
+								  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?> " href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+							  </li>
+						 <?php endforeach; ?>
+						</ul>
+						 <?php if ($this->input['count'] > 0):?>
+						   <a href="<?php echo $this->url(array('idW' => $this->idWorld), 'worldHistory', true) ?>" class="mrg-lr-3">остальные&nbsp;(<?php echo $this->input['count']?>)</a>
+						 <?php endif;?>
+					 <?php else:?>
+					 <span class="empty-td">Никого нет</span>
+					 <?php endif;?>
+				 </td>
+				 <td>
+					 <?php if (count($this->output['players']) > 0):?>
+					 <ul class="mrg-bottom-13">
+						 <?php foreach ($this->output['players'] as $value): ?>
+							  <li>
+								  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+							  </li>
+						 <?php endforeach; ?>
+					 </ul>
+						 <?php if ($this->output['count'] > 0):?>
+							<a href="<?php echo $this->url(array('idW' => $this->idWorld), 'worldHistory', true) ?>" class="mrg-lr-3">остальные&nbsp;(<?php echo $this->output['count']?>)</a>
+						 <?php endif;?>
+					 <?php else:?>
+						 <span class="empty-td">Никого нет</span>
+					 <?php endif;?>
+				 </td>
+				 <td>
+					 <?php if (count($this->transGate['transes']) > 0):?>
+					 <ul>
+						 <?php $dateHead = ''; foreach ($this->transGate['transes'] as $value): ?>
+								<?php
+								if ( $value['date'] != $dateHead )
+								{
+									$dateHead = $value['date'];
+									echo "<div class='time-separation'>{$value['date']}</div>";
+								}
+								?>
+							  <li>
+								  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+								  <div class="rubber-block mrg-top-2">
+									  <?php echo $this->GateIcon($value['old_gate']) .' &rarr; '. $this->GateIcon($value['new_gate']); ?>
+								  </div>
+							  </li>
+						 <?php endforeach; ?>
+					 </ul>
+						 <?php if ($this->transGate['count'] > 0):?>
+							   <a href="<?php echo $this->url(array('idW' => $this->idWorld), 'worldHistory', true) ?>" class="mrg-lr-3">остальные&nbsp;(<?php echo $this->transGate['count']?>)</a>
+						 <?php endif;?>
+					 <?php else:?>
+						 <span class="empty-td">Всё как прежде</span>
+					 <?php endif;?>
+				 </td>
+				 <td>
+					 <?php if (count($this->transAlliance['transes']) > 0): ?>
+					 <ul>
+						 <?php  $dateHead = ''; foreach ($this->transAlliance['transes'] as $value): ?>
+								<?php
+								if ( $value['date'] != $dateHead )
+								{
+									$dateHead = $value['date'];
+									echo "<div class='time-separation'>{$value['date']}</div>";
+								}
+								?>
+							  <li>
+								  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>">
+									<?php echo $value['nik'] ?>
+								  </a>
+								  <br>
+								  <?php echo $this->allianceLink($this->idWorld, $value['old_id'], $value['old_name']); ?>
+								  &rarr;
+								  <?php echo $this->allianceLink($this->idWorld, $value['new_id'], $value['new_name']); ?>
+							  </li>
+						 <?php endforeach; ?>
+					 </ul>
+						 <?php if ($this->transAlliance['count'] > 0):?>
+							   <a href="<?php echo $this->url(array('idW' => $this->idWorld), 'worldHistory', true) ?>" class="mrg-lr-3">
+								   остальные&nbsp;(<?php echo $this->transAlliance['count']?>)
+							   </a>
+						 <?php endif;?>
+
+					 <?php else:?>
+						 <span class="empty-td">Всё как прежде</span>
+					 <?php endif;?>
+				 </td>
+				 <td>
+					 <?php if (count($this->transSots['transes']) > 0):?>
+						 <ul>
+							 <?php  $dateHead = ''; foreach ($this->transSots['transes'] as $value): ?>
+									<?php
+									if ( $value['date'] != $dateHead )
+									{
+										$dateHead = $value['date'];
+										echo "<div class='time-separation'>{$value['date']}</div>";
+									}
+									?>
+									  <li>
+										  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+										  <br>
+										  <?php
+										  if( is_null($value['old_adr']) )
+											  echo "{$value['new_adr']} <span class='color-green'>new</span>";
+										  elseif( is_null($value['new_adr']) )
+											  echo "{$value['old_adr']} <span class='color-red'>del</span>";
+										  else
+											  echo "{$value['old_adr']} &rarr; {$value['new_adr']}";
+										  ?>
+									  </li>
+							 <?php endforeach; ?>
+						 </ul>
+						 <?php if ($this->transSots['count'] > 0): ?>
+							   <a href="<?php echo $this->url(array('idW' => $this->idWorld), 'worldHistory', true) ?>" class="mrg-lr-3">
+								   остальные&nbsp;(<?php echo $this->transSots['count']?>)
+							   </a>
+						 <?php endif;?>
+					 <?php else:?>
+						 <span class="empty-td">Всё как прежде</span>
+					 <?php endif;?>
+				 </td>
+				 <td>
+					 <?php if (count($this->maxRankDelts['delts']) > 0):?>
+						 <ul>
+							 <?php  $dateHead = ''; foreach ($this->maxRankDelts['delts'] as $value): ?>
+									<?php
+									if ( $value['date'] != $dateHead )
+									{
+										$dateHead = $value['date'];
+										echo "<div class='time-separation'>{$value['date']}</div>";
+									}
+									?>
+									  <li>
+										  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+										  <br>
+										  <?php $this->printDelta($value['delta']); ?>
+									  </li>
+							 <?php endforeach; ?>
+						 </ul>
+						 <?php if ($this->maxRankDelts['count'] > 0): ?>
+							   <a href="<?php echo $this->url(array('idW' => $this->idWorld), 'worldHistory', true) ?>" class="mrg-lr-3">
+								   остальные&nbsp;(<?php echo $this->maxRankDelts['count']?>)
+							   </a>
+						 <?php endif;?>
+					 <?php else:?>
+						 <span class="empty-td">Всё как прежде</span>
+					 <?php endif;?>
+				 </td>
+				 <td>
+					 <?php if (count($this->maxBoDelts['delts']) > 0):?>
+						 <ul>
+							 <?php  $dateHead = ''; foreach ($this->maxBoDelts['delts'] as $value): ?>
+									<?php
+									if ( $value['date'] != $dateHead )
+									{
+										$dateHead = $value['date'];
+										echo "<div class='time-separation'>{$value['date']}</div>";
+									}
+									?>
+									  <li>
+										  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+										  <br>
+										  <?php $this->printDelta($value['delta']); ?>
+									  </li>
+							 <?php endforeach; ?>
+						 </ul>
+						 <?php if ($this->maxBoDelts['count'] > 0): ?>
+							   <a href="<?php echo $this->url(array('idW' => $this->idWorld), 'worldHistory', true) ?>" class="mrg-lr-3">
+								   остальные&nbsp;(<?php echo $this->maxBoDelts['count']?>)
+							   </a>
+						 <?php endif;?>
+					 <?php else:?>
+						 <span class="empty-td">Всё как прежде</span>
+					 <?php endif;?>
+				 </td>
+			</tr>
+			</tbody>
+	   </table>
+</div>

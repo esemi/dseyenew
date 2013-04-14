@@ -1,0 +1,36 @@
+<?php $this->WorldList(); ?>
+
+<h2 class="title">Инструменты разработчиков</h2>
+
+<div class=" mrg-right-42 mrg-left-157 text-just">
+	<p class="mrg-left-13">
+		На данной странице описаны некоторые "плюшки" для разработчиков, решивших использовать информацию с нашего проекта в своих целях.<br>
+		Пока инструментов не много и если вам нужен какой либо специфичный функционал &mdash; <a href="<?php echo $this->url(array( ), 'staticContacts', true); ?>">свяжитесь с нами</a>.
+	</p>
+	<h3 class="subtitle">Быстрый переход к странице игрока</h3>
+	<p class="mrg-left-13">
+		Если вам необходимо привязать динамическую ссылку на страницу игрока вы можете воспользоваться специально составленным URL адресом:
+	</p>
+	<p class="mrg-left-42">
+		<span class="monospace"><?php echo $this->url(array( 'idW' => 'ID_WORLD', 'nik' => 'NIK_PLAYER' ), 'playerSearch', true); ?></span>
+	<br>
+		<span class="font-13">где <span class="bold">ID_WORLD</span> &mdash; идентификатор мира, <span class="bold">NIK_PLAYER</span> &mdash; ник игрока данного мира.</span>
+	</p>
+	<p class="mrg-left-13">
+		Если игрок не будет найден в указанном мире или ник игрока содержит недопустимые символы пользователь увидит стандартную страницу ошибки с кодом 500. В противном случае пользователь будет перенаправлен на страницу игрока с кодом 302.
+	</p>
+	<h3 class="subtitle">CSV репозиторий</h3>
+	<p class="mrg-left-13">
+		Информацию об активных игроках каждого конкретного мира вы можете получить в виде CSV файла (маска <span class="monospace">WORLD_NAME.csv.gz</span>).
+		Кроме того доступен исторический архив игровых и наших csv за последние несколько дней.
+	</p>
+	<p class="mrg-left-42">
+		<a class="monospace" href="/csv/">csv репозиторий</a><br>
+		<a class="monospace" href="/csv/game_csv_archive/">архив игровых csv</a><br>
+		<a class="monospace" href="/csv/our_csv_archive/">архив наших csv</a>
+	</p>
+	<p class="mrg-left-13">
+		Новые параметры будут добавляться в конец строки, поэтому вы можете не опасаться проблем с совместимостью при изменениях.
+	</p>
+
+</div>

@@ -1,0 +1,6 @@
+http://habrahabr.ru/rss/blogs/net/
+http://habrahabr.ru/rss/blogs/cpp/
+http://habrahabr.ru/rss/blogs/java/
+http://habrahabr.ru/rss/blogs/python/
+http://habrahabr.ru/rss/blogs/ruby/
+http://habrahabr.ru/rss/blogs/php/

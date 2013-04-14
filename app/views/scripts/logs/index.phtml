@@ -1,0 +1,83 @@
+<h3 class="subtitle">Exception log</h3>
+<pre>
+	<?php
+	foreach ($this->excepLog as $str)
+		echo $str;
+	?>
+</pre>
+<h3 class="subtitle">CSRF log</h3>
+<pre>
+	<?php
+	foreach ($this->csrfLog as $str)
+		echo $str;
+	?>
+</pre>
+<h3 class="subtitle">Errors log</h3>
+<pre>
+	<?php
+	foreach ($this->errorsLog as $str)
+		echo $str;
+	?>
+</pre>
+
+<h3 class="subtitle">Cron log</h3>
+<pre>
+	<?php
+	foreach ($this->cronLog as $str)
+		echo $str;
+	?>
+</pre>
+
+<h3 class="subtitle">Apache log</h3>
+<pre>
+	<?php
+	foreach ($this->httpLog as $str)
+		echo $str;
+	?>
+</pre>
+
+<h3 class="subtitle">Nginx log</h3>
+<pre>
+	<?php
+	foreach ($this->nginxLog as $str)
+		echo $str;
+	?>
+</pre>
+
+<?php
+echo $this->partial(
+        'Partials/logTable.phtml',
+        array( 'data' => $this->up, 'name' => 'UP log' ) );
+
+echo $this->partial(
+        'Partials/logTable.phtml',
+        array( 'data' => $this->day, 'name' => 'DAY log' ) );
+
+echo $this->partial(
+        'Partials/logTable.phtml',
+        array( 'data' => $this->online, 'name' => 'online log' ) );
+
+echo $this->partial(
+        'Partials/logTable.phtml',
+        array( 'data' => $this->scav, 'name' => 'scav log' ) );
+
+echo $this->partial(
+        'Partials/logTable.phtml',
+        array( 'data' => $this->dshelp, 'name' => 'dshelp log' ) );
+
+echo $this->partial(
+		'Partials/logTable.phtml',
+		array( 'data' => $this->oldranks, 'name' => 'oldranks log' ) );
+
+echo $this->partial(
+        'Partials/logTable.phtml',
+        array( 'data' => $this->newranks, 'name' => 'newranks log' ) );
+
+echo $this->partial(
+        'Partials/logTable.phtml',
+        array( 'data' => $this->nra, 'name' => 'nra log' ) );
+
+echo $this->partial(
+        'Partials/logTable.phtml',
+        array( 'data' => $this->csv, 'name' => 'csv log' ) );
+?>

@@ -1,0 +1,23 @@
+<?php $this->addGraph('online'); ?>
+
+<h2 class=" mrg-left-21 mrg-right-21 mrg-top--7 small-title mrg-bottom-8 float-left">Статистика online</h2>
+
+<div class="js-graph-menu-online text-right" selectclass="color-psol bold no-underline">
+	<ul class="justify-blocks mrg-top-7 mrg-right-21 mrg-bottom-8">
+		<?php foreach($this->menu as $item): ?>
+			<li class="inline-block mrg-top-13">
+				<h4 class='bold text-center mrg-bottom-3'><?php echo $item['name']; ?></h4>
+				<ul>
+					<li type="hour" version="<?php echo $item['name']; ?>"  class="inline"><a href="#<?php echo $item['name']; ?>_hour" class="hover-no-underline">По часам</a></li>
+					<li type="day" version="<?php echo $item['name']; ?>" class="inline mrg-left-13"><a href="#<?php echo $item['name']; ?>_day" class="hover-no-underline">По дням</a></li>
+				</ul>
+			</li>
+		<?php endforeach; ?>
+</ul>
+</div>
+
+<div id="graph-container" class="mrg-top-21 text-center">
+</div>
+
+
+

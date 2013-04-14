@@ -1,0 +1,43 @@
+<?php
+
+$cycle = $this->cycle(array('odd','even'));
+
+$num = 0;
+
+if( isset($this->error) ) :
+      echo "<tr><td colspan='7'>{$this->error}</td></tr>";
+elseif( count($this->players) == 0 ) :
+      echo "<tr><td colspan='7'>Игроков не найдено</td></tr>";
+else :
+    foreach($this->players as $player) : ?>
+
+           <tr class="<?php echo $cycle->next(); ?>">
+                <td class="text-right pad-right-8">
+                    <?php echo ++$num; ?>
+                </td>
+                <td class="pad-right-8">
+                    <a class="<?php echo $this->RaseColor($player['id_rase'], true); ?> no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $player['id_world'], 'idP' => $player['id'] ), 'playerStat', true) ?>"><?php echo $player['nik']; ?></a>
+                </td>
+                <td class="text-center pad-right-8">
+                    <?php echo $this->allianceLink($player['id_world'], $player['id_alliance'], $player['alliance']); ?>                    
+                </td>
+                <td class="text-right pad-right-8">
+                    <?php echo "{$player['dom']} ". $this->GateIcon($player['gate']); ?>
+                </td>
+                <td>
+                    <?php echo " {$player['dom_name']}"; ?>
+                </td>
+                <td class="text-right pad-right-8">
+                    <?php $this->printStatus($player['status']); ?>
+                </td>
+                <?php if(isset($player['world'])) :?>
+                    <td class="text-right">
+                        <a href="<?php echo $this->url(array( 'idW' => $player['id_world'] ), 'worldIndex', true) ?>" class="no-underline"><?php echo $player['world']; ?></a>
+                    </td>
+                <?php else: ?>
+                    <td></td>
+                <?php endif; ?>
+            </tr>
+
+    <?php endforeach;
+endif; ?>

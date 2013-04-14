@@ -1,0 +1,69 @@
+<?php $this->MainMenu('profile'); ?>
+
+<?php $this->printMessage($this->messType, $this->messText); ?>
+
+<div class="mrg-left-157">
+	<?php
+	$this->breadCrumb( array(sprintf('Профиль пользователя %s' , $this->escape($this->user['login']))), false );
+	?>
+	<div class="mrg-left-13 inline-block text-top">
+		<h3 class="subtitle mrg-bottom-8">Данные пользователя</h3>
+		<ul class="indicators mrg-left-13">
+			<li><strong class="bold">Имя пользователя:</strong> <?php echo $this->escape($this->user['login']); ?></li>
+			<li><strong class="bold">Уровень доступа:</strong> <?php echo $this->user['role']; ?></li>
+			<li>
+				<strong class="bold">Email:</strong>
+				<?php echo $this->escape($this->user['email']); ?>
+				<?php if( $this->user['approved'] == 'no'): ?>
+					<a href="<?php echo $this->url( array(), 'staticEmailApprove', true); ?>" class="color-red red-hover">не подтверждён</a>
+				<?php endif; ?>
+			</li>
+			<li><strong class="bold">Дата регистрации:</strong> <?php echo $this->user['created']; ?></li>
+			<?php if($this->accessEdit): ?>
+				<li><a href="<?php echo $this->url(array(),'userPasswordChange',true); ?>">сменить пароль</a></li>
+			<?php endif; ?>
+			</ul>
+	</div>
+
+<?php if(isset($this->autoSearchData)): ?>
+	<div class="mrg-left-60 mrg-bottom-13 inline-block text-top">
+		<h3 class="subtitle mrg-bottom-8">Автопоиск</h3>
+			<?php if(count($this->autoSearchData) > 0): ?>
+				<div class="mrg-left-13">
+					<h4 class=" bold mrg-bottom-5">последние используемые:</h4>
+					<ul class="indicators mrg-left-13">
+						<?php foreach($this->autoSearchData as $item): ?>
+							<li>
+								<a href="<?php echo $this->url(array('idA' => $item['id']), 'userAutosearchFind', true); ?>" class="no-underline main-color-link psol-hover" target="_blank" title="<?php echo $this->escape($item['name']); ?>">
+									<?php echo $this->escape($this->wordWrap($item['name'] )); ?>
+								</a>
+							</li>
+						<?php endforeach; ?>
+						<li><a href="<?php echo $this->url(array(),'userAutosearch',true); ?>">остальные</a><li>
+					</ul>
+				</div>
+			<?php else: ?>
+				<p class="mrg-left-13">
+					Вы сюда еще ничего не добавили.<br>
+					Не знаете что это? <a href="<?php echo $this->url(array('id'=>'autosearch'), 'helpView', true); ?>">Ответ тут</a>.
+				</p>
+			<?php endif; ?>
+	</div>
+<?php endif; ?>
+
+	<div class="mrg-left-13 mrg-top-13">
+		<h3 class="subtitle mrg-bottom-8">История пользователя</h3>
+		<ul class="indicators mrg-left-13">
+				<?php foreach( $this->history as $row ): ?>
+					<li>
+						<span class="mrg-right-8"><?php echo $row['date']; ?></span>
+						<?php echo $row['action']; ?>
+					</li>
+				<?php endforeach; ?>
+			<li>
+				<a href="<?php echo $this->url( array(), 'userHistory', true); ?>">остальная</a>
+			</li>
+		</ul>
+	</div>
+</div>
+

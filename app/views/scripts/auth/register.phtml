@@ -1,0 +1,48 @@
+<?php $this->WorldList(); ?>
+
+<h2 class="title inline">Регистрация нового пользователя</h2>
+
+<?php $this->printMessage($this->messType, $this->messText); ?>
+
+<form class="mrg-left-157 mrg-top-13" name="registerform" action="" method="post" id="registerform">
+	<table class="inline-block text-bottom ">
+		<tbody>
+			<tr>
+				<td><label for="login">Введите логин: </label></td>
+				<td><input id="login" class="mrg-left-5 w-157" name="login"  placeholder="Введите логин" type="text" value="<?php echo $this->escape($this->post['login']); ?>"  maxlength="50"/></td>
+				<td></td>
+			</tr>
+			<tr>
+				<td><label for="pass" class="mrg-top-7">Введите пароль: </label></td>
+				<td><input id="pass" class="mrg-left-5 mrg-top-7 w-157" name="pass"  placeholder="Введите пароль" type="password" /></td>
+				<td>
+					<div class="js-pass-strong inline-block mrg-left-21">
+						<div class="pass-strong-0"></div>
+						<div class="pass-strong-0"></div>
+						<div class="pass-strong-0"></div>
+						<div class="pass-strong-0"></div>
+						<div class="pass-strong-0"></div>
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td><label for="email" class="mrg-top-7">Введите email: </label></td>
+				<td><input id="email" class="mrg-left-5 mrg-top-7 w-157" name="email"  placeholder="Введите email" type="text" value="<?php echo $this->escape($this->post['email']); ?>" maxlength="255" /></td>
+				<td><input class="inline-block text-bottom mrg-left-21" type="submit" value="зарегистрироваться" /></td>
+			</tr>
+		</tbody>
+	</table>
+
+<div class="inline-block text-top w-268 text-just mrg-left-42">
+	<?php $this->printWarning(); ?><br>
+	<p class="mrg-left-13">Не указывайте в качестве пароля свой пароль от игры &mdash; это не безопасно.</p>
+</div>
+	<?php if(isset($this->recaptcha)): ?>
+	<div style="margin-bottom: 15px; margin-top: 10px; width: 400px;">
+		<?php echo $this->recaptcha->getHTML(); ?>
+	</div>
+	<?php endif; ?>
+</form>
+
+
+

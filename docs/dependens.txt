@@ -1,0 +1,24 @@
+apache 2.2+
+	mod_rpaf
+nginx 1.1+ and
+	HttpAutoindexModule
+mysql 5.5.13+
+	innodb
+	myisam
+	memory
+php 5.3+
+	dom
+	memcached
+	eaccelerator
+	hash
+	curl
+memcached
+Zend 1.11.12
+
+jQuery 1.5.1
+jQuery dimensions 1.1.2
+jQuery Tooltip plugin 1.3
+jQuery UI 1.8.11
+Highcharts JS v2.3.3
+
+

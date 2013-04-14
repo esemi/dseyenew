@@ -1,0 +1,46 @@
+GRANT USAGE ON *.* TO 'dseye_back'@'localhost' IDENTIFIED BY PASSWORD '*C1E3D1B1D6CBD7626973A4708D1C0D2302789903';
+
+GRANT SELECT, INSERT, UPDATE, DELETE ON `dseye\_new`.* TO 'dseye_back'@'localhost';
+
+GRANT SELECT, INSERT, UPDATE, DELETE, DROP ON `dseye`.* TO 'dseye_back'@'localhost';
+
+
+GRANT USAGE ON *.* TO 'dseye_front'@'localhost' IDENTIFIED BY PASSWORD '*2776131C2EC11D4132CC3F11989E5CCD332D3558';
+
+GRANT SELECT ON `dseye`.* TO 'dseye_front'@'localhost';
+
+GRANT SELECT ON `dseye\_new`.* TO 'dseye_front'@'localhost';
+
+GRANT INSERT ON `dseye_new`.`antibrut` TO 'dseye_front'@'localhost';
+
+GRANT INSERT, UPDATE (position) ON `dseye`.`feedback` TO 'dseye_front'@'localhost';
+
+GRANT INSERT, UPDATE (date_touch, prop) ON `dseye_new`.`users_search` TO 'dseye_front'@'localhost';
+
+GRANT INSERT, UPDATE (date_activate) ON `dseye`.`users_approved` TO 'dseye_front'@'localhost';
+
+GRANT INSERT, UPDATE (last_login, approved, pass) ON `dseye`.`users` TO 'dseye_front'@'localhost';
+
+GRANT INSERT (position), UPDATE (position) ON `dseye_new`.`feedback` TO 'dseye_front'@'localhost';
+
+GRANT SELECT, INSERT ON `dseye`.`antibrut` TO 'dseye_front'@'localhost';
+
+GRANT INSERT, UPDATE ON `dseye_new`.`search_props` TO 'dseye_front'@'localhost';
+
+GRANT INSERT, UPDATE (approved, pass) ON `dseye_new`.`users` TO 'dseye_front'@'localhost';
+
+GRANT INSERT ON `dseye_new`.`form` TO 'dseye_front'@'localhost';
+
+GRANT INSERT, UPDATE (date_activate) ON `dseye_new`.`users_approved` TO 'dseye_front'@'localhost';
+
+GRANT INSERT ON `dseye`.`users_history` TO 'dseye_front'@'localhost';
+
+GRANT INSERT, UPDATE (date_activate) ON `dseye`.`users_remember` TO 'dseye_front'@'localhost';
+
+GRANT INSERT, UPDATE (date_activate) ON `dseye_new`.`users_remember` TO 'dseye_front'@'localhost';
+
+GRANT INSERT ON `dseye_new`.`users_history` TO 'dseye_front'@'localhost';
+
+GRANT INSERT, UPDATE (prop, date_create), DELETE ON `dseye`.`users_search` TO 'dseye_front'@'localhost';
+
+GRANT INSERT ON `dseye`.`form` TO 'dseye_front'@'localhost';

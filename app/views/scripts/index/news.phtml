@@ -1,0 +1,30 @@
+<?php $this->WorldList(); ?>
+
+<h2 class="title">Новости <a href="<?php echo $this->url(array(), 'newsRss', true); ?>" target="_blank"><div class="rss inline-block mrg-left-5"></div></a></h2>
+<ul class="news mrg-left-157 mrg-top-13 mrg-right-145">
+    <?php foreach($this->news as $news) : ?>
+    <li>
+        <h4 class="js-news sub-subtitle inline pseudo finger">
+            <a name="item<?php echo $news['id']; ?>" ></a>
+            <?php echo $news['title']; ?>
+        </h4>
+        <?php $this->printNewsStatus($news['cat']); ?>
+        <span class="float-right"><?php echo $news['date']; ?></span>
+        <p class ="<?php echo ( $this->idN == $news['id'] ) ? '':'hide'; ?> mrg-left-13 mrg-bottom-13 text-just">
+            <?php echo $news['text'] ?><br>
+            <a href="<?php echo $this->url(array( 'idN' => $news['id'] ), 'newsView', true) ?>" class="no-underline font-11">
+                ссылка на новость
+            </a>
+        </p>
+    </li>
+    <?php endforeach; ?>
+</ul>
+
+<div class="w-123 float-right mrg-right-21">
+    <div class="w-123 pos-fix news-manager text-right">
+        <div class="js-open-all-news finger logo_color_hover">развернуть всё</div>
+        <div class="js-close-all-news finger logo_color_hover">свернуть всё</div>
+        <div class="js-get-top  finger mrg_top_12 logo_color_hover">наверх</div>
+    </div>
+</div>
+

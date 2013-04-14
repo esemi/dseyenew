@@ -1,0 +1,31 @@
+<?php $this->WorldList(); ?>
+
+<h2 class="title inline">Вход в личный кабинет</h2>
+
+<?php $this->printMessage($this->messType, $this->messText); ?>
+
+<div class="float-right text-right mrg-top-34 mrg-right-42">
+	<a class="mrg-top-5 block" href="<?php echo $this->url(array(),'staticRegistration',true); ?>">Зарегистрироваться</a>
+	<a class="mrg-top-3 block" href="<?php echo $this->url(array(), 'staticPasswordRemember', true); ?>">Забыли пароль?</a>
+</div>
+<form class="mrg-top-13 mrg-left-157" name="loginform" action="" method="post">
+	<table class="inline-block text-bottom mrg-right-21">
+		<tbody>
+			<tr>
+				<td><label for="login">Логин: </label></td>
+				<td><input class="mrg-left-5 w-157" id="login" name="login" placeholder="Введите логин" type="text" value="<?php echo $this->escape($this->login); ?>" maxlength="50"/></td>
+			</tr>
+			<tr>
+				<td><label for="pass" class=" mrg-top-7">Пароль: </label></td>
+				<td><input id="pass" name="pass" class="mrg-top-7 mrg-left-5 w-157" type="password" placeholder="Введите пароль" /></td>
+			</tr>
+
+		</tbody>
+	</table>
+	<input class="inline-block text-bottom" type="submit" value="Вход" />
+	<?php if(isset($this->recaptcha)): ?>
+	<div style="margin-bottom: 15px; margin-top: 10px; width: 400px;">
+		<?php echo $this->recaptcha->getHTML(); ?>
+	</div>
+	<?php endif; ?>
+</form>

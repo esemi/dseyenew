@@ -1,0 +1,42 @@
+<?php $this->MainMenu('profile'); ?>
+
+<div class="mrg-left-157">
+	<?php
+	$this->breadCrumb( array(sprintf('<a href="%s">Профиль</a>', $this->url(array(), 'userProfile', true)), 'автопоиск'), false);
+	?>
+
+
+	<div class="mrg-left-13">
+
+	<?php if( count($this->autoSearchList) == 0 ): ?>
+		<p>
+			Вы сюда еще ничего не добавили.<br>
+			Не знаете что это? <a href="<?php echo $this->url(array('id'=>'autosearch'), 'helpView', true); ?>">Ответ тут</a>.
+		</p>
+	<?php else: ?>
+		<div class="js-ajax-result text-center"></div>
+			<?php foreach( $this->autoSearchList as $item ): ?>
+			<div class="inline-block text-top mrg-right-42">
+				<a href="<?php echo $this->url(array( 'idW' => $item->id), 'worldIndex', true); ?>" target="_blank" class="no-underline subtitle">
+					<?php echo $item->name; ?>
+				</a>
+				<ul class="indicators mrg-left-5 mrg-top-5">
+				<?php foreach( $item->data as $row ): ?>
+					<li>
+						<a href="<?php echo $this->url(array('idA' => $row['id']), 'userAutosearchFind', true); ?>" target="_blank" class="no-underline main-color-link color-logo-hover psol-hover">
+							<?php echo $this->escape( $row['name'] ); ?>
+						</a>
+						<?php if( $this->accessDelete === true ): ?>
+							<div idA="<?php echo $row['id']; ?>" class="js-autosearch-delete delete inline-block mrg-left-5 finger"> </div>
+						<?php endif; ?>
+					</li>
+				<?php endforeach; ?>
+					<li>
+						<a href="<?php echo $this->url(array( 'idW' => $item->id), 'worldSearch', true); ?>" target="_blank"> добавить новый</a>
+					</li>
+				</ul>
+			</div>
+		<?php endforeach; ?>
+	<?php endif; ?>
+	</div>
+</div>

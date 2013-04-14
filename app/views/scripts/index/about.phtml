@@ -1,0 +1,29 @@
+<?php $this->WorldList(); ?>
+
+<h2 class="title">О проекте</h2>
+<div class="mrg-left-157 mrg-right-42 text-just">
+	<p>
+		Данный проект создан и будет развиваться для облегчения отслеживания внутриигровой ситуации и общей динамики развития игры.<br>
+		<img class="no-border no-margin" alt="торт" src="/images/faq/pie.png"/> Официальный День Рождения проекта 11.02.2011. В этот день свет увидела первая публичная альфа-версия.
+	</p>
+	<p>
+		Отдельное спасибо хотелось бы высказать игроку <a title="Профиль вдохновителя проекта" href='<?php echo $this->url(array('idW'=>8,'idP'=>6515),'playerStat',true);?>' class="no-underline">mrdolfin555</a> за вдохновение и дельные советы, а также всем кто не стесняется высказывать критику и предложения. Благодаря вам проект становится лучше и эффективнее.
+	</p>
+	<div>
+		<h3 class="sub-subtitle bold color-logo mrg-top-21">Настройки системы</h3>
+		<div class="text_just mrg-left-13">
+			<p>User agent нашего бота: <span class="bold"><?php echo $this->botName; ?></span></p>
+			<p>Время хранения статистики и изменений по мирам/альянсам/игрокам: <span class="bold"><?php printf('%d %s', $this->scav['worldstat'], Mylib_Utils::plural('день', 'дня', 'дней',  $this->scav['worldstat']) ); ?></span></p>
+			<p>Время хранения статистики по игрокам: <span class="bold"><?php printf('%d %s', $this->scav['playerstat'], Mylib_Utils::plural('день', 'дня', 'дней',  $this->scav['playerstat']) ); ?></span></p>
+			<p>Время хранения статистики игроков онлайн: <span class="bold"><?php printf('%d %s', $this->scav['onlinestat'], Mylib_Utils::plural('день', 'дня', 'дней',  $this->scav['onlinestat']) ); ?></span></p>
+			<p>Минимальный размер изменения старого рейтинга для учёта в "max изменениях рейтинга": <span class="bold"><?php echo $this->delta['rank_old']['border']; ?></span></p>
+			<p>Количество изменений старого рейтинга в сутки для учёта в "max изменениях рейтинга": <span class="bold"><?php echo $this->delta['rank_old']['limit']; ?> шт.</span></p>
+			<p>Минимальный размер изменения БО для учёта в "max росте БО": <span class="bold"><?php echo $this->delta['bo']['border']; ?></span></p>
+			<p>Количество изменений БО в сутки для учёта в "max росте БО": <span class="bold"><?php echo $this->delta['bo']['limit']; ?> шт.</span></p>
+			<p>Период устаревания последней дельты в списках игроков: <span class="bold"><?php echo $this->scav['player_delts']; ?> часа</span></p>
+			<p>Время хранения исторических csv (игровых и наших): <span class="bold"><?php echo $this->scav['csv_archive']; ?> дней</span></p>
+			<p>Время хранения коротких ссылок на расширенный поиск: <span class="bold"><?php echo $this->scav['search_tinyurl']; ?> дней</span></p>
+		</div>
+	</div>
+
+</div>

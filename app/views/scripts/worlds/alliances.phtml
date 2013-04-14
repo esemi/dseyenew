@@ -1,0 +1,84 @@
+<?php
+$cycle = $this->cycle(array('odd','even'));
+
+$this->breadCrumb( array(
+            sprintf('<a href="%s">%s</a>',
+                    $this->url(array( 'idW' => $this->idWorld ), 'worldIndex', true), $this->nameWorld),
+            'Cписок альянсов') );
+?>
+
+<?php if( count($this->paginator) ): ?>
+	<table class="rubber-block main-min-width table js-table-select">
+		<thead class="text-center">
+		<tr>
+			<th>№</th>
+			<th>Имя</th>
+			<th><?php echo $this->sortHead($this->sort, 'count', 'Игроков'); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'count_colony', 'Колоний'); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'rank_old', 'Рейтинг (стар.)'); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'bo', '<acronym title="Боевые очки">БО</acronym>'); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'avg_rank_old', 'Сред. рейтинг (стар.)'); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'avg_bo', 'Сред. <acronym title="Боевые очки">БО</acronym>'); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'avg_nra', 'Сред. <acronym title="Новый рейтинг активности">НРА</acronym>'); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'avg_ra', 'Сред. <acronym title="Рейтинг активности">РА</acronym>'); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'rank_new', 'Рейтинг (нов.)'); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'arch', 'Археология'); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'build', 'Стройка'); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'scien', 'Наука'); ?></th>
+		</tr>
+		</thead>
+		<tfoot class="border text-center">
+			<tr>
+				<td colspan="14">
+				   <div class="float-right"> <?php echo $this->selectJsCount($this->countPerPage); ?></div>
+					<div class="mrg-left-125"><?php echo $this->paginator; ?></div>
+				</td>
+			</tr>
+		</tfoot>
+		<tbody>
+		<?php foreach($this->paginator as $item): ?>
+		  <tr class="<?php echo $cycle->next(); ?>">
+			<td class="text-right pad-right-8">
+				  <?php echo $this->numbered++; ?>
+			</td>
+			<td class="text-left pad-right-8">
+				<?php echo $this->allianceLink($this->idWorld, $item['id'], $item['name']); ?>
+			</td>
+			<td class="text-center">
+				<a href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idA' => $item['id'] ), 'alliancePlayers', true) ?>" class="no-underline hover-underline">
+					<?php echo $item['count']; ?>
+				</a>
+			</td>
+			<td class="text-center">
+				<a href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idA' => $item['id'] ), 'allianceColony', true) ?>" class="no-underline hover-underline">
+					<?php echo $item['count_colony']; ?>
+				</a>
+			</td>
+			<td class="text-right pad-right-8">
+				<?php echo $this->NumFormat($item['rank_old']); ?></td>
+			<td class="text-right pad-right-8">
+				<?php echo $this->NumFormat($item['bo']); ?></td>
+			<td class="text-right pad-right-8">
+				<?php echo $this->NumFormat($item['avg_rank_old']); ?></td>
+			<td class="text-right pad-right-8">
+				<?php echo $this->NumFormat($item['avg_bo']); ?></td>
+			<td class="text-right pad-right-8">
+				<?php echo $this->NumFormat($item['avg_nra'], true); ?></td>
+			<td class="text-right pad-right-8">
+				<?php echo $this->NumFormat($item['avg_ra'], true); ?></td>
+			<td class="text-right pad-right-8">
+				<?php echo $this->NumFormat($item['rank_new']); ?></td>
+			<td class="text-right pad-right-8">
+				<?php echo $this->NumFormat($item['arch']); ?></td>
+			<td class="text-right pad-right-8">
+				<?php echo $this->NumFormat($item['build']); ?></td>
+			<td class="text-right">
+				<?php echo $this->NumFormat($item['scien']); ?></td>
+		  </tr>
+		<?php endforeach; ?>
+		</tbody>
+	</table>
+<?php else: ?>
+    @TODO Альянсы не найдены. Возможно мир только что был добавлен в анализатор и ещё не обновил свои параметры.
+<?php endif; ?>
+

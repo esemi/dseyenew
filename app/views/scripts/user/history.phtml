@@ -1,0 +1,27 @@
+<?php $this->MainMenu('profile'); ?>
+
+<div class="mrg-left-157">
+	<?php
+	$this->breadCrumb( array(
+		sprintf('<a href="%s">Профиль</a>', $this->url(array(), 'userProfile', true)),
+		'история действий'), false);
+	?>
+	<table class="rubber-block table mrg-left-13">
+		<thead class="text-center">
+			<tr>
+				<th>Время</th>
+				<th>ip</th>
+				<th>Действие</th>
+			</tr>
+		</thead>
+		<tbody>
+			<?php foreach($this->history as $item): ?>
+				<tr>
+					<td class="pad-lr-8 pad-top-6 text-center"><?php echo $item['date']; ?></td>
+					<td class="pad-lr-8 pad-top-6 text-center"><?php echo $item['ip']; ?></td>
+					<td class="pad-lr-8 pad-top-6"><?php echo $item['action']; ?></td>
+				</tr>
+			<?php endforeach; ?>
+		</tbody>
+	</table>
+</div>

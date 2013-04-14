@@ -1,0 +1,29 @@
+<?php
+$handle = fopen('php://output', 'w');
+$params = array('№','ник','адрес соты','ворота','альянс','раса','рейтинг старый','БО','НРА','РА','уровень','лига','рейтинг новый','фрхеология','стройка','наука', 'ссылка на пользователя', 'ссылка на альянс');
+Mylib_Utils::fputcsv($handle, $params);
+foreach($this->players as $k => $player)
+{
+	Mylib_Utils::fputcsv($handle, array(
+		$k+1,
+		$player['nik'],
+		$player['main_addr'],
+		(isset($player['gate'])) ? (($player['gate'] == '1') ? 'открыты' : 'закрыты') : '-',
+		$player['alliance'],
+		$this->rases[$player['id_rase']],
+		$player['rank_old'],
+		$player['bo'],
+		$player['nra'],
+		$player['ra'],
+		$player['level'],
+		$player['liga'],
+		$player['rank_new'],
+		$player['arch'],
+		$player['build'],
+		$player['scien'],
+		$this->url(array( 'idW' => $this->idWorld, 'idP' => $player['id'] ), 'playerStat', true),
+		$this->url(array( 'idW' => $this->idWorld, 'idA' => $player['id_alliance'] ), 'allianceIndex', true),
+		));
+}
+fclose($handle);
+?>

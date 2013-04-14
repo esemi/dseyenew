@@ -1,0 +1,98 @@
+<?php
+$cycle = $this->cycle(array('odd','even'));
+
+$this->breadCrumb( array(
+            sprintf('<a href="%s">%s</a>',
+                    $this->url(array( 'idW' => $this->idWorld ), 'worldIndex', true), $this->nameWorld),
+            'Список игроков') );
+?>
+
+<?php if( count($this->paginator) ): ?>
+    <table class="rubber-block main-min-width table js-table-select">
+    <thead class="text-center">
+        <tr>
+          <th>№</th>
+          <th><?php echo $this->sortHead($this->sort, 'nik', 'Ник'); ?></th>
+          <th><?php echo $this->sortHead($this->sort, 'dom', 'Дом'); ?></th>
+          <th>Альянс</th>
+          <th><?php echo $this->sortHead($this->sort, 'rank_old', 'Рейтинг (стар.)'); ?></th>
+          <th><?php echo $this->sortHead($this->sort, 'delta_rank', '<acronym title="Абсолютное изменение старого рейтинга">АИР</acronym>'); ?></th>
+          <th><?php echo $this->sortHead($this->sort, 'bo', '<acronym title="Боевые очки">БО</acronym>'); ?></th>
+          <th><?php echo $this->sortHead($this->sort, 'delta_bo', '<acronym title="Абсолютное изменение боевых очков">АИБ</acronym>'); ?></th>
+          <th><?php echo $this->sortHead($this->sort, 'nra', '<acronym title="Новый рейтинг активности">НРА</acronym>'); ?></th>
+          <th><?php echo $this->sortHead($this->sort, 'ra', '<acronym title="Рейтинг активности">РА</acronym>'); ?></th>
+          <th><?php echo $this->sortHead($this->sort, 'level', 'Уровень'); ?></th>
+          <th><?php echo $this->sortHead($this->sort, 'liga', 'Лига'); ?></th>
+          <th><?php echo $this->sortHead($this->sort, 'rank_new', 'Рейтинг (нов.)'); ?></th>
+          <th><?php echo $this->sortHead($this->sort, 'arch', 'Археология'); ?></th>
+          <th><?php echo $this->sortHead($this->sort, 'build', 'Стройка'); ?></th>
+          <th><?php echo $this->sortHead($this->sort, 'scien', 'Наука'); ?></th>
+        </tr>
+    </thead>
+    <tfoot class="border text-center">
+        <tr>
+            <td colspan="16">
+               <div class="float-right"> <?php echo $this->selectJsCount($this->countPerPage); ?></div>
+               <div class="mrg-left-125"><?php echo $this->paginator; ?></div>
+            </td>
+        </tr>
+    </tfoot>
+    <tbody>
+        <?php foreach ($this->paginator as $item): ?>
+        <tr class="<?php echo $cycle->next();?>">
+          <td class="text-right pad-right-8">
+                    <?php echo $this->numbered++; ?>
+          </td>
+          <td class="pad-right-8">
+              <a class="<?php echo $this->RaseColor($item['id_rase'], true); ?> no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $item['id'] ), 'playerStat', true) ?>">
+                  <?php echo $item['nik']; ?>
+              </a>
+          </td>
+          <td class="text-right pad-right-8">
+             <?php echo "{$item['dom']} ". $this->GateIcon($item['gate']); ?>
+          </td>
+          <td class="text-center">
+              <?php echo $this->allianceLink($this->idWorld, $item['id_alliance'], $item['alliance']); ?>
+          </td>
+          <td class="text-right pad-right-8">
+             <?php echo $this->NumFormat($item['rank_old']); ?>
+          </td>
+          <td class="text-right pad-right-8">
+              <?php $this->printDelta($item['delta_rank_old']); ?>
+          </td>
+          <td class="text-right pad-right-8">
+            <?php echo $this->NumFormat($item['bo'], true); ?>
+          </td>
+          <td class="text-right pad-right-8">
+              <?php $this->printDelta($item['delta_bo'],true); ?>
+          </td>
+          <td class="text-right pad-right-8">
+            <?php echo $item['nra']; ?>
+          </td>
+          <td class="text-right pad-right-8">
+            <?php echo $item['ra']; ?>
+          </td>
+          <td class="text-right pad-right-8">
+            <?php echo $item['level']; ?>
+          </td>
+          <td class="text-right pad-right-8">
+            <?php echo $item['liga']; ?>
+          </td>
+          <td class="text-right pad-right-8">
+            <?php echo $this->NumFormat($item['rank_new']); ?>
+          </td>
+          <td class="text-right pad-right-8">
+            <?php echo $this->NumFormat($item['archeology']); ?>
+          </td>
+          <td class="text-right pad-right-8">
+            <?php echo $this->NumFormat($item['building']); ?>
+          </td>
+          <td class="text-right ">
+            <?php echo $this->NumFormat($item['science']); ?>
+          </td>
+        </tr>
+        <?php endforeach; ?>
+    </tbody>
+  </table>
+<?php endif; ?>
+

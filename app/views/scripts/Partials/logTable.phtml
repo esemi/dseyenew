@@ -1,0 +1,15 @@
+<?php if(count($this->data) > 0): ?>
+<table>
+    <caption><?php echo $this->name; ?></caption>
+    <thead>
+        <th>size</th>
+        <th>date</th>
+    </thead>
+    <tbody>
+        <?php
+        foreach( $this->data as $log )
+            printf('<tr><td>%dKb</td><td><a href="%s" target="_blank">%s</a></td></tr>', $log['size'], $this->url(array( 'idL' => $log['id'] ), 'moderLogView', true), $log['date']);
+        ?>
+    </tbody>
+</table>
+<?php endif; ?>

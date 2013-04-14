@@ -1,0 +1,299 @@
+<?php
+$cycle = $this->cycle(array( 'odd', 'even' ));
+$num = 0;
+
+$this->headScript()->captureStart() ?>
+var worldID = <?php echo $this->idWorld; ?>;
+<?php $this->headScript()->captureEnd();
+
+$this->breadCrumb( array(
+			sprintf('<a href="%s">%s</a>',
+					$this->url(array( 'idW' => $this->idWorld ), 'worldIndex', true), $this->nameWorld),
+			'Поиск игроков') );
+
+if( isset($this->error) )
+	$this->printMessage('error', $this->error);
+?>
+<div class="main-width rubber-block">
+	<h3 class="js-fast-search-slider subtitle pseudo finger inline mrg-left-21">Быстрый поиск</h3>
+
+	<div class="js-fast-search-form mrg-left-42 mrg-bottom-13 hide">
+		<p>
+			Если вам необходимо произвести поиск игроков без учёта мира &mdash; воспользуйтесь сервисом <a href="<?php echo $this->url(array(), 'globalSearch', true)?>">глобального поиска игроков</a>.
+		</p>
+		<p class="color-logo"><span class="bold">Введите часть ника или названия домашней соты</span> (минимум 3 символа)</p>
+		<input placeholder="Введите ник или его часть" class="w-192 js-search-term <?php echo ( !isset($this->post) ) ? 'js-form-focus' : ''; ?>" type="text" value="" idW="<?php echo $this->idWorld; ?>"/>
+		<table class="hide table mrg-top-13 js-table-select">
+			<thead class="text-center">
+				<tr>
+					<th>№</th>
+					<th>Ник</th>
+					<th>Альянс</th>
+					<th colspan="2">Дом</th>
+					<th colspan="2">Статус</th>
+				</tr>
+			</thead>
+			<tfoot class="border text-center">
+				<tr>
+					<td colspan="7">
+						<span class="mrg-left-5 mrg-right-5">Результаты поиска ограничены <?php echo $this->limitFast; ?> игроками</span>
+					</td>
+				</tr>
+			</tfoot>
+			<tbody class="js-search-result">
+			</tbody>
+		</table>
+	</div>
+	<div class="mrg-top-13">
+		<h3 class="js-full-search-slider subtitle pseudo finger inline mrg-left-21">Расширенный поиск</h3>
+
+		<div class="<?php echo (isset($this->post)) ? 'hide' : ''; ?> js-full-search-form mrg-left-42 mrg-top-13">
+			<form class="js-advanced-search" action="<?php echo $this->url(array( 'idW' => $this->idWorld ), 'worldSearch', true)?>" method="post">
+				<ul class="rare-indicators slider">
+					<li class="float-right mrg-right-470"><strong class="bold text-top">Раса:</strong>
+						<div class="inline-block">
+							<?php
+								echo $this->formMultiCheckbox(
+									'rase',
+									isset($this->searchProp->rase) ? $this->searchProp->rase : null,
+									null,
+									$this->rases,
+									'<br>').'<br>';
+							?>
+						</div>
+					</li>
+					<li><strong class="bold">Ворота:</strong>
+						<?php
+						echo $this->formSelect(
+								'gate',
+								isset($this->searchProp->gate) ? $this->searchProp->gate : null,
+								array('size'=>1),
+								array('all' =>'все','open' => 'открыты','close' => 'закрыты'));
+						?>
+						<div class="quest inline-block mrg-left-5  js-quest-tooltip" tooltip="Учитывается только домашняя сота." ></div>
+					</li>
+					<li><strong class="bold">Кольцо:</strong>
+						<?php
+						echo $this->formSelect(
+								'ring',
+								isset($this->searchProp->ring) ? $this->searchProp->ring : null,
+								array('size'=>1),
+								array('4' => 'мельсион', '1' =>'ворания','2' => 'лиенсорд','3' => 'псолеон',
+										'12' => 'ворания и лиенсорд', '23' => 'лиенсорд и псолеон', '13' => 'ворания и псолеон',
+										'123' => 'все, кроме мельсиона'));
+						?>
+					</li>
+
+					<li>
+						<strong class="bold">Лига:</strong>
+						<?php
+						echo $this->formMultiCheckbox(
+								'liga',
+								isset($this->searchProp->liga) ? $this->searchProp->liga : null,
+								null,
+								array('I' => 'I','II'=> 'II','III'=> 'III'),
+								'&nbsp;');
+						?>
+					</li>
+
+					<li><strong class="bold text-top">Альянс:</strong>
+						<?php
+						echo $this->formSelect(
+								'alliance',
+								isset($this->searchProp->alliance) ? $this->searchProp->alliance : null,
+								array('size'=>1, 'class' => 'text-top'),
+								array('all' =>'все','yes' => 'есть','none' => 'нет'));
+						?>
+
+						<?php if( count($this->filterAlliances) > 1) : ?>
+							<div class="js-alliance-filter mrg-left-135 mrg-top--23 <?php echo (
+									(
+									isset($this->searchProp->alliance) && $this->searchProp->alliance != 'none'
+									) || !isset($this->searchProp->alliance) )
+									? '' : 'hide'; ?>">
+
+								<?php
+								echo $this->formRadio(
+									'filter_alliance_mod',
+									isset($this->searchProp->filterAllianceMod) ? $this->searchProp->filterAllianceMod : 'only',
+									array('label_class' => 'text-top'),
+									array('only' => 'только', 'not' => 'исключая'),
+									'&nbsp;');
+								?>
+								<br>
+								<?php
+								echo $this->formSelect(
+									'filter_alliance',
+									isset($this->searchProp->filterAlliance) ? $this->searchProp->filterAlliance : null,
+									array('size'=>5, 'multiple'=>'multiple'),
+									$this->filterAlliances);
+								?>
+								<div class="quest inline-block text-top mrg-left-5 mrg-top-5 js-quest-tooltip" tooltip="Для выбора нескольких альянсов зажмите кнопку CTRL." ></div>
+							</div>
+						<?php endif; ?>
+
+					</li>
+					<li class="mrg-top-34">
+						<?php echo $this->FormSlider('<strong class="bold">Комплекс</strong>', 'compl', $this->maxParams, $this->searchProp ); ?>
+					</li>
+					<li>
+						<?php echo $this->FormSlider('<strong class="bold">Рейтинг (старый)</strong>', 'rankold', $this->maxParams, $this->searchProp );?>
+					</li>
+					<li>
+						<?php echo $this->FormSlider('<strong class="bold"><acronym title="Боевые очки">БО</acronym></strong>', 'bo', $this->maxParams, $this->searchProp);?>
+					</li>
+					<li>
+						<?php echo $this->FormSlider('<strong class="bold"><acronym title="Новый рейтинг активноси">НРА</acronym></strong>', 'nra', $this->maxParams, $this->searchProp );?>
+					</li>
+					<li>
+						<?php echo $this->FormSlider('<strong class="bold"><acronym title="Рейтинг активноси">РА</acronym></strong>', 'ra', $this->maxParams, $this->searchProp );?>
+					</li>
+					<span class="js-search-additional-props-show pseudo sub-subtitle pseudo finger">показать остальные настройки</span>
+					<div class="js-search-additional-props hide">
+						<li>
+							<?php echo $this->FormSlider('<strong class="bold">Уровень</strong>', 'level', $this->maxParams, $this->searchProp );?>
+						</li>
+						<li>
+							<?php echo $this->FormSlider('<strong class="bold">Рейтинг (новый)</strong>', 'ranknew', $this->maxParams, $this->searchProp );?>
+						</li>
+						<li>
+							<?php echo $this->FormSlider('<strong class="bold">Археология</strong>', 'arch', $this->maxParams, $this->searchProp ); ?>
+						</li>
+						<li>
+							<?php echo $this->FormSlider('<strong class="bold">Строительство</strong>', 'build', $this->maxParams, $this->searchProp );?>
+						</li>
+						<li>
+							<?php echo $this->FormSlider('<strong class="bold">Наука</strong>', 'scien', $this->maxParams, $this->searchProp ); ?>
+						</li>
+					</div>
+				</ul>
+				<div class="text-center"><input type="submit" value="найти"></div>
+			</form>
+		</div>
+	</div>
+
+<?php if( isset($this->players) ): ?>
+
+	<?php if( isset($this->autoSearchProp) ): ?>
+		<div class="js-autosearch float-right text-right mrg-top--24 mrg-bottom-8">
+			<span class="js-autosearch-form-show sub-subtitle pseudo finger">Добавить в автопоиск</span>
+			<div class="js-autosearch-form hide mrg-top-13">
+				<div class="mrg-bottom-8">
+					<label>
+						<input name="typesearch" type="radio" checked="checked" value="new" class="<?php if( count($this->autoSearchNames) == 0 ) echo 'hide'; ?>" />Новый
+					</label>
+					<input name="new_name" value="" placeholder="Название нового автопоиска" type="text" class="mrg-left-3 js-autosearch-select" />
+				</div>
+				<div class="mrg-bottom-8 <?php if( count($this->autoSearchNames) == 0 ) echo 'hide'; ?>" >
+					<label>
+						<input name="typesearch" type="radio" value="edit" />Заменить
+					</label>
+					<select name="edit_name" size="1" class="mrg-left-3 js-autosearch-select">
+						<?php foreach( $this->autoSearchNames as $item ): ?>
+							<option value="<?php echo $item['id']; ?>">
+								<?php echo $this->escape($this->wordWrap($item['name'])); ?>
+							</option>
+						<?php endforeach; ?>
+					</select>
+				</div>
+				<input type="hidden" name="property" value="<?php echo $this->autoSearchProp; ?>" />
+				<span class="js-autosearch-form-hide finger color-red bold main-color-hover">Отмена</span>
+				<span class="js-autosearch-form-submit finger color-green mrg-left-13 bold main-color-hover">Сохранить</span>
+			</div>
+		</div>
+	<?php endif; ?>
+</div>
+<div class="js-ajax-result clear text-center"></div>
+<table class="rubber-block w-100pr table mrg-top-13 js-table-select">
+	<thead class="text-center">
+		<tr>
+			<th>№</th>
+			<th><?php echo $this->sortHead($this->sort, 'nik', 'Ник', $this->saveLink); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'adr', 'Дом', $this->saveLink); ?></th>
+			<th>Альянс</th>
+			<th><?php echo $this->sortHead($this->sort, 'rank_old', 'Рейтинг (стар.)', $this->saveLink); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'bo', '<acronym title="Боевые очки">БО</acronym>', $this->saveLink); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'nra', '<acronym title="Новый рейтинг активности">НРА</acronym>', $this->saveLink); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'ra', '<acronym title="Рейтинг активности">РА</acronym>', $this->saveLink); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'level', 'Уровень', $this->saveLink); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'liga', 'Лига', $this->saveLink); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'rank_new', 'Рейтинг (нов.)', $this->saveLink); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'arch', 'Археология', $this->saveLink); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'build', 'Стройка', $this->saveLink); ?></th>
+			<th><?php echo $this->sortHead($this->sort, 'scien', 'Наука', $this->saveLink); ?></th>
+		</tr>
+	</thead>
+	<tfoot class="border text-center">
+		<tr>
+			<td colspan="14">
+				<a title="ссылка на поиск по заданным параметрам" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'save'=> $this->saveLink ), 'worldSearch');?>">ссылка на заданные настройки поиска</a>
+				<br><a title="экспорт результатов в формате csv для excel" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'save'=> $this->saveLink ), 'worldSearch');?>?format=export-csv">экспорт результатов</a>
+				<br><?php $this->printWarning(); ?> &mdash; результаты поиска ограничены <?php echo $this->limitFull; ?> игроками.<br> Сортировка работает по всем найденным игрокам, без указанного выше ограничения.
+			</td>
+		</tr>
+	</tfoot>
+	<tbody>
+		<?php if( count($this->players) == 0 ) : ?>
+			<tr>
+				<td colspan="14">
+					Игроков, удовлетворяющих заданным критериям, не найдено.
+				</td>
+			</tr>
+		<?php else: ?>
+			<?php foreach ($this->players as $item): ?>
+			<tr class="<?php echo $cycle->next();?>">
+				<td class="text-right pad-right-8">
+						<?php echo ++$num; ?>
+				</td>
+				<td class="pad-right-8">
+					<a target="_blank" class="<?php echo $this->RaseColor($item['id_rase'], true); ?> no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $item['id'] ), 'playerStat', true) ?>">
+						<?php echo $item['nik']; ?>
+					</a>
+				</td>
+				<td class="text-right pad-right-8">
+					<?php
+					echo "{$item['main_addr']} ";
+					if( isset($item['gate']) )
+						echo $this->GateIcon($item['gate']);
+					?>
+				</td>
+				<td class="text-center">
+					<?php echo $this->allianceLink($this->idWorld, $item['id_alliance'], $item['alliance'], true); ?>
+				</td>
+				<td class="text-right pad-right-8">
+					<?php echo $this->NumFormat($item['rank_old']); ?>
+				</td>
+				<td class="text-right pad-right-8">
+					<?php echo $this->NumFormat($item['bo'], true); ?>
+				</td>
+				<td class="text-right pad-right-8">
+					<?php echo $item['nra']; ?>
+				</td>
+				<td class="text-right pad-right-8">
+					<?php echo $item['ra']; ?>
+				</td>
+				<td class="text-right pad-right-8">
+					<?php echo $item['level']; ?>
+				</td>
+				<td class="text-right pad-right-8">
+					<?php echo $item['liga']; ?>
+				</td>
+				<td class="text-right pad-right-8">
+					<?php echo $this->NumFormat($item['rank_new']); ?>
+				</td>
+				<td class="text-right pad-right-8">
+					<?php echo $this->NumFormat($item['arch']); ?>
+				</td>
+				<td class="text-right pad-right-8">
+					<?php echo $this->NumFormat($item['build']); ?>
+				</td>
+				<td class="text-right ">
+					<?php echo $this->NumFormat($item['scien']); ?>
+				</td>
+			</tr>
+			<?php endforeach; ?>
+		<?php endif; ?>
+	</tbody>
+</table>
+
+<?php endif; ?>

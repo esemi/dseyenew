@@ -1,0 +1,50 @@
+<?php
+
+$this->addGraph('world');
+
+$this->breadCrumb( array( sprintf('<a href="%s">%s</a>', $this->url(array( 'idW' => $this->idWorld ), 'worldIndex', true), $this->nameWorld), 'Статистика') );
+
+?>
+
+<div class=" inline-block text-right text-top mrg-top-75" style="width:30%;">
+	<ul class="indicators inline-block text-left js-graph-menu-world" selectclass="color-voran bold no-underline">
+		<li>
+			<strong class="bold">Пришли/ушли:</strong><a href="#in_out_day">за месяц</a>/<a href="#in_out_all">за всё время</a>
+		</li>
+		<li>
+			<strong class="bold">Количество:</strong><a href="#count_player">игроков</a>/<a href="#count_colony">колоний</a>/<a href="#count_alliance">альянсов</a>
+		</li>
+		<li>
+			<strong class="bold">Рейтинг (стар.):</strong><a href="#rank_old_sum">общий</a>/<a href="#rank_old_avg">средний</a>
+		</li>
+		<li>
+			<strong class="bold"><acronym title="Боевые очки">БО</acronym>:</strong><a href="#bo_sum">общий</a>/<a href="#bo_avg">средний</a>
+		</li>
+		<li>
+			<strong class="bold"><acronym title="Новый рейтинг активности">НРА</acronym>:</strong><a href="#nra_sum">общий</a>/<a href="#nra_avg">средний</a>
+		</li>
+		<li>
+			<strong class="bold"><acronym title="Рейтинг активности">РА</acronym>:</strong><a href="#ra_sum">общий</a>/<a href="#ra_avg">средний</a>
+		</li>
+		<li>
+			<a href="#level_avg">Средний уровень</a>
+		</li>
+		<li>
+			<strong class="bold">Рейтинг (нов.):</strong><a href="#rank_new_sum">общий</a>/<a href="#rank_new_avg">средний</a>
+		</li>
+		<li>
+			<strong class="bold">Археология:</strong><a href="#arch_sum">общий</a>/<a href="#arch_avg">средний</a>
+		</li>
+		<li>
+			<strong class="bold">Cтроительство:</strong><a href="#build_sum">общий</a>/<a href="#build_avg">средний</a>
+		</li>
+		<li>
+			<strong class="bold">Наука:</strong><a href="#scien_sum">общий</a>/<a href="#scien_avg">средний</a>
+		</li>
+	</ul>
+</div>
+
+<div id="graph-container" class="inline-block text-center" style="width:68%;" iditem="<?php echo $this->idWorld; ?>">
+
+</div>
+

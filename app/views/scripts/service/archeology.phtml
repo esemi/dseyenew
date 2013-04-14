@@ -1,0 +1,79 @@
+<?php $this->WorldList(); ?>
+
+<h2 class="title">Таблица археологического рейтинга артефактов</h2>
+
+<div class=" mrg-right-42 mrg-left-157 text-just">
+	<p>
+		В этой таблице приведены данные по количеству очков археологического рейтинга выдаваемых за каждый найденный артефакт.
+	</p>
+	<p>
+		Эти данные получены экспериментальным путём (отдельное спасибо <a href="<?php echo $this->url(array( 'idW' => 8, 'idP' => 6549 ), 'playerStat', true) ?>">Gryzzly</a> и <a href="<?php echo $this->url(array( 'idW' => 8, 'idP' => 7108 ), 'playerStat', true) ?>">hamsterOK</a>) в мирах Водолея и Эридана, но скорее всего являются верными и для остальных миров.
+	</p>
+	<p>
+		Если вы нашли несоответствие с вашей динамикой арх. рейтинга &mdash; <a href="<?php echo $this->url(array(), 'staticContacts', true) ?>" target="_blank">напишите нам</a>.
+	</p>
+	<table class="rubber-block arch-info-table mrg-top-21 js-arch-rank-table">
+			<thead class="text-center">
+				<tr>
+					<th></th>
+					<th>Здание</th>
+					<th>Сота</th>
+					<th>Военный</th>
+					<th>Компл</th>
+					<th>Альянс</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr>
+					<th>Крохотный</th>
+					<td>1</td>
+					<td>6</td>
+					<td>12</td>
+					<td>36</td>
+					<td>72</td>
+				</tr>
+				<tr>
+					<th>Малый</th>
+					<td>2</td>
+					<td>12</td>
+					<td>24</td>
+					<td>72</td>
+					<td>144</td>
+				</tr>
+				<tr>
+					<th>Средний</th>
+					<td>4</td>
+					<td>24</td>
+					<td>48</td>
+					<td>144</td>
+					<td>288</td>
+				</tr>
+				<tr>
+					<th>Крупный</th>
+					<td>8</td>
+					<td>48</td>
+					<td>96</td>
+					<td>288</td>
+					<td>576</td>
+				</tr>
+				<tr>
+					<th>Большой</th>
+					<td>24</td>
+					<td>144</td>
+					<td>288</td>
+					<td>864</td>
+					<td>1728</td>
+				</tr>
+				<tr>
+					<th>Огромный</th>
+					<td>48</td>
+					<td>288</td>
+					<td>576</td>
+					<td>1728</td>
+					<td>3456</td>
+				</tr>
+			</tbody>
+		</table>
+</div>
+
+

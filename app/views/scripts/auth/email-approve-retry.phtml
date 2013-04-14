@@ -1,0 +1,25 @@
+<?php $this->WorldList(); ?>
+
+<h2 class="title inline">Повторный запрос подтверждения email адреса</h2>
+
+<?php $this->printMessage($this->messType, $this->messText); ?>
+
+<div class="mrg-left-157 mrg-top-13 mrg-right-42">
+	<p>
+		Если после успешной регистрации вам не пришло письмо с инструкцией по подтвердению email адреса, вы можете попробовать запросить его ещё раз.
+	</p>
+	<p>
+		Если ни одна из попыток подтверждения так и не увенчалась успехом <a href="<?php echo $this->url( array(),'staticContacts',true ); ?>">свяжитесь с нами</a>.
+	</p>
+
+	<form class="mrg-top-34 mrg-left-13" name="loginform" action="" method="post">
+		<?php if(isset($this->recaptcha)): ?>
+		<div style="margin-bottom: 15px; margin-top: 10px; width: 400px;">
+			<?php echo $this->recaptcha->getHTML(); ?>
+		</div>
+		<?php endif; ?>
+		<input class="inline-block text-bottom" type="submit" value="Отправить запрос" />
+	</form>
+</div>
+
+

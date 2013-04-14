@@ -1,0 +1,101 @@
+<?php
+
+$act = (isset($this->actTitle)) ? " — {$this->actTitle}" : "";
+$key = (isset($this->keywords)) ? "{$this->keywords}, " : '';
+$desc = (isset($this->description)) ? "{$this->description}. " : '';
+
+$this->headMeta()
+		->appendHttpEquiv('Content-Type', 'text/html;charset=utf-8')
+		->appendHttpEquiv('Content-Language', 'ru-RU')
+		->appendName('description', "{$desc}Анализатор бесплатной онлайн игры Destiny Sphere (Сфера Судьбы)." )
+		->appendName('keywords', "{$key}Онлайн игра, Анализатор, сфера судьбы, Destiny Sphere, Помощник, dseye");
+
+$version = $this->cacheVersion();
+
+$this->headScript()->prependFile( "/js/lib.js?{$version}");
+$this->headScript()->prependFile( "/js/lib/combine.js?{$version}");
+
+$this->headLink()->prependStylesheet("/css/newlayouts.css?{$version}");
+$this->headLink()->prependStylesheet("/css/pepper-grinder/jQui.css?{$version}");
+
+$this->headTitle("{$this->title}{$act}. DSeye — анализатор онлайн игры Destiny Sphere (Сфера Судьбы)");
+
+//для залогиненых юзеров главная становится профилем
+$mainHref = (Zend_Controller_Action_HelperBroker::getStaticHelper('CheckAccess')->check('profile', 'view', 'return'))
+		?
+		$this->url(array( ), 'userProfile', true)
+		:
+		$this->url(array( ), 'staticIndex', true);
+
+echo $this->doctype();
+?>
+<html>
+	<head>
+		<?php echo $this->headMeta(); ?>
+		<?php echo $this->headTitle(); ?>
+		<?php echo $this->render('counters.phtml'); ?>
+		<link rel="icon" href="/img/favicon.ico" type="image/x-icon"/>
+		<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
+		<link rel="alternate" type="application/rss+xml" href="<?php echo $this->url(array(), 'newsRss', true); ?>" title="Atom feed news of DSeye.ru"/>
+		<?php echo $this->headLink(); ?>
+	</head>
+	<body>
+		<div id="for-footer-1">
+			<div id="header" class="main-width rubber-block">
+				<noscript>
+						 Для корректной работы сайта необходимо включить JavaScript
+				</noscript>
+				<!--[if lte IE 7]>
+					<p class="alert">К сожалению ваш браузер устарел и не поддерживается данным проектом. Пожалуйста обновитесь.</p>
+				<![endif]-->
+				<!--логотип-->
+				<a href="<?php echo $mainHref; ?>"><img alt="логотип DSeye" width="150px" height="126px" src="/img/<?php echo $this->customLogo(); ?>.gif" class="float-left mrg-top-7"/></a>
+				<!--заголовок-->
+				<h1 class="main-title"><a href='<?php echo $mainHref; ?>' class="no-underline">DSeye</a> <span>анализатор онлайн игры Destiny Sphere </span></h1>
+				<!--менюшка-->
+					<?php $this->MainMenu('login'); ?>
+				<div>
+					<?php
+					$this->MainMenu(1, true);
+					$this->MainMenu(2, ( isset($this->idWorld) ) ? true : false);
+					$this->MainMenu(3, ( isset($this->idWorld) && isset($this->idAlliance) ) ? true : false);
+					?>
+				</div>
+				<?php if(isset($this->helpLink)): ?>
+					<a target="_blank" alt="Справка по данной странице" href="<?php echo $this->helpLink; ?>"><div class="help-link mrg-right-42"></div></a>
+				<?php endif; ?>
+			</div>
+			<div id="content" class="<?php echo ( !isset($this->rubberPage) || $this->rubberPage === false ) ? "main-width" : 'max-main-content';?> rubber-block pos-rel">
+				<?php echo $this->layout()->content; ?>
+			</div>
+			<div id="for-footer-2" class="clear"></div>
+		</div>
+		<div id="footer" class="unimp-text clear main-width rubber-block mrg-top-21">
+			<p class="float-left mrg-top-13">
+				<?php echo $this->DbProfiler(); ?><br>
+				<?php echo $this->CacheInfo(); ?><br>
+				<?php echo $this->MemInfo(); ?>
+			</p>
+
+			<p class="text-right float-right mrg-top-13">
+				&copy;&nbsp;Эйдук&nbsp;И.В.,&nbsp;дизайн&nbsp;и&nbsp;графические материалы,&nbsp;2010-2013
+			</p>
+			<p class="text-center ">
+				version 2.2
+				<a href="<?php echo $this->url(array(), 'newsRss', true); ?>" target="_blank"><span class="rss inline-block mrg-left-5"></span></a>
+				<br>
+				created by
+				<a title="Профиль создателя проекта" href="<?php echo $this->url(array( 'idW' => 8, 'idP' => 6778 ), 'playerStat', true) ?>" class="no-underline">ktylhy</a>
+				<?php echo $this->allianceLink(8, 343, '[UVE]'); ?>
+			</p>
+		</div>
+
+		<?php
+		$token = $this->getToken();
+		if(!is_null($token))
+			printf('<input id="js-csrf-token" type="hidden" class="hide" name="token" value="%s"/>', $token);
+		?>
+
+		<?php echo $this->headScript(); ?>
+	</body>
+</html>

@@ -1,0 +1,35 @@
+SELECT SUM(`delta`) as sum, alliances.name, GROUP_CONCAT(players.nik), GROUP_CONCAT(delta)
+FROM `players_max_bo_delta` 
+LEFT JOIN players ON (players.id = players_max_bo_delta.id_player)
+LEFT JOIN alliances ON (players.id_alliance = alliances.id)
+WHERE players_max_bo_delta.id_world = 4 AND MONTH(`date`) = 1 AND players_max_bo_delta.id NOT IN (40711, 40712) 
+GROUP BY `players`.id_alliance
+ORDER BY sum DESC
+
+
+
+
+SELECT SUM(`delta`) as sum, COUNT(delta) AS count, AVG(delta) AS avg, nik, alliances.name, GROUP_CONCAT(delta)
+FROM `players_max_bo_delta` 
+LEFT JOIN players ON (players.id = players_max_bo_delta.id_player)
+LEFT JOIN alliances ON (players.id_alliance = alliances.id)
+WHERE players_max_bo_delta.id_world = 4 AND MONTH(`date`) = 1 AND players_max_bo_delta.id NOT IN (40711, 40712) 
+GROUP BY players_max_bo_delta.id_player
+ORDER BY sum DESC
+
+
+SELECT `id_player` , `stat_players`.`archeology` , `stat_players`.`building` , `stat_players`.`science` , `date_create`
+FROM players
+RIGHT JOIN `stat_players` ON ( players.id = `id_player` )
+WHERE id_world =11
+AND players.status = 'active'
+ORDER BY id_player, `date_create` ASC
+
+SELECT nik, date, delta
+FROM `stat_players_bo`
+LEFT JOIN players ON ( `id_player` = players.id )
+WHERE id_world =11
+AND MONTH( `date` ) =12
+AND `delta` >0
+ORDER BY `delta` DESC
+LIMIT 20
