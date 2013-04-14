@@ -87,4 +87,18 @@ class ServiceController extends Zend_Controller_Action
 		$this->view->actTitle = 'Форматер красной кнопки (вес армии, время раунда)';
 	}
 
+	/**
+	 * Страница с описанием аддона для браузеров
+	 */
+	public function addonPageAction()
+	{
+		$this->view->helpLink = $this->view->url( array('id'=>'addon'), 'helpView', true );
+
+		$this->view->addonUrls = $this->getFrontController()->getParam('bootstrap')->getOption('addon');
+
+		$this->view->keywords = 'Аддон firefox, Аддон для браузера, Быстрый поиск игроков';
+		$this->view->description = 'Аддон для популярных браузеров, позволяющий быстро искать игроков не уходя со страницы стороннего сайта';
+		$this->view->actTitle = 'Аддон для браузера от нашего проекта';
+	}
+
 }
