@@ -1,28 +1,28 @@
 <div class="mrg-left-157"><img alt="глазик" src="/img/eye_big.gif"/>
-    <h2 class="title inline">Ой-ёй! Ошибочка!</h2>
+	<h2 class="title inline">Ой-ёй! Ошибочка!</h2>
 
-    <h2 class="small-title mrg-left-13 mrg-top-21">
-      <?php echo $this->message ?>
-    </h2>
+	<h2 class="small-title mrg-left-13 mrg-top-21">
+	<?php echo $this->message ?>
+	</h2>
 
-    <?php if (isset($this->exceptionMessage)): ?>
-    <p class="mrg-left-21">
-      <?php echo $this->exceptionMessage ?>
-    </p>
-    <?php endif ?>
+	<?php if (isset($this->exceptionMessage)): ?>
+	<p class="mrg-left-21">
+	<?php echo $this->exceptionMessage ?>
+	</p>
+	<?php endif ?>
 
 
-    <?php if (isset($this->exception)): ?>
-    <h3 class="subtitle mrg-left-13">Exception information:</h3>
-    <p class="mrg-left-21">
-      <strong class="bold">Message:</strong>
-      <?php echo $this->exception->getMessage() ?>
-    </p>
-    <h3 class="subtitle mrg-left-13">Stack trace:</h3>
-    <pre><?php echo $this->exception->getTraceAsString() ?>
-    </pre>
-        <h3>Request Parameters:</h3>
-    <pre><?php echo var_export($this->request->getParams(), true) ?>
-    </pre>
-        <?php endif ?>
+	<?php if (isset($this->exception)): ?>
+	<h3 class="subtitle mrg-left-13">Exception information:</h3>
+	<p class="mrg-left-21">
+	<strong class="bold">Message:</strong>
+	<?php echo $this->exception->getMessage() ?>
+	</p>
+	<h3 class="subtitle mrg-left-13">Stack trace:</h3>
+	<pre><?php echo $this->exception->getTraceAsString() ?>
+	</pre>
+		<h3>Request Parameters:</h3>
+	<pre><?php echo var_export($this->request->getParams(), true) ?>
+	</pre>
+		<?php endif ?>
 </div>
