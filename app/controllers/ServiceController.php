@@ -101,4 +101,22 @@ class ServiceController extends Zend_Controller_Action
 		$this->view->actTitle = 'Аддон для браузера от нашего проекта';
 	}
 
+	/**
+	 * Поиск сущности из аддона
+	 */
+	public function addonSearchAction()
+	{
+		$this->view->helpLink = $this->view->url( array('id'=>'addon'), 'helpView', true );
+
+		$this->view->keywords = 'Аддон firefox, Аддон для браузера, Быстрый поиск игроков, Быстрый поиск сот';
+		$this->view->description = 'Быстрый поиск игроков по адресу, нику и названии соты';
+		$this->view->actTitle = 'Аддон для браузера от нашего проекта';
+
+		//если есть гет параметр
+			//ищем точное совпадение ника/соты/адреса
+				//если ничего не нашли - ищем ник и соты LIKE term%
+			//если результат один - редиректим на страницу игрока
+			//иначе - показываем список и подсвечиваем совпадения
+	}
+
 }
