@@ -4,13 +4,27 @@
 
 <div class=" mrg-right-42 mrg-left-157 text-just">
 	<p class="mrg-left-13">
-		Наш сервис предоставляет аддон для браузера firefox.<br>
-		Данный аддон позовляет легко и быстро искать на нашем сайте информацию по игроку, просто кликая правой кнопкой мыши на любых страницах.<br>
-		На данный момент аддон находится в стадии тестирования и проходит проверку в <a href="http://addons.mozilla.org/ru/firefox/" rel="nofollow">AMO</a>. Сразу после этого мы разместим его для публичного пользования.<br>
-		Если вам нужен какой либо специфичный функционал или вы нашли ошибку в работе аддона &mdash; <a href="<?php echo $this->url(array( ), 'staticContacts', true); ?>">свяжитесь с нами</a>.
+		Наш сервис предоставляет аддон для браузера firefox.
+	</p>
+	<p class="mrg-left-13">
+		Этот аддон позовляет легко и быстро искать на нашем сайте информацию по игроку, просто кликая правой кнопкой мыши на любых страницах.
+	</p>
+	<p class="mrg-left-13">
+		На данный момент аддон находится в стадии тестирования и проходит проверку в <a href="http://addons.mozilla.org/ru/firefox/" rel="nofollow">AMO</a>. Сразу после нее мы разместим его для публичного пользования.
+	</p>
+	<p class="mrg-left-13">
+		Если вам нужен какой либо специфичный функционал, или вы нашли ошибку в работе аддона &mdash; <a href="<?php echo $this->url(array( ), 'staticContacts', true); ?>">свяжитесь с нами</a>.
 	</p>
 	@TODO three img`s for links
-	<a href="<?php echo $this->addonUrls['repo_url']; ?>">Исходный код</a>
-	<a href="<?php echo $this->addonUrls['amo_url']; ?>">Скачать</a>
-	<a href="<?php echo $this->url( array('id'=>'addon'), 'helpView', true ) ?>">Как это работает</a>
+	<ul class="text-center">
+		<li class="inline-block">
+			<a href="<?php echo $this->addonUrls['repo_url']; ?>">Исходный код</a>
+		</li>
+		<li class="inline-block">
+			<a href="<?php echo $this->addonUrls['amo_url']; ?>">Скачать</a>
+		</li>
+		<li class="inline-block">
+			<a href="<?php echo $this->url( array('id'=>'addon'), 'helpView', true ) ?>">Как это работает</a>
+		</li>
+	<ul>
 </div>
