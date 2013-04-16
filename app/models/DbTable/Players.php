@@ -22,6 +22,10 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 		'sotsWithoutWorld' => array('up'),
 		'getNeighborsDom' => array('up'),
 		'getNeighborsMels' => array('up'),
+		'findByNik' => array('up'),
+		'findByDomName' => array('up'),
+		'findByAddress' => array('up'),
+		'fastSearch' => array('up'),
 	);
 
 	/*
@@ -203,25 +207,58 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 		return !is_null($result);
 	}
 
-	/*
-	 * поиск ид игрока по нику ( быстрый переход )
+	/**
+	 * поиск ид игрока по нику ( быстрый переход и аддон )
+	 * @return mixed Int or false
 	 */
-	public function findByNik( $nik, $idW )
+	protected function notcached_findByNik( $nik, $idW = null )
 	{
 		$select = $this->select()
 				->from($this, array('id'))
 				->where('nik = ?', $nik)
-				->where('id_world = ?', $idW, Zend_Db::INT_TYPE)
 				->limit(1);
+
+		if( !is_null($idW) )
+			$select->where('id_world = ?', $idW, Zend_Db::INT_TYPE);
+
 		$result = $this->fetchRow($select);
 		return (!is_null($result) ) ? $result->id : false;
+	}
+
+
+	/**
+	 * поиск ид игроков по имени домашней соты ( аддон )
+	 * @TODO check db perfomance
+	 * @return array Array of int user_ids
+	 */
+	protected function notcached_findByDomName( $term )
+	{
+		$select = $this->select()
+				->from($this, array('id'))
+				->where('dom_name = ?', $term);
+
+		return $this->fetchAll($select)->toArray();
+	}
+
+	/**
+	 * Поиск id игроков по адресу дом соты
+	 * @TODO check db perfomance
+	 * @return array Array of int user_ids
+	 */
+	protected function notcached_findByAddress( $term )
+	{
+		$select = $this->select()
+				->from($this, array('id'))
+				->where('CONCAT_WS(".", ring, compl, sota ) = ?', $term);
+
+		return $this->fetchAll($select)->toArray();
 	}
 
 
 	/*
 	 * поиск игроков по части ника/названию домашней соты
 	 */
-	public function fastSearch(  $term, $limit, $idW = 0 )
+	protected function notcached_fastSearch(  $term, $limit, $idW = 0 )
 	{
 		$select = $this->select();
 		$select->setIntegrityCheck(false)
