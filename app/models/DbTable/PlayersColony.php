@@ -9,6 +9,11 @@ class App_Model_DbTable_PlayersColony extends Mylib_DbTable_Cached
     protected $_name = 'players_colony';
     protected $_cacheName = 'up';
 
+	protected $_tagsMap = array(
+		'findByName' => array('up'),
+		'findByAddress' => array('up'),
+	);
+
     public function add($idP, $compl, $sota, $name)
     {
         return $this->insert( array(
@@ -102,5 +107,35 @@ class App_Model_DbTable_PlayersColony extends Mylib_DbTable_Cached
                 ->order( new Zend_Db_Expr('NULL') );
         return $this->fetchAll($select)->toArray();
     }
+
+
+	/**
+	 * поиск id игроков по имени колонии (аддон)
+	 * @TODO check db perfomance
+	 * @return array Array of int user_ids
+	 */
+	protected function notcached_findByName( $term )
+	{
+		$select = $this->select()
+				->from($this, array('id'))
+				->where('col_name = ?', $term);
+
+		return $this->fetchAll($select)->toArray();
+	}
+
+	/**
+	 * Поиск id игроков по адресу колонии (аддон)
+	 * @TODO check db perfomance
+	 * @return array Array of int user_ids
+	 */
+	protected function notcached_findByAddress( $term )
+	{
+		$select = $this->select()
+				->from($this, array('id'))
+				->where('CONCAT_WS(".", "4", compl, sota ) = ?', $term);
+
+		return $this->fetchAll($select)->toArray();
+	}
+
 
 }

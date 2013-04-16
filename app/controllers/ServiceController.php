@@ -103,6 +103,9 @@ class ServiceController extends Zend_Controller_Action
 
 	/**
 	 * Поиск сущности из аддона
+	 * если нашлась одна сущность - редиректим на страницу оной
+	 * если несколько или ни одной - оставляем тут и показываем список формой
+	 * @TODO делить поиск по адресам и нику/имени_соты
 	 */
 	public function addonSearchAction()
 	{
@@ -113,10 +116,58 @@ class ServiceController extends Zend_Controller_Action
 		$this->view->actTitle = 'Аддон для браузера от нашего проекта';
 
 		//если есть гет параметр
-			//ищем точное совпадение ника/соты/адреса
-				//если ничего не нашли - ищем ник и соты LIKE term%
+		$term = trim($this->_request->getPost('term', ''));
+		if( !empty($term) )
+		{
+			$findIds = array();
+
+			//строгое совпадение ника
+			$res = $this->_helper->modelLoad('Players')->findByNik($term);
+			if($res !== false)
+				$findIds[] = $res;
+
+			//строгое совпадение домашней соты
+			$res = $this->_helper->modelLoad('Players')->findByDomName($term);
+			if( count($res) > 0 )
+				$findIds = array_merge($findIds, $res);
+
+			//строгое совпадение адреса дом соты
+			$res = $this->_helper->modelLoad('Players')->findByAddress($term);
+			if( count($res) > 0 )
+				$findIds = array_merge($findIds, $res);
+
+			//строгое совпадение имени колонии
+			$res = $this->_helper->modelLoad('PlayersColony')->findByName($term);
+			if( count($res) > 0 )
+				$findIds = array_merge($findIds, $res);
+
+			//строгое совпадение адреса колонии
+			$res = $this->_helper->modelLoad('PlayersColony')->findByAddress($term);
+			if( count($res) > 0 )
+				$findIds = array_merge($findIds, $res);
+
+			//если ничего не нашли - ищем ник и соты LIKE term%
+			/*if( count($findIds) === 0 )
+			{
+
+			}*/
+
+			//получаем результаты
+			$result = array();
+			foreach( $findIds as $idP )
+			{
+				$result[] = $this->_helper->modelLoad('Players')->getInfo($idP);
+			}
+
 			//если результат один - редиректим на страницу игрока
-			//иначе - показываем список и подсвечиваем совпадения
+			if( count($result) === 1 )
+			{
+				$this->_helper->redirector->gotoRouteAndExit(array( 'idW' => $result[0]['id_world'], 'idP' => $result[0]['id'] ),'playerStat', true);
+			}
+
+			$this->view->results = $result;
+		}
+
 	}
 
 }
