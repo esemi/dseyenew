@@ -6,9 +6,9 @@
  */
 class Action_Helper_WorldsListing extends Zend_Controller_Action_Helper_Abstract
 {
-	public function postDispatch()
+	public function preDispatch()
 	{
-		if( !$this->getRequest()->isXmlHttpRequest() )
+		if( !$this->getRequest()->isXmlHttpRequest() &&  $this->getRequest()->getActionName() !== 'stat-add' ) //@FIXME replace on call single method
 			$this->getActionController()->view->listWorlds = $this->getActionController()->getHelper('ModelLoad')->load('Worlds')->listing();
 	}
 
