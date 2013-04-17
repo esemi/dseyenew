@@ -119,6 +119,9 @@ class ServiceController extends Zend_Controller_Action
 		$term = trim($this->_request->getParam('term', ''));
 		if( !empty($term) )
 		{
+			//запоминаем статсу
+			$this->_helper->modelLoad('AddonStat')->add('search', $this->_request, array('term' => $term));
+
 			$decodeIds = function($x){ return $x['id']; };
 			$findIds = array();
 

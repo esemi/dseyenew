@@ -56,3 +56,13 @@ CREATE TABLE `dseye_new`.`cron_lock` (
 `date_last_lock` DATETIME NOT NULL ,
 PRIMARY KEY ( `type` )
 ) ENGINE = InnoDB;
+
+
+CREATE TABLE IF NOT EXISTS `addon_stat` (
+  `date_create` datetime NOT NULL,
+  `action` varchar(255) NOT NULL,
+  `ip` int(10) unsigned NOT NULL,
+  `agent` varchar(255) NOT NULL,
+  `opt_data` text NOT NULL,
+  KEY `date_create` (`date_create`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
