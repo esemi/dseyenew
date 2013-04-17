@@ -116,7 +116,7 @@ class ServiceController extends Zend_Controller_Action
 		$this->view->actTitle = 'Аддон для браузера от нашего проекта';
 
 		//если есть гет параметр
-		$term = trim($this->_request->getPost('term', ''));
+		$term = trim($this->_request->getParam('term', ''));
 		if( !empty($term) )
 		{
 			$decodeIds = function($x){ return $x['id']; };
@@ -165,6 +165,7 @@ class ServiceController extends Zend_Controller_Action
 				if( count($res) > 0 )
 					$findIds = array_merge($findIds, array_map($decodeIds, $res));
 			}
+
 
 			//получаем результаты
 			$result = array();
