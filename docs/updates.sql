@@ -1,20 +1,3 @@
-ALTER TABLE `users_search` CHANGE `date_create` `date_touch` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP;
-ALTER TABLE `users` DROP `last_login`;
-ALTER TABLE `users_search` CHANGE `name` `name` TEXT CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
-ALTER TABLE `antibrut` CHANGE `type` `type` VARCHAR( 150 ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
-ALTER TABLE `users_history` DROP `post`;
-ALTER TABLE `news` DROP `desc`;
-
-CREATE TABLE IF NOT EXISTS `search_props` (
-	`uid` char(64) CHARACTER SET utf8 COLLATE utf8_bin NOT NULL,
-	`prop` int(11) NOT NULL,
-	`date_create` datetime NOT NULL,
-	PRIMARY KEY (`uid`),
-	KEY `date_create` (`date_create`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-ALTER TABLE `search_props` CHANGE `date_create` `date_touch` DATETIME NOT NULL;
-ALTER TABLE `search_props` CHANGE `prop` `prop` TEXT NOT NULL;
-
 UPDATE `dseye_new`.`game_versions` SET `old_ranks_rep` = 'http://destinysphere.ru/ds/ranking.php?sort=thefinal&dir=desc', `new_ranks_rep` = 'http://destinysphere.ru/ds/ranking_new.php?sort=thefinal&dir=desc' WHERE `game_versions`.`id` = 1;
 UPDATE `dseye_new`.`game_versions` SET `old_ranks_rep` = 'http://ds-game.ru/ds/ranking.php?sort=thefinal&dir=desc', `new_ranks_rep` = 'http://ds-game.ru/ds/ranking_new.php?sort=thefinal&dir=desc' WHERE `game_versions`.`id` = 2;
 UPDATE `dseye_new`.`game_versions` SET `old_ranks_rep` = 'http://test.destinysphere.ru/ds/ranking.php?sort=thefinal&dir=desc', `new_ranks_rep` = 'http://test.destinysphere.ru/ds/ranking_new.php?sort=thefinal&dir=desc' WHERE `game_versions`.`id` = 3;
