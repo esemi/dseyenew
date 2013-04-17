@@ -119,38 +119,52 @@ class ServiceController extends Zend_Controller_Action
 		$term = trim($this->_request->getPost('term', ''));
 		if( !empty($term) )
 		{
+			$decodeIds = function($x){ return $x['id']; };
 			$findIds = array();
 
 			//строгое совпадение ника
 			$res = $this->_helper->modelLoad('Players')->findByNik($term);
-			if($res !== false)
-				$findIds[] = $res;
+			if( count($res) > 0 )
+				$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
 			//строгое совпадение домашней соты
 			$res = $this->_helper->modelLoad('Players')->findByDomName($term);
 			if( count($res) > 0 )
-				$findIds = array_merge($findIds, $res);
+				$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
 			//строгое совпадение адреса дом соты
 			$res = $this->_helper->modelLoad('Players')->findByAddress($term);
 			if( count($res) > 0 )
-				$findIds = array_merge($findIds, $res);
+				$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
 			//строгое совпадение имени колонии
 			$res = $this->_helper->modelLoad('PlayersColony')->findByName($term);
 			if( count($res) > 0 )
-				$findIds = array_merge($findIds, $res);
+				$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
 			//строгое совпадение адреса колонии
 			$res = $this->_helper->modelLoad('PlayersColony')->findByAddress($term);
 			if( count($res) > 0 )
-				$findIds = array_merge($findIds, $res);
+				$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
 			//если ничего не нашли - ищем ник и соты LIKE term%
-			/*if( count($findIds) === 0 )
+			if( count($findIds) === 0 )
 			{
+				//мягкое совпадение ника
+				$res = $this->_helper->modelLoad('Players')->findByNik($term, null, false);
+				if( count($res) > 0 )
+					$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
-			}*/
+				//мягкое совпадение домашней соты
+				$res = $this->_helper->modelLoad('Players')->findByDomName($term, false);
+				if( count($res) > 0 )
+					$findIds = array_merge($findIds, array_map($decodeIds, $res));
+
+				//мягкое совпадение имени колонии
+				$res = $this->_helper->modelLoad('PlayersColony')->findByName($term, false);
+				if( count($res) > 0 )
+					$findIds = array_merge($findIds, array_map($decodeIds, $res));
+			}
 
 			//получаем результаты
 			$result = array();

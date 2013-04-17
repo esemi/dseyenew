@@ -114,11 +114,16 @@ class App_Model_DbTable_PlayersColony extends Mylib_DbTable_Cached
 	 * @TODO check db perfomance
 	 * @return array Array of int user_ids
 	 */
-	protected function notcached_findByName( $term )
+	protected function notcached_findByName( $term, $strong=true )
 	{
 		$select = $this->select()
-				->from($this, array('id'))
-				->where('col_name = ?', $term);
+				->from($this, array('id' => 'id_player'));
+
+		if($strong){
+			$select->where('col_name = ?', $term);
+		}else{
+			$select->where($this->_db->quoteInto( "col_name LIKE ?", "{$term}%" ));
+		}
 
 		return $this->fetchAll($select)->toArray();
 	}
@@ -131,7 +136,7 @@ class App_Model_DbTable_PlayersColony extends Mylib_DbTable_Cached
 	protected function notcached_findByAddress( $term )
 	{
 		$select = $this->select()
-				->from($this, array('id'))
+				->from($this, array('id' => 'id_player'))
 				->where('CONCAT_WS(".", "4", compl, sota ) = ?', $term);
 
 		return $this->fetchAll($select)->toArray();

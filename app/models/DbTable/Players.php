@@ -211,18 +211,21 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 	 * поиск ид игрока по нику ( быстрый переход и аддон )
 	 * @return mixed Int or false
 	 */
-	protected function notcached_findByNik( $nik, $idW = null )
+	protected function notcached_findByNik( $nik, $idW = null, $strong=true )
 	{
 		$select = $this->select()
-				->from($this, array('id'))
-				->where('nik = ?', $nik)
-				->limit(1);
+				->from($this, array('id'));
+
+		if($strong){
+			$select->where('nik = ?', $nik);
+		}else{
+			$select->where($this->_db->quoteInto( "nik LIKE ?", "{$nik}%" ));
+		}
 
 		if( !is_null($idW) )
 			$select->where('id_world = ?', $idW, Zend_Db::INT_TYPE);
 
-		$result = $this->fetchRow($select);
-		return (!is_null($result) ) ? $result->id : false;
+		return $this->fetchAll($select)->toArray();
 	}
 
 
@@ -231,11 +234,16 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 	 * @TODO check db perfomance
 	 * @return array Array of int user_ids
 	 */
-	protected function notcached_findByDomName( $term )
+	protected function notcached_findByDomName( $term, $strong=true )
 	{
 		$select = $this->select()
-				->from($this, array('id'))
-				->where('dom_name = ?', $term);
+				->from($this, array('id'));
+
+		if($strong){
+			$select->where('dom_name = ?', $term);
+		}else{
+			$select->where($this->_db->quoteInto( "dom_name LIKE ?", "{$term}%" ));
+		}
 
 		return $this->fetchAll($select)->toArray();
 	}
