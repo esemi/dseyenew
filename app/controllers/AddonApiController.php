@@ -8,7 +8,9 @@ class AddonApiController extends Zend_Controller_Action
 
 	public function init()
 	{
-		$this->view->title = 'Аддон';
+		$this->_helper->contextSwitch()
+			->setActionContext('stat-add', array('json'))
+			->initContext();
 	}
 
 	/**
@@ -21,6 +23,7 @@ class AddonApiController extends Zend_Controller_Action
 	{
 		$this->view->helpLink = $this->view->url( array('id'=>'addon'), 'helpView', true );
 
+		$this->view->title = 'Аддон';
 		$this->view->keywords = 'Аддон firefox, Аддон для браузера, Быстрый поиск игроков, Быстрый поиск сот';
 		$this->view->description = 'Быстрый поиск игроков по адресу, нику и названии соты с помощью аддона для браузера';
 		$this->view->actTitle = 'Поиск игроков';
@@ -98,9 +101,41 @@ class AddonApiController extends Zend_Controller_Action
 
 	}
 
+	/**
+	 * Вызов статистики из аддона
+	 *
+	 */
 	public function statAddAction()
 	{
+		$this->_helper->contextSwitch()->initContext('json');
 
+		$action = trim($this->_request->getPost('action', ''));
+		$counter = trim($this->_request->getPost('counter',''));
+		if( !empty($action) )
+		{
+			$this->_helper->modelLoad('AddonStat')->add($action, $this->_request, array('counter' => $counter));
+			$this->view->result = array('status' => 'success');
+		}else{
+			$this->_addErrorLog('Empty action');
+			$this->view->result = array('status' => 'fail');
+		}
+	}
+
+	protected function _addErrorLog($error)
+	{
+		$this->getInvokeArg('bootstrap')->getResource('Log')->error(
+				$this->_request->getClientIp()
+				.' '
+				.$this->_request->getRequestUri()
+				.' '
+				.$error
+				.' '
+				. $this->_request->getServer('HTTP_REFERER', '')
+				. ' '
+				. serialize($this->_request->getPost())
+				. ' '
+				. $this->_request->getServer('HTTP_USER_AGENT', '')
+		);
 	}
 
 
