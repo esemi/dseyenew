@@ -33,6 +33,11 @@ class Action_Helper_CheckAccess extends Zend_Controller_Action_Helper_Abstract
 	{
 		$cntr = $this->getActionController();
 		$result = $this->_acl->isAllowed($this->_role, $resourse, $privileges);
+		if(!$result)
+		{
+			Zend_Controller_Action_HelperBroker::getStaticHelper('Logger')->customError("Check access failure");
+		}
+
 		switch ($mode) {
 			case 'redirect':
 				if (!$result) {

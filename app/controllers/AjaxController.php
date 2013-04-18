@@ -12,15 +12,8 @@ class AjaxController extends Zend_Controller_Action
 		$_onlineMap = null,
 		$_dshelpMap = null;
 
-	private
-		$_notLoggedActions = array(),
-		$_log = null;
-
-
 	public function init()
 	{
-		$this->_log = $this->getInvokeArg('bootstrap')->getResource('Log');
-
 		//только аякс запросы
 		if( !$this->_request->isXmlHttpRequest() )
 			throw new Exception('AJAX only');
@@ -31,8 +24,7 @@ class AjaxController extends Zend_Controller_Action
 			throw new Exception('AJAX referer');
 
 		//логирование всех запросов, кроме секурных
-		if( !in_array($this->_request->getActionName(), $this->_notLoggedActions) )
-			$this->_addAjaxLog();
+		$this->_helper->Logger()->ajaxAccess();
 
 
 		$this->_helper->getHelper('AjaxContext')
@@ -54,67 +46,6 @@ class AjaxController extends Zend_Controller_Action
 							->initContext();
 	}
 
-
-	/*
-	 * добавление лога запроса
-	 */
-	private function _addAjaxLog()
-	{
-		$this->_log->ajax(
-			$this->_request->getClientIp()
-			. ' '
-			. $this->_request->getRequestUri()
-			. ' '
-			. $this->_request->getServer('HTTP_REFERER', '')
-			. ' '
-			. serialize($this->_request->getPost())
-			. ' '
-			. $this->_request->getServer('HTTP_USER_AGENT', ''));
-	}
-
-	/*
-	 * добавление лога ошибки CSRF токена
-	 */
-	private function _addCsrfLog()
-	{
-		$this->_log->csrf(
-				  $this->_request->getClientIp()
-				. ' '
-				. $this->_request->getRequestUri()
-				. ' '
-				. $this->_request->getServer('HTTP_REFERER', '')
-				. ' '
-				. serialize($this->_request->getPost())
-				. ' '
-				. $this->_request->getServer('HTTP_USER_AGENT', '')
-				);
-	}
-
-	/*
-	 * добавление лога странной ошибки
-	 */
-	private function _addErrorLog($error = null)
-	{
-		if( is_null($error) )
-		{
-			$error = (isset($this->view->error)) ? $this->view->error : 'Undefined error';
-		}
-
-		$this->_log->error(
-				  $this->_request->getClientIp()
-				. ' '
-				. $this->_request->getRequestUri()
-				. ' '
-				. $error
-				. ' '
-				. $this->_request->getServer('HTTP_REFERER', '')
-				. ' '
-				. serialize($this->_request->getPost())
-				. ' '
-				. $this->_request->getServer('HTTP_USER_AGENT', '')
-				);
-	}
-
 	/*
 	 * Добавление игрока в мониторинг
 	 */
@@ -123,14 +54,12 @@ class AjaxController extends Zend_Controller_Action
 		if( !$this->_helper->checkAccess('monitoring','manage') )
 		{
 			$this->view->error = 'Сессия устарела. Перезайдите в систему и попробуйте снова';
-			$this->_addErrorLog();
 			return;
 		}
 
 		if( !$this->_helper->tokenCheck($this->_request->getPost('csrf')) )
 		{
 			$this->view->error = 'Токен устарел. Перезагрузите исходную страницу';
-			$this->_addCsrfLog();
 			return;
 		}
 
@@ -139,7 +68,7 @@ class AjaxController extends Zend_Controller_Action
 		if( !$this->_helper->modelLoad('Players')->validate($idP) )
 		{
 			$this->view->error = 'Некорректный идентификатор игрока';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -150,7 +79,7 @@ class AjaxController extends Zend_Controller_Action
 		if( $this->_helper->modelLoad('MonitorItems')->issetByUser($idP, $user->id) )
 		{
 			$this->view->error = 'Данный игрок уже добавлен в мониторинг';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -172,14 +101,12 @@ class AjaxController extends Zend_Controller_Action
 		if( !$this->_helper->checkAccess('monitoring','manage') )
 		{
 			$this->view->error = 'Сессия устарела. Перезайдите в систему и попробуйте снова';
-			$this->_addErrorLog();
 			return;
 		}
 
 		if( !$this->_helper->tokenCheck($this->_request->getPost('csrf')) )
 		{
 			$this->view->error = 'Токен устарел. Перезагрузите исходную страницу';
-			$this->_addCsrfLog();
 			return;
 		}
 
@@ -189,7 +116,7 @@ class AjaxController extends Zend_Controller_Action
 		if( !$this->_helper->modelLoad('MonitorItems')->issetByUser($idP, $user->id) )
 		{
 			$this->view->error = 'Данный игрок не найден в вашем мониторинге';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -213,14 +140,12 @@ class AjaxController extends Zend_Controller_Action
 		if( !$this->_helper->checkAccess('autosearch','add') )
 		{
 			$this->view->error = 'Сессия устарела. Перезайдите в систему и попробуйте снова';
-			$this->_addErrorLog();
 			return;
 		}
 
 		if( !$this->_helper->tokenCheck($this->_request->getPost('csrf')) )
 		{
 			$this->view->error = 'Токен устарел. Перезагрузите исходную страницу';
-			$this->_addCsrfLog();
 			return;
 		}
 
@@ -229,7 +154,7 @@ class AjaxController extends Zend_Controller_Action
 		if( $this->_helper->modelLoad('Worlds')->validate( (int)$idW ) !== true )
 		{
 			$this->view->error = 'Некорректный идентификатор мира';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -238,7 +163,7 @@ class AjaxController extends Zend_Controller_Action
 		if( empty($name) )
 		{
 			$this->view->error = 'Некорректное имя';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -251,7 +176,7 @@ class AjaxController extends Zend_Controller_Action
 			$this->_helper->modelLoad('Players')->_validateSearchForm($prop, $rases) !== true )
 		{
 			$this->view->error = 'Некорректные настройки поиска';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -263,7 +188,7 @@ class AjaxController extends Zend_Controller_Action
 			$idA = $this->_helper->modelLoad('UsersSearch')->add( $user->id, $idW, $name, $prop );
 		}catch (Exception $e){
 			$this->view->error = $e->getMessage();
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -282,14 +207,12 @@ class AjaxController extends Zend_Controller_Action
 		if( !$this->_helper->checkAccess('autosearch','add') )
 		{
 			$this->view->error = 'Сессия устарела. Перезайдите в систему и попробуйте снова';
-			$this->_addErrorLog();
 			return;
 		}
 
 		if( !$this->_helper->tokenCheck($this->_request->getPost('csrf')) )
 		{
 			$this->view->error = 'Токен устарел. Перезагрузите исходную страницу';
-			$this->_addCsrfLog();
 			return;
 		}
 
@@ -300,7 +223,7 @@ class AjaxController extends Zend_Controller_Action
 		if( !$this->_helper->modelLoad('UsersSearch')->validateAccess( $idA, $user->id ) )
 		{
 			$this->view->error = 'Некорректный идентификатор поиска';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -313,7 +236,7 @@ class AjaxController extends Zend_Controller_Action
 			$this->_helper->modelLoad('Players')->_validateSearchForm($prop, $rases) !== true )
 		{
 			$this->view->error = 'Некорректные настройки поиска';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -323,7 +246,7 @@ class AjaxController extends Zend_Controller_Action
 			$this->_helper->modelLoad('UsersSearch')->upd( $idA, $prop );
 		}catch (Exception $e){
 			$this->view->error = $e->getMessage();
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -343,14 +266,12 @@ class AjaxController extends Zend_Controller_Action
 		if( !$this->_helper->checkAccess('autosearch','del') )
 		{
 			$this->view->error = 'Сессия устарела. Перезайдите в систему и попробуйте снова';
-			$this->_addErrorLog();
 			return;
 		}
 
 		if( !$this->_helper->tokenCheck($this->_request->getPost('csrf')) )
 		{
 			$this->view->error = 'Токен устарел. Перезагрузите исходную страницу';
-			$this->_addCsrfLog();
 			return;
 		}
 
@@ -361,7 +282,7 @@ class AjaxController extends Zend_Controller_Action
 		if( !$this->_helper->modelLoad('UsersSearch')->validateAccess( $idA, $user->id  ) )
 		{
 			$this->view->error = 'Некорректный идентификатор поиска';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -370,7 +291,7 @@ class AjaxController extends Zend_Controller_Action
 			$this->view->del = $this->_helper->modelLoad('UsersSearch')->del( $idA );
 		}catch (Exception $e){
 			$this->view->error = $e->getMessage();
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -397,7 +318,7 @@ class AjaxController extends Zend_Controller_Action
 			$this->view->players = $this->_helper->modelLoad('Players')->fastSearch( $term, $limit, $idW );
 		}else{
 			$this->view->error = 'Некорректные параметры';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 		}
 	}
 
@@ -417,11 +338,11 @@ class AjaxController extends Zend_Controller_Action
 		if( ($ring < 1) || ($ring > 4) || $this->_helper->modelLoad('Worlds')->validate( $idW ) !== true )  //кольцо левое или мир хз какой
 		{
 			$this->view->error = 'Некорректные параметры (кольцо или мир)';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		} elseif( $first < 1 || $last < 1 || $first == $last) { //параметры карты не дошли
 			$this->view->error = 'Некорректные значения шагов';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -429,7 +350,7 @@ class AjaxController extends Zend_Controller_Action
 		$ranks = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOption('map');
 		if( count($ranks) != 5 ) {
 			$this->view->error = 'Некорректные границы групп развития';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -437,7 +358,7 @@ class AjaxController extends Zend_Controller_Action
 		$this->view->numMax = $maxNum = $this->_helper->modelLoad('WorldsProperty')->getMaxComple($idW, $ring);
 		if( $maxNum === 0 ) {
 			$this->view->error = 'Не найден максимальный комплекс на выбранном кольце';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -461,7 +382,7 @@ class AjaxController extends Zend_Controller_Action
 		if( $info === false )
 		{
 			$this->view->error = 'Некорректный идентификатор игрока';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -490,7 +411,7 @@ class AjaxController extends Zend_Controller_Action
 				if( is_null($data) )
 				{
 					$this->view->error = 'Некорректный тип графика';
-					$this->_addErrorLog();
+					$this->_helper->Logger()->customError($this->view->error);
 					return;
 				}
 
@@ -510,7 +431,7 @@ class AjaxController extends Zend_Controller_Action
 			if( count($series) === 0 )
 			{
 				$this->view->error = 'Данные отсутствуют';
-				$this->_addErrorLog();
+				$this->_helper->Logger()->customError($this->view->error);
 				return;
 			}
 
@@ -527,14 +448,14 @@ class AjaxController extends Zend_Controller_Action
 			if( $info === false )
 			{
 				$this->view->error = 'Игрок не найден';
-				$this->_addErrorLog();
+				$this->_helper->Logger()->customError($this->view->error);
 				return;
 			}
 
 			if( !$this->_helper->modelLoad('WorldsDshelp')->graphAvailable( $info['id_world'] ) )
 			{
 				$this->view->error = 'Данный график недоступен для выбранного мира';
-				$this->_addErrorLog();
+				$this->_helper->Logger()->customError($this->view->error);
 				return;
 			}
 
@@ -544,7 +465,7 @@ class AjaxController extends Zend_Controller_Action
 			if( $url === false )
 			{
 				$this->view->error = 'График временно недоступен';
-				$this->_addErrorLog();
+				$this->_helper->Logger()->customError($this->view->error);
 				return;
 			}
 			$this->view->url = $url;
@@ -556,10 +477,10 @@ class AjaxController extends Zend_Controller_Action
 		if( is_null($data) )
 		{
 			$this->view->error = 'Не выбран тип графика';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 		}elseif( count($data) === 0 ){
 			$this->view->error = 'Данные отсутствуют';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 		}else{
 			$this->view->series = $this->_prepareStandartSingleGraph($type, $data);
 		}
@@ -805,7 +726,7 @@ class AjaxController extends Zend_Controller_Action
 				break;
 			default:
 				$this->view->error = 'Не выбран тип графика';
-				$this->_addErrorLog();
+				$this->_helper->Logger()->customError($this->view->error);
 				return;
 				break;
 		}
@@ -813,7 +734,7 @@ class AjaxController extends Zend_Controller_Action
 		if(count($data) === 0)
 		{
 			$this->view->error = 'Данные отсутствуют';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 		}else{
 			$this->view->series = $series;
 		}
@@ -909,7 +830,7 @@ class AjaxController extends Zend_Controller_Action
 				break;
 			default:
 				$this->view->error = 'Не выбран тип графика';
-				$this->_addErrorLog();
+				$this->_helper->Logger()->customError($this->view->error);
 				return;
 				break;
 		}
@@ -917,7 +838,7 @@ class AjaxController extends Zend_Controller_Action
 		if(count($data) === 0)
 		{
 			$this->view->error = 'Данные отсутствуют';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 		}else{
 			$this->view->series = $series;
 		}
@@ -957,7 +878,7 @@ class AjaxController extends Zend_Controller_Action
 		if(count($version) != 1)
 		{
 			$this->view->error = 'Неверная версия игры';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -975,7 +896,7 @@ class AjaxController extends Zend_Controller_Action
 
 			default:
 				$this->view->error = 'Некорректный тип графика';
-				$this->_addErrorLog();
+				$this->_helper->Logger()->customError($this->view->error);
 				return;
 				break;
 		}
@@ -983,7 +904,7 @@ class AjaxController extends Zend_Controller_Action
 		if(count($data) == 0)
 		{
 			$this->view->error = 'Данные отсутствуют';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -1000,14 +921,14 @@ class AjaxController extends Zend_Controller_Action
 		if( !$this->_helper->modelLoad('Worlds')->validate( $idW ) )
 		{
 			$this->view->error = 'Некорректный идентификатор мира';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
 		if( $w1 === false || $w2 === false || $w1 <= 0 || $w2 <= 0 )
 		{
 			$this->view->error = 'Некорректное значение веса армии';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -1015,7 +936,7 @@ class AjaxController extends Zend_Controller_Action
 		if( is_null($worldProp) )
 		{
 			$this->view->error = 'Отсутствуют коэфициенты рассчёта';
-			$this->_addErrorLog();
+			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
@@ -1063,7 +984,7 @@ class AjaxController extends Zend_Controller_Action
 			}else{
 				$err = "Ошибка разбора строки '{$str}' - '{$res}'";
 				$invalidHtml .= "{$err}\n";
-				$this->_addErrorLog($err);
+				$this->_helper->Logger()->customError($err);
 			}
 		}
 
