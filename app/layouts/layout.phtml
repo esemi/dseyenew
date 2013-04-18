@@ -21,11 +21,8 @@ $this->headLink()->prependStylesheet("/css/pepper-grinder/jQui.css?{$version}");
 $this->headTitle("{$this->title}{$act}. DSeye — анализатор онлайн игры Destiny Sphere (Сфера Судьбы)");
 
 //для залогиненых юзеров главная становится профилем
-$mainHref = (Zend_Controller_Action_HelperBroker::getStaticHelper('CheckAccess')->check('profile', 'view', 'return'))
-		?
-		$this->url(array( ), 'userProfile', true)
-		:
-		$this->url(array( ), 'staticIndex', true);
+$auth = Zend_Auth::getInstance();
+$mainHref = ($auth->hasIdentity()) ? $this->url(array( ), 'userProfile', true) : $this->url(array( ), 'staticIndex', true);
 
 echo $this->doctype();
 ?>
