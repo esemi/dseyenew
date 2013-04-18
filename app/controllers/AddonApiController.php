@@ -118,29 +118,10 @@ class AddonApiController extends Zend_Controller_Action
 			$this->_helper->modelLoad('AddonStat')->add($action, $this->_request, array('counter' => $counter));
 			$this->view->result = array('status' => 'success');
 		}else{
-			$this->_addErrorLog('Empty action');
+			$this->_helper->Logger()->customError('Empty action');
 			$this->view->result = array('status' => 'fail');
 		}
 	}
-
-	protected function _addErrorLog($error)
-	{
-		$this->getInvokeArg('bootstrap')->getResource('Log')->error(
-				$this->_request->getClientIp()
-				.' '
-				.$this->_request->getRequestUri()
-				.' '
-				.$error
-				.' '
-				. $this->_request->getServer('HTTP_REFERER', '')
-				. ' '
-				. serialize($this->_request->getPost())
-				. ' '
-				. $this->_request->getServer('HTTP_USER_AGENT', '')
-		);
-	}
-
-
 }
 
 ?>
