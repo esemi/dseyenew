@@ -11,14 +11,14 @@ class ErrorController extends Zend_Controller_Action
 			Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_CONTROLLER,
 			Zend_Controller_Plugin_ErrorHandler::EXCEPTION_NO_ACTION
 		);
-		$log = $this->getInvokeArg('bootstrap')->getResource('Log');
+
 		if( in_array($errors->type, $notFoundTypes) || $errors->exception instanceof Mylib_Exception_NotFound)
 		{
 			$this->_setNotFoundMeta();
-			$log->notice($this->_getLogMessage($errors));
+			$this->_helper->Logger()->notice($errors->exception->getMessage());
 		}else{
 			$this->_setFatalErrorMeta();
-			$log->crit($this->_getLogMessage($errors));
+			$this->_helper->Logger()->critical($errors->exception->getMessage());
 		}
 
 		if ($this->getInvokeArg('displayExceptionMessage') == true)
@@ -29,16 +29,6 @@ class ErrorController extends Zend_Controller_Action
 			$this->view->exception = $errors->exception;
 
 		$this->view->request = $errors->request;
-	}
-
-	protected function _getLogMessage($errors)
-	{
-		return sprintf('%s %s %s %s %s',
-				$errors->exception->getMessage(),
-				$errors->request->getClientIp(),
-				$errors->request->getRequestUri(),
-				$errors->request->getServer('HTTP_REFERER', 'undef'),
-				$errors->request->getServer('HTTP_USER_AGENT', 'undef'));
 	}
 
 	protected function _setNotFoundMeta()

@@ -22,6 +22,16 @@ class Action_Helper_Logger extends Zend_Controller_Action_Helper_Abstract
 		$this->_log = $this->getActionController()->getInvokeArg('bootstrap')->getResource('Log');
 	}
 
+	public function notice($message)
+	{
+		$this->_log->notice($message. ' '.$this->_ip. ' '. $this->_uri. ' '. $this->_referer. ' '. serialize($this->_request->getPost()). ' '. $this->_agent);
+	}
+
+	public function critical($message)
+	{
+		$this->_log->crit($message. ' '.$this->_ip. ' '. $this->_uri. ' '. $this->_referer. ' '. serialize($this->_request->getPost()). ' '. $this->_agent);
+	}
+
 	public function customError($error)
 	{
 		$this->_log->error($this->_ip. ' '. $this->_uri. ' '.  $error. ' '. $this->_referer. ' '. serialize($this->_request->getPost()). ' '. $this->_agent);
