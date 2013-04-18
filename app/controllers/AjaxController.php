@@ -2,7 +2,6 @@
 
 /*
  * контроллер для всех ajax запросов
- * @TODO ссылки нормальные (разделить как graph-online-live)
  */
 
 class AjaxController extends Zend_Controller_Action

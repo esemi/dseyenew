@@ -21,6 +21,8 @@ class AddonApiController extends Zend_Controller_Action
 	 */
 	public function searchAction()
 	{
+		$this->_helper->WorldsListing();
+
 		$this->view->helpLink = $this->view->url( array('id'=>'addon'), 'helpView', true );
 
 		$this->view->title = 'Аддон';
