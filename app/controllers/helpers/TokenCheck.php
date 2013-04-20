@@ -12,7 +12,7 @@ class Action_Helper_TokenCheck extends Zend_Controller_Action_Helper_Abstract
 
 		if($result === false)
 		{
-			Zend_Controller_Action_HelperBroker::getStaticHelper('Logger')->csrfError();
+			$this->getActionController()->getHelper('Logger')->csrfError();
 		}
 
 		return $result;
