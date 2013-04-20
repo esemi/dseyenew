@@ -15,7 +15,7 @@ class App_Model_DbTable_CronLogs extends Mylib_DbTable_Cached
 	 */
 	public function clearOld( $days )
 	{
-		return $this->delete( array($this->_db->quoteInto( 'date < NOW() - INTERVAL ? DAY', $days, Zend_Db::INT_TYPE )) );
+		return $this->delete( array($this->_db->quoteInto( 'date < (NOW() - INTERVAL ? DAY)', $days, Zend_Db::INT_TYPE )) );
 	}
 
 
