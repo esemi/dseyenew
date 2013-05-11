@@ -9,6 +9,8 @@ class App_Model_Cronlog
 {
 	protected $_type,
 			  $_log,
+			  $_gc_p,
+			  $_gc_d,
 			  $_result, // success|warning|fail|none
 			  $_table,
 			  $_mctimeStart;
@@ -20,6 +22,8 @@ class App_Model_Cronlog
 		$this->_mctimeStart = microtime(1);
 		$this->_table = new App_Model_DbTable_CronLogs();
 		$this->_type = $opt['type'];
+		$this->_gc_p = $opt['gc_probability'];
+		$this->_gc_d = $opt['gc_divisor'];
 		$this->_log = fopen("php://temp", 'w+');
 		$this->setResultError();
 	}
@@ -68,6 +72,8 @@ class App_Model_Cronlog
 
 		$this->_addStat();
 
+		$this->_gcRun();
+
 		$txt = $this->get();
 
 		switch ($this->_type)
@@ -77,16 +83,16 @@ class App_Model_Cronlog
 				return date("d_F_Y__H:i")." {$action} log to database {$this->_result}\n";
 			break;
 
+			case 'text':
+				return str_replace(array('<br/>', '<br>'), "\n", $txt);
+			break;
+
 			case 'file':
+			default :
 				$handle = fopen( APPLICATION_PATH . "/logs/{$action}_" . date("d_F_Y__H-i") . '.html' , 'w' );
 				fwrite( $handle,  nl2br($txt));
 				fclose( $handle );
 				return date("d_F_Y__H:i")." {$action} log to file {$this->_result}\n";
-			break;
-
-			case 'text':
-			default :
-				return str_replace(array('<br/>', '<br>'), "\n", $txt);
 			break;
 		}
 	}
@@ -108,5 +114,18 @@ class App_Model_Cronlog
 			$profiler->getTotalNumQueries(),
 			$profiler->getTotalElapsedSecs());
 	}
+
+	protected function _gcRun()
+	{
+		$rand = rand(1, $this->_gc_d);
+		if( $rand <= $this->_gc_p )
+		{
+			$scav = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOption('scav');
+			$this->_table->clearOld($scav['cronlog']);
+			$this->add('Старые логи крона удалены', true);
+		}
+	}
+
+
 }
 ?>
