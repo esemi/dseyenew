@@ -156,8 +156,7 @@ class AuthController extends Zend_Controller_Action
 							array(
 								'email' => $post['email'],
 								'login' => $post['login'],
-								'token' => $token,
-								'ip' => $ip
+								'token' => $token
 								)) );
 				$mail->addTo($post['email']);
 				$mail->send();
@@ -264,7 +263,7 @@ class AuthController extends Zend_Controller_Action
 		}
 
 		$ip = $this->_request->getClientIp(false);
-		
+
 		if( true !== $this->_helper->modelLoad('Antibrut')->checkIP('registerretry', $ip) )
 			$this->view->recaptcha = $recaptcha = $this->_recaptcha;
 
@@ -299,8 +298,7 @@ class AuthController extends Zend_Controller_Action
 							array(
 								'email' => $user['email'],
 								'login' => $user['login'],
-								'token' => $token,
-								'ip' => $ip
+								'token' => $token
 								)) );
 			$mail->addTo($user['email']);
 			$mail->send();
@@ -368,8 +366,7 @@ class AuthController extends Zend_Controller_Action
 							array(
 								'login' => $user->login,
 								'token' => $token,
-								'scavProp' => $rememberProp['hours'],
-								'ip' => $ip
+								'scavProp' => $rememberProp['hours']
 								)) );
 			$mail->addTo($user->email);
 			$mail->send();
