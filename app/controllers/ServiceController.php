@@ -75,16 +75,4 @@ class ServiceController extends Zend_Controller_Action
 		$this->view->actTitle = 'Военный калькулятор (вес армии, время раунда)';
 	}
 
-	/**
-	 * форматер сообщений КК
-	 */
-	public function redbuttonAction()
-	{
-		$this->view->helpLink = $this->view->url( array('id'=>'redbutton_formater'), 'helpView', true );
-
-		$this->view->keywords = 'Красная кнопка, Форматер, Сообщение';
-		$this->view->description = 'Сервис форматирования сообщений красной кнопки';
-		$this->view->actTitle = 'Форматер красной кнопки (вес армии, время раунда)';
-	}
-
 }
