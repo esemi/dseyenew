@@ -77,7 +77,6 @@ class Zend_View_Helper_MainMenu extends Zend_View_Helper_Abstract
 				array('href' => $this->view->url(array( ), 'globalSearch', true), 'name' => 'поиск игроков'),
 				array('href' => $this->view->url(array( ), 'archeologyRank', true), 'name' => 'археология'),
 				array('href' => $this->view->url(array( ), 'armyCalc', true), 'name' => 'время раунда'),
-				//array('href' => $this->view->url(array( ), 'redButton', true), 'name' => 'форматер кк'),
 				array('href' => $this->view->url(array( ), 'onlineStat', true), 'name' => 'статистика online'),
 				array('href' => $this->view->url(array( ), 'addonPage', true), 'name' => 'поисковый аддон'),
 				array('href' => $this->view->url(array( ), 'staticDev', true), 'name' => 'разработчикам'),
