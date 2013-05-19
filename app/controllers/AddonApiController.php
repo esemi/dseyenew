@@ -34,6 +34,9 @@ class AddonApiController extends Zend_Controller_Action
 		$term = trim($this->_request->getParam('term', ''));
 		if( !empty($term) )
 		{
+			 //@todo 50 rows
+			 //@todo limit to template
+			 //@todo alliance and world name for each item
 			//запоминаем статсу
 			$this->_helper->modelLoad('AddonStat')->add('search', $this->_request, array('term' => $term));
 

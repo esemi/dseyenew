@@ -484,7 +484,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 		$select = $this->select()
 				->setIntegrityCheck(false)
 				->from($this, array(
-					'id','nik','id_rase', 'id_world', 'ring', 'compl',
+					'id','nik','id_rase','id_alliance', 'id_world', 'ring', 'compl',
 					'dom' => "CONCAT_WS('.', ring, compl, sota )",
 					'dom_name', 'rank_old','rank_new', 'bo', 'nra', 'ra', 'gate', 'level', 'liga',
 					'archeology', 'building', 'science', 'status',
