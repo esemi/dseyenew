@@ -36,13 +36,9 @@ class AddonApiController extends Zend_Controller_Action
 
 		//если есть гет параметр
 		$term = trim($this->_request->getParam('term', ''));
+
 		if( !empty($term) )
 		{
-			//@TODO empty form
-			//@TODO тексты
-			//@TODO colony display
-			//@todo world name for each item
-
 			//запоминаем статсу
 			$this->_helper->modelLoad('AddonStat')->add('search', $this->_request, array('term' => $term));
 
@@ -96,7 +92,9 @@ class AddonApiController extends Zend_Controller_Action
 			//получаем результаты
 			$findIds = array_slice($findIds, 0, $limit);
 			foreach( $findIds as $idP ){
-				$result[] = $this->_helper->modelLoad('Players')->getInfo($idP);
+				$tmp = $this->_helper->modelLoad('Players')->getInfo($idP);
+				$tmp['world'] = $this->_helper->modelLoad('Worlds')->getName($tmp['id_world']);
+				$result[] = $tmp;
 			}
 
 			//если результат один - редиректим на страницу игрока

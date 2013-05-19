@@ -5,8 +5,18 @@ $cycle = $this->cycle(array('odd','even'));
 $num = 0;
 ?>
 
+<p>
+	Данный сервис позволяет искать игроков во всей базе нашей системы без учёта мира. В данный момент поиск допустим по нику и имени/адресу всех сот игрока.<br>
+	Если по вашему запросу будет найден всего один игрок - вас автоматически перенаправит на его страницу.
+</p>
 
-<?php if( isset($this->results) ): ?>
+<form action="" method="GET">
+	<input type="search" name="term" placeholder="Введите критерий поиска" maxlength="50" value="<?php echo $this->escape($this->term); ?>"/>
+</form>
+
+
+
+<?php if( !empty($this->term) ): ?>
 	<table class=" mrg-left-42 table mrg-top-13 js-table-select">
 		<thead class="text-center">
 			<tr>
@@ -14,14 +24,15 @@ $num = 0;
 				<th>Ник</th>
 				<th>Альянс</th>
 				<th colspan="2">Дом</th>
+				<th colspan="2">Колонии</th>
 				<th>Статус</th>
 				<th>Мир</th>
 			</tr>
 		</thead>
 		<tfoot class="border text-center">
 			<tr>
-				<td colspan="7">
-					<span class="mrg-left-5 mrg-right-5">Результаты поиска ограничены <?php echo $this->limitFast; ?> игроками</span>
+				<td colspan="9">
+					<span class="mrg-left-5 mrg-right-5">Результаты поиска ограничены <?php echo $this->escape($this->limit); ?> игроками</span>
 				</td>
 			</tr>
 		</tfoot>
@@ -37,24 +48,32 @@ $num = 0;
 						<a class="<?php echo $this->RaseColor($player['id_rase'], true); ?> no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $player['id_world'], 'idP' => $player['id'] ), 'playerStat', true) ?>"><?php echo $player['nik']; ?></a>
 					</td>
 					<td class="text-center pad-right-8">
-						<?php echo $this->allianceLink($player['id_world'], $player['id_alliance'], $player['alliance']); ?>
+						<?php echo $this->allianceLink($player['id_world'], $player['id_alliance'], $player['all']); ?>
 					</td>
 					<td class="text-right pad-right-8">
 						<?php echo "{$player['dom']} ". $this->GateIcon($player['gate']); ?>
 					</td>
-					<td class=" pad-right-8">>
+					<td class=" pad-right-8">
 						<?php echo " {$player['dom_name']}"; ?>
+					</td>
+					<td class="text-right pad-right-8">
+						<?php
+						foreach($player['colony'] as $col)
+							echo "{$col['col']}<br>";
+						?>
+					</td>
+					<td >
+						<?php
+						foreach($player['colony'] as $col)
+							echo "{$col['col_name']}<br>";
+						?>
 					</td>
 					<td class="text-right pad-right-8">
 						<?php $this->printStatus($player['status']); ?>
 					</td>
-					<?php if(isset($player['world'])) :?>
-						<td class="text-right">
-							<a href="<?php echo $this->url(array( 'idW' => $player['id_world'] ), 'worldIndex', true) ?>" class="no-underline"><?php echo $player['world']; ?></a>
-						</td>
-					<?php else: ?>
-						<td></td>
-					<?php endif; ?>
+					<td class="text-right">
+						<a href="<?php echo $this->url(array( 'idW' => $player['id_world'] ), 'worldIndex', true) ?>" class="no-underline"><?php echo $player['world']; ?></a>
+					</td>
 				</tr>
 
 			<?php endforeach; ?>
