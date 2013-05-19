@@ -1177,6 +1177,23 @@
 		.arch-table-active{
 			background: #fef3e9;
 		}
+
+
+		/* 5.10 ADDON PAGE
+	--------------------------------------------------*/
+		.box-for-pic-addon-page{
+			width: 70px;
+			height: 70px;
+		}
+		.pic-code{
+			background: url('/img/sprite_addon_page.png') 0px 0px no-repeat;
+		}
+		.pic-download{
+			background: url('/img/sprite_addon_page.png') -70px 0px no-repeat;
+		}
+		.pic-go-to-faq{
+			background: url('/img/sprite_addon_page.png') -140px 0px no-repeat;
+		}
 /*End 5. PAGES*/
 
 /* COLORS & colors links
