@@ -42,8 +42,7 @@ class AuthController extends Zend_Controller_Action
 		}
 
 		$ip = $this->_request->getClientIp(false);
-		$prop = $this->getFrontController()->getParam('bootstrap')->getOption('antibrut');
-		if( true !== $this->_helper->modelLoad('Antibrut')->checkIP( 'login', $ip, $prop['login']['try'], $prop['login']['minutes']) )
+		if( true !== $this->_helper->modelLoad('Antibrut')->checkIP('login', $ip) )
 			$this->view->recaptcha = $recaptcha = $this->_recaptcha;
 
 		if( $this->_request->isPost() )
@@ -67,7 +66,7 @@ class AuthController extends Zend_Controller_Action
 			{
 				$this->_helper->modelLoad('Antibrut')->addIP( 'login', $ip );
 
-				if( true !== $this->_helper->modelLoad('Antibrut')->checkIP( 'login', $ip, $prop['login']['try'], $prop['login']['minutes']) )
+				if( true !== $this->_helper->modelLoad('Antibrut')->checkIP('login', $ip) )
 					$this->view->recaptcha = $this->_recaptcha;
 
 				$this->view->messType = 'error';
@@ -121,8 +120,7 @@ class AuthController extends Zend_Controller_Action
 
 		$ip = $this->_request->getClientIp(false);
 
-		$prop = $this->getFrontController()->getParam('bootstrap')->getOption('antibrut');
-		if( true !== $this->_helper->modelLoad('Antibrut')->checkIP( 'register', $ip, $prop['register']['try'], $prop['register']['minutes']) )
+		if( true !== $this->_helper->modelLoad('Antibrut')->checkIP('register', $ip) )
 			$this->view->recaptcha = $recaptcha = $this->_recaptcha;
 
 		if ( $this->_request->isPost() )
@@ -158,8 +156,7 @@ class AuthController extends Zend_Controller_Action
 							array(
 								'email' => $post['email'],
 								'login' => $post['login'],
-								'token' => $token,
-								'ip' => $ip
+								'token' => $token
 								)) );
 				$mail->addTo($post['email']);
 				$mail->send();
@@ -266,16 +263,15 @@ class AuthController extends Zend_Controller_Action
 		}
 
 		$ip = $this->_request->getClientIp(false);
-		$prop = $this->getFrontController()->getParam('bootstrap')->getOption('antibrut');
 
-		if( true !== $this->_helper->modelLoad('Antibrut')->checkIP( 'registerretry', $ip, $prop['registerretry']['try'], $prop['registerretry']['minutes']) )
+		if( true !== $this->_helper->modelLoad('Antibrut')->checkIP('registerretry', $ip) )
 			$this->view->recaptcha = $recaptcha = $this->_recaptcha;
 
 		if( $this->_request->isPost() )
 		{
 			$this->_helper->modelLoad('Antibrut')->addIP( 'registerretry', $ip );
 
-			if( true !== $this->_helper->modelLoad('Antibrut')->checkIP( 'registerretry', $ip, $prop['registerretry']['try'], $prop['registerretry']['minutes']) )
+			if( true !== $this->_helper->modelLoad('Antibrut')->checkIP('registerretry', $ip) )
 				$this->view->recaptcha = $this->_recaptcha;
 
 			//проверяем капчу (если надо)
@@ -302,8 +298,7 @@ class AuthController extends Zend_Controller_Action
 							array(
 								'email' => $user['email'],
 								'login' => $user['login'],
-								'token' => $token,
-								'ip' => $ip
+								'token' => $token
 								)) );
 			$mail->addTo($user['email']);
 			$mail->send();
@@ -371,8 +366,7 @@ class AuthController extends Zend_Controller_Action
 							array(
 								'login' => $user->login,
 								'token' => $token,
-								'scavProp' => $rememberProp['hours'],
-								'ip' => $ip
+								'scavProp' => $rememberProp['hours']
 								)) );
 			$mail->addTo($user->email);
 			$mail->send();

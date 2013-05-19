@@ -13,11 +13,4 @@
 ===================================<br>
 Код активации: <b><?php echo $this->token; ?></b><br>
 ===================================<br>
-<br>
-(IP адрес отправителя: <?php echo $this->ip; ?>)
-<br><br>
---
-<br>
-С уважением, Администрация DSeye.ru
-<br>
-<a href='<?php echo $this->url(array(), 'staticIndex', true); ?>' target='_blank'><?php echo $this->url(array(), 'staticIndex', true); ?></a>
+<?php echo $this->partial('Partials/mail/footer-part.phtml'); ?>
