@@ -68,7 +68,7 @@ class PlayerController extends Zend_Controller_Action
 	public function quickAction()
 	{
 		//пробуем получить ник игрока
-		$res = $this->_helper->modelLoad('Players')->findByNik( trim($this->_getParam('nik')), $this->idW );
+		$res = $this->_helper->modelLoad('Players')->findByNik( trim($this->_getParam('nik')), 1, $this->idW );
 
 		if( $res === false )
 			throw new Mylib_Exception_NotFound('Игрок с данным ником не найден в заданном мире');
