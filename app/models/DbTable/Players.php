@@ -211,10 +211,11 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 	 * поиск ид игрока по нику ( быстрый переход и аддон )
 	 * @return mixed Int or false
 	 */
-	protected function notcached_findByNik( $nik, $idW = null, $strong=true )
+	protected function notcached_findByNik( $nik, $limit, $idW = null, $strong=true )
 	{
 		$select = $this->select()
-				->from($this, array('id'));
+				->from($this, array('id'))
+				->limit($limit);
 
 		if($strong){
 			$select->where('nik = ?', $nik);

@@ -30,13 +30,19 @@ class AddonApiController extends Zend_Controller_Action
 		$this->view->description = 'Быстрый поиск игроков по адресу, нику и названии соты с помощью аддона для браузера';
 		$this->view->actTitle = 'Поиск игроков';
 
+		$result = array();
+		$conf = $this->getFrontController()->getParam('bootstrap')->getOption('limits');
+		$limit = $conf['addonSearch'];
+
 		//если есть гет параметр
 		$term = trim($this->_request->getParam('term', ''));
 		if( !empty($term) )
 		{
-			 //@todo 50 rows
-			 //@todo limit to template
-			 //@todo alliance and world name for each item
+			//@TODO empty form
+			//@TODO тексты
+			//@TODO colony display
+			//@todo world name for each item
+
 			//запоминаем статсу
 			$this->_helper->modelLoad('AddonStat')->add('search', $this->_request, array('term' => $term));
 
@@ -44,7 +50,7 @@ class AddonApiController extends Zend_Controller_Action
 			$findIds = array();
 
 			//строгое совпадение ника
-			$res = $this->_helper->modelLoad('Players')->findByNik($term);
+			$res = $this->_helper->modelLoad('Players')->findByNik($term, $limit);
 			if( count($res) > 0 )
 				$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
@@ -72,7 +78,7 @@ class AddonApiController extends Zend_Controller_Action
 			if( count($findIds) === 0 )
 			{
 				//мягкое совпадение ника
-				$res = $this->_helper->modelLoad('Players')->findByNik($term, null, false);
+				$res = $this->_helper->modelLoad('Players')->findByNik($term, $limit, null, false);
 				if( count($res) > 0 )
 					$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
@@ -87,23 +93,20 @@ class AddonApiController extends Zend_Controller_Action
 					$findIds = array_merge($findIds, array_map($decodeIds, $res));
 			}
 
-
 			//получаем результаты
-			$result = array();
-			foreach( $findIds as $idP )
-			{
+			foreach( $findIds as $idP ){
 				$result[] = $this->_helper->modelLoad('Players')->getInfo($idP);
 			}
 
 			//если результат один - редиректим на страницу игрока
-			if( count($result) === 1 )
-			{
+			if( count($result) === 1 ){
 				$this->_helper->redirector->gotoRouteAndExit(array( 'idW' => $result[0]['id_world'], 'idP' => $result[0]['id'] ),'playerStat', true);
 			}
-
-			$this->view->results = $result;
 		}
 
+		$this->view->limit = $limit;
+		$this->view->term = $term;
+		$this->view->results = array_slice($result, 0, $limit);
 	}
 
 	/**
