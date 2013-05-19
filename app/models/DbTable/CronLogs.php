@@ -10,12 +10,12 @@ class App_Model_DbTable_CronLogs extends Mylib_DbTable_Cached
     protected $_cacheName = 'default';
 
 	/*
-	 * удаляем неинтересные логи старше N дней
+	 * удаляем неинтересные логи старше N часов
 	 * scav cli
 	 */
-	public function clearOld( $days )
+	public function clearOld( $hours )
 	{
-		return $this->delete( array($this->_db->quoteInto( 'date < NOW() - INTERVAL ? DAY', $days, Zend_Db::INT_TYPE )) );
+		return $this->delete( array($this->_db->quoteInto( 'date < (NOW() - INTERVAL ? HOUR)', $hours, Zend_Db::INT_TYPE )) );
 	}
 
 

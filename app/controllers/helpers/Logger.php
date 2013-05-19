@@ -10,7 +10,8 @@ class Action_Helper_Logger extends Zend_Controller_Action_Helper_Abstract
 			$_ip,
 			$_referer,
 			$_agent,
-			$_uri;
+			$_uri,
+			$_log;
 
 	public function init() //not __construct for $this->getActionController() call (action controller set into __construct of HelperBroker)
 	{

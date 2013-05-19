@@ -33,10 +33,6 @@ class Action_Helper_CheckAccess extends Zend_Controller_Action_Helper_Abstract
 	{
 		$cntr = $this->getActionController();
 		$result = $this->_acl->isAllowed($this->_role, $resourse, $privileges);
-		if(!$result)
-		{
-			Zend_Controller_Action_HelperBroker::getStaticHelper('Logger')->customError("Check access failure");
-		}
 
 		switch ($mode) {
 			case 'redirect':
@@ -51,7 +47,7 @@ class Action_Helper_CheckAccess extends Zend_Controller_Action_Helper_Abstract
 						$url .= "?return={$returnUrl}";
 					}
 
-					$cntr->getHelper('flashMessenger')->addMessage(array('error' => "У вас недостаточно прав для доступа к данной страницы. {$message}."));
+					$cntr->getHelper('flashMessenger')->addMessage(array('error' => "У вас недостаточно прав для доступа к данной странице. {$message}."));
 					$cntr->getHelper('redirector')->gotoUrlAndExit($url);
 				}
 				break;
