@@ -55,7 +55,7 @@ class AddonApiController extends Zend_Controller_Action
 				$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
 			//строгое совпадение домашней соты
-			$res = $this->_helper->modelLoad('Players')->findByDomName($term);
+			$res = $this->_helper->modelLoad('Players')->findByDomName($term, $limit);
 			if( count($res) > 0 )
 				$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
@@ -65,7 +65,7 @@ class AddonApiController extends Zend_Controller_Action
 				$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
 			//строгое совпадение имени колонии
-			$res = $this->_helper->modelLoad('PlayersColony')->findByName($term);
+			$res = $this->_helper->modelLoad('PlayersColony')->findByName($term, $limit);
 			if( count($res) > 0 )
 				$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
@@ -83,17 +83,18 @@ class AddonApiController extends Zend_Controller_Action
 					$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
 				//мягкое совпадение домашней соты
-				$res = $this->_helper->modelLoad('Players')->findByDomName($term, false);
+				$res = $this->_helper->modelLoad('Players')->findByDomName($term, $limit, false);
 				if( count($res) > 0 )
 					$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
 				//мягкое совпадение имени колонии
-				$res = $this->_helper->modelLoad('PlayersColony')->findByName($term, false);
+				$res = $this->_helper->modelLoad('PlayersColony')->findByName($term, $limit, false);
 				if( count($res) > 0 )
 					$findIds = array_merge($findIds, array_map($decodeIds, $res));
 			}
 
 			//получаем результаты
+			$findIds = array_slice($findIds, 0, $limit);
 			foreach( $findIds as $idP ){
 				$result[] = $this->_helper->modelLoad('Players')->getInfo($idP);
 			}
@@ -106,7 +107,7 @@ class AddonApiController extends Zend_Controller_Action
 
 		$this->view->limit = $limit;
 		$this->view->term = $term;
-		$this->view->results = array_slice($result, 0, $limit);
+		$this->view->results = $result;
 	}
 
 	/**

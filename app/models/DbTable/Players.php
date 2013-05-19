@@ -215,7 +215,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 	{
 		$select = $this->select()
 				->from($this, array('id'))
-				->limit($limit);
+				->limit((int) $limit);
 
 		if($strong){
 			$select->where('nik = ?', $nik);
@@ -235,10 +235,11 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 	 * @TODO check db perfomance
 	 * @return array Array of int user_ids
 	 */
-	protected function notcached_findByDomName( $term, $strong=true )
+	protected function notcached_findByDomName( $term, $limit, $strong=true )
 	{
 		$select = $this->select()
-				->from($this, array('id'));
+				->from($this, array('id'))
+				->limit((int) $limit);
 
 		if($strong){
 			$select->where('dom_name = ?', $term);
