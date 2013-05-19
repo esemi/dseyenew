@@ -102,11 +102,11 @@ class AddonApiController extends Zend_Controller_Action
 			if( count($result) === 1 ){
 				$this->_helper->redirector->gotoRouteAndExit(array( 'idW' => $result[0]['id_world'], 'idP' => $result[0]['id'] ),'playerStat', true);
 			}
+			$this->view->results = array_slice($result, 0, $limit);
 		}
 
 		$this->view->limit = $limit;
 		$this->view->term = $term;
-		$this->view->results = array_slice($result, 0, $limit);
 	}
 
 	/**
