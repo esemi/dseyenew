@@ -9,6 +9,11 @@
 *.fsproj merge=union
 *.dbproj merge=union
 
+*.php text
+*.phtml text
+*.js text
+*.css text
+
 # Standard to msysgit
 *.doc	 diff=astextplain
 *.DOC	 diff=astextplain
