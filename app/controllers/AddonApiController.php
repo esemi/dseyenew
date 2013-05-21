@@ -35,7 +35,7 @@ class AddonApiController extends Zend_Controller_Action
 		$limit = $conf['addonSearch'];
 
 		//если есть гет параметр
-		$term = trim($this->_request->getParam('term', ''));
+		$term = mb_substr(trim($this->_request->getParam('term', '')), 0, 50);
 
 		if( !empty($term) )
 		{
