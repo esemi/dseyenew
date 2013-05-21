@@ -1,0 +1,20 @@
+/* TEAM */
+	Chef and main developer:Efremov Semen
+	Contact: support [at] esemi.ru
+	Skype: esemiko
+	Github: https://github.com/esemi
+	From: Saint-Petersburg, Russia
+
+	Designer and UI developer: Eiduk Irina
+	Github: https://github.com/Eira
+	From: Saint-Petersburg, Russia
+
+/* THANKS */
+
+	Ideas Generator: Dolfin
+	Skype: mrdolfin
+
+/* SITE */
+	Language: Russian
+	Doctype:HTML5
+	IDE: Netbeans, PyCharm, Photoshop
