@@ -211,10 +211,11 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 	 * поиск ид игрока по нику ( быстрый переход и аддон )
 	 * @return mixed Int or false
 	 */
-	protected function notcached_findByNik( $nik, $idW = null, $strong=true )
+	protected function notcached_findByNik( $nik, $limit, $idW = null, $strong=true )
 	{
 		$select = $this->select()
-				->from($this, array('id'));
+				->from($this, array('id'))
+				->limit((int) $limit);
 
 		if($strong){
 			$select->where('nik = ?', $nik);
@@ -234,10 +235,11 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 	 * @TODO check db perfomance
 	 * @return array Array of int user_ids
 	 */
-	protected function notcached_findByDomName( $term, $strong=true )
+	protected function notcached_findByDomName( $term, $limit, $strong=true )
 	{
 		$select = $this->select()
-				->from($this, array('id'));
+				->from($this, array('id'))
+				->limit((int) $limit);
 
 		if($strong){
 			$select->where('dom_name = ?', $term);
@@ -484,7 +486,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 		$select = $this->select()
 				->setIntegrityCheck(false)
 				->from($this, array(
-					'id','nik','id_rase', 'id_world', 'ring', 'compl',
+					'id','nik','id_rase','id_alliance', 'id_world', 'ring', 'compl',
 					'dom' => "CONCAT_WS('.', ring, compl, sota )",
 					'dom_name', 'rank_old','rank_new', 'bo', 'nra', 'ra', 'gate', 'level', 'liga',
 					'archeology', 'building', 'science', 'status',

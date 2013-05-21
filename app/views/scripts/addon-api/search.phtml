@@ -1,1 +1,92 @@
-<?php var_dump($this->results); ?>
+<?php
+
+$cycle = $this->cycle(array('odd','even'));
+
+$num = 0;
+?>
+<h2 class="title mrg-left-21">Поиск игроков</h2>
+<div class="mrg-left-42">
+	<p>
+		Данный сервис позволяет искать игроков во всей базе нашей системы без учёта мира. В данный момент поиск допустим по нику и имени/адресу всех сот игрока.<br>
+		Если по вашему запросу будет найден всего один игрок - вас автоматически перенаправит на его страницу.
+	</p>
+
+	<form action="" method="GET" class="mrg-left-21">
+		<input class="w-214" type="search" name="term" placeholder="Введите критерий поиска" maxlength="50" value="<?php echo $this->escape($this->term); ?>"/>
+		<input class=" mrg-left-13 inline-block" type="submit" value="Искать" />
+	</form>
+
+
+
+	<?php if( !empty($this->term) ): ?>
+		<?php if(count($this->results) === 0): ?>
+			<p class="mrg-left-42 mrg-top-13">
+				К сожалению, ничего не найдено
+			</p>
+		<?php else: ?>
+			<table class="mrg-left-42 table mrg-top-13 js-table-select">
+				<thead class="text-center">
+					<tr>
+						<th>№</th>
+						<th>Ник</th>
+						<th>Альянс</th>
+						<th colspan="2">Дом</th>
+						<th colspan="2">Колонии</th>
+						<th>Статус</th>
+						<th>Мир</th>
+					</tr>
+				</thead>
+				<tfoot class="border text-center">
+					<tr>
+						<td colspan="9">
+							<span class="mrg-left-5 mrg-right-5">Результаты поиска ограничены <?php echo $this->escape($this->limit); ?> игроками</span>
+						</td>
+					</tr>
+				</tfoot>
+				<tbody class="">
+
+					<?php foreach($this->results as $player): ?>
+
+						<tr class="<?php echo $cycle->next(); ?>">
+							<td class="text-right text-middle pad-right-8">
+								<?php echo ++$num; ?>
+							</td>
+							<td class="pad-right-8 text-middle">
+								<a class="<?php echo $this->RaseColor($player['id_rase'], true); ?> no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $player['id_world'], 'idP' => $player['id'] ), 'playerStat', true) ?>"><?php echo $player['nik']; ?></a>
+							</td>
+							<td class="text-center pad-right-8 text-middle">
+								<?php echo $this->allianceLink($player['id_world'], $player['id_alliance'], $player['all']); ?>
+							</td>
+							<td class="text-right pad-right-8 text-middle">
+								<?php echo "{$player['dom']} ". $this->GateIcon($player['gate']); ?>
+							</td>
+							<td class=" pad-right-8 text-middle">
+								<?php echo " {$player['dom_name']}"; ?>
+							</td>
+							<td class="text-right pad-tb-3 pad-right-8 text-middle">
+								<?php
+								foreach($player['colony'] as $col)
+									echo "{$col['col']}<br>";
+								?>
+							</td>
+							<td class="text-middle pad-tb-3">
+								<?php
+								foreach($player['colony'] as $col)
+									echo "{$col['col_name']}<br>";
+								?>
+							</td>
+							<td class="text-right pad-right-8 text-middle">
+								<?php $this->printStatus($player['status']); ?>
+							</td>
+							<td class="text-right text-middle">
+								<a href="<?php echo $this->url(array( 'idW' => $player['id_world'] ), 'worldIndex', true) ?>" class="no-underline"><?php echo $player['world']; ?></a>
+							</td>
+						</tr>
+
+					<?php endforeach; ?>
+
+				</tbody>
+			</table>
+		<?php endif; ?>
+	<?php endif; ?>
+</div>

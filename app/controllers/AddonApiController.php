@@ -30,8 +30,13 @@ class AddonApiController extends Zend_Controller_Action
 		$this->view->description = 'Быстрый поиск игроков по адресу, нику и названии соты с помощью аддона для браузера';
 		$this->view->actTitle = 'Поиск игроков';
 
+		$result = array();
+		$conf = $this->getFrontController()->getParam('bootstrap')->getOption('limits');
+		$limit = $conf['addonSearch'];
+
 		//если есть гет параметр
 		$term = trim($this->_request->getParam('term', ''));
+
 		if( !empty($term) )
 		{
 			//запоминаем статсу
@@ -41,12 +46,12 @@ class AddonApiController extends Zend_Controller_Action
 			$findIds = array();
 
 			//строгое совпадение ника
-			$res = $this->_helper->modelLoad('Players')->findByNik($term);
+			$res = $this->_helper->modelLoad('Players')->findByNik($term, $limit);
 			if( count($res) > 0 )
 				$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
 			//строгое совпадение домашней соты
-			$res = $this->_helper->modelLoad('Players')->findByDomName($term);
+			$res = $this->_helper->modelLoad('Players')->findByDomName($term, $limit);
 			if( count($res) > 0 )
 				$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
@@ -56,7 +61,7 @@ class AddonApiController extends Zend_Controller_Action
 				$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
 			//строгое совпадение имени колонии
-			$res = $this->_helper->modelLoad('PlayersColony')->findByName($term);
+			$res = $this->_helper->modelLoad('PlayersColony')->findByName($term, $limit);
 			if( count($res) > 0 )
 				$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
@@ -69,38 +74,38 @@ class AddonApiController extends Zend_Controller_Action
 			if( count($findIds) === 0 )
 			{
 				//мягкое совпадение ника
-				$res = $this->_helper->modelLoad('Players')->findByNik($term, null, false);
+				$res = $this->_helper->modelLoad('Players')->findByNik($term, $limit, null, false);
 				if( count($res) > 0 )
 					$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
 				//мягкое совпадение домашней соты
-				$res = $this->_helper->modelLoad('Players')->findByDomName($term, false);
+				$res = $this->_helper->modelLoad('Players')->findByDomName($term, $limit, false);
 				if( count($res) > 0 )
 					$findIds = array_merge($findIds, array_map($decodeIds, $res));
 
 				//мягкое совпадение имени колонии
-				$res = $this->_helper->modelLoad('PlayersColony')->findByName($term, false);
+				$res = $this->_helper->modelLoad('PlayersColony')->findByName($term, $limit, false);
 				if( count($res) > 0 )
 					$findIds = array_merge($findIds, array_map($decodeIds, $res));
 			}
 
-
 			//получаем результаты
-			$result = array();
-			foreach( $findIds as $idP )
-			{
-				$result[] = $this->_helper->modelLoad('Players')->getInfo($idP);
+			$findIds = array_slice($findIds, 0, $limit);
+			foreach( $findIds as $idP ){
+				$tmp = $this->_helper->modelLoad('Players')->getInfo($idP);
+				$tmp['world'] = $this->_helper->modelLoad('Worlds')->getName($tmp['id_world']);
+				$result[] = $tmp;
 			}
 
 			//если результат один - редиректим на страницу игрока
-			if( count($result) === 1 )
-			{
+			if( count($result) === 1 ){
 				$this->_helper->redirector->gotoRouteAndExit(array( 'idW' => $result[0]['id_world'], 'idP' => $result[0]['id'] ),'playerStat', true);
 			}
-
-			$this->view->results = $result;
 		}
 
+		$this->view->limit = $limit;
+		$this->view->term = $term;
+		$this->view->results = $result;
 	}
 
 	/**

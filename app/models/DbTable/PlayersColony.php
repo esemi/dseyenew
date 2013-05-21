@@ -114,10 +114,11 @@ class App_Model_DbTable_PlayersColony extends Mylib_DbTable_Cached
 	 * @TODO check db perfomance
 	 * @return array Array of int user_ids
 	 */
-	protected function notcached_findByName( $term, $strong=true )
+	protected function notcached_findByName( $term, $limit, $strong=true )
 	{
 		$select = $this->select()
-				->from($this, array('id' => 'id_player'));
+				->from($this, array('id' => 'id_player'))
+				->limit((int) $limit);
 
 		if($strong){
 			$select->where('col_name = ?', $term);

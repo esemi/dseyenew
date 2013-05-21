@@ -16,7 +16,7 @@ class App_Model_DbTable_Antibrut extends Mylib_DbTable_Cached
 	public function init()
 	{
 		parent::init();
-		
+
 		$this->_prop = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOption('antibrut');
 	}
 
