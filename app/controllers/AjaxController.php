@@ -519,7 +519,7 @@ class AjaxController extends Zend_Controller_Action
 				$data = $this->_helper->modelLoad('StatRa')->getStat($idP);
 				break;
 			case 'nra':
-				$data = $this->_helper->modelLoad('StatNRa')->getStat($idP);
+				$data = $this->_helper->modelLoad('StatNra')->getStat($idP);
 				break;
 			case 'level':
 				$data = $this->_helper->modelLoad('StatLevel')->getStat($idP);
