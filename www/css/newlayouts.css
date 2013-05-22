@@ -543,7 +543,9 @@
 		.mrg-left-271{
 		margin-left: 271px;
 		}
-
+		.pad-left-3{
+					padding-left: 3px;
+				}
 		.pad-left-8{
 				padding-left: 8px;
 		}
@@ -611,6 +613,9 @@
 			padding: 0px 13px;
 		}
 
+		.pad-tb-3{
+			padding: 3px 0px;
+		}
 
 
 		.no-border{
@@ -667,7 +672,7 @@
 			min-height: 100%;
 			height: auto !important;
 			height: 100%;
-			margin: 0px auto -103px;
+			margin: 0px auto -115px;
 		}
 		#for-footer-2{
 			height:103px;
@@ -879,6 +884,33 @@
 			background: #ffd9d9;
 		}
 
+		/*Logos for contact list
+		------------------------------------*/
+		.logo-icq{
+			width: 16px;
+			height: 16px;
+			background: url('/img/sprite_contacts.png') -16px 0px no-repeat;
+		}
+		.logo-skype{
+			width: 16px;
+			height: 16px;
+			background: url('/img/sprite_contacts.png') 0px 0px no-repeat;
+		}
+		.logo-mail{
+			width: 16px;
+			height: 16px;
+			background: url('/img/sprite_contacts.png') -32px 0px no-repeat;
+		}
+		.logo-vk{
+			width: 16px;
+			height: 16px;
+			background: url('/img/sprite_contacts.png') -48px 0px no-repeat;
+		}
+		.logo-forum{
+			width: 16px;
+			height: 16px;
+			background: url('/img/sprite_contacts.png') -64px 0px no-repeat;
+		}
 	/* 5.5 Worlds
 	----------------------------------------*/
 		.indicators li{
