@@ -14,13 +14,13 @@
 	<p class="mrg-left-13">
 		Если вам нужен какой либо специфичный функционал, или вы нашли ошибку в работе аддона &mdash; <a href="<?php echo $this->url(array( ), 'staticContacts', true); ?>">свяжитесь с нами</a>.
 	</p>
+
 	<ul class="text-center mrg-top-34">
 
-		<li class="inline-block w-123 mrg-right-8">
-			<a class="hide" href="<?php echo $this->addonUrls['amo_url']; ?>" class="block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5"></a>
-			<p class="color-red"> warning</p>
+		<!--li class="inline-block w-123 mrg-right-8">
+			<a href="<?php echo $this->addonUrls['amo_url']; ?>" class="block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5"></a>
 			<a href="<?php echo $this->addonUrls['amo_url']; ?>">Скачать</a>
-		</li>
+		</li-->
 		<li class="inline-block w-123 mrg-right-8">
 			<a href="<?php echo $this->url( array('id'=>'addon'), 'helpView', true ) ?>" class="block rubber-block box-for-pic-addon-page pic-go-to-faq mrg-bottom-5"></a>
 			<a href="<?php echo $this->url( array('id'=>'addon'), 'helpView', true ) ?>">Как это работает</a>
@@ -30,4 +30,6 @@
 			<a href="<?php echo $this->addonUrls['repo_url']; ?>">Исходный код</a>
 		</li>
 	</ul>
+	
+	<p class="color-red text-center">На данный момент аддон проходит проверку перед добавлением в брайзерные магазины расширений. Как только проверка будет пройдена &mdash; аддон станет доступен для скачивания и установки.</p>
 </div>

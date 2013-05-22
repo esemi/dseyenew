@@ -33,6 +33,7 @@ echo $this->doctype();
 		<?php echo $this->render('counters.phtml'); ?>
 		<link rel="icon" href="/img/favicon.ico" type="image/x-icon"/>
 		<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
+		<link rel="author" href="/humans.txt" />
 		<link rel="alternate" type="application/rss+xml" href="<?php echo $this->url(array(), 'newsRss', true); ?>" title="Atom feed news of DSeye.ru"/>
 		<?php echo $this->headLink(); ?>
 	</head>
@@ -76,7 +77,7 @@ echo $this->doctype();
 
 			<p class="text-right float-right mrg-top-13">
 				&copy;&nbsp;Эйдук&nbsp;И.В.,&nbsp;дизайн&nbsp;и&nbsp;графические материалы,&nbsp;2010-2013<br>
-				<a href="#"><img src="/img/humanstxt.gif"></a>
+				<a href="/humans.txt"><img src="/img/humanstxt.gif"></a>
 			</p>
 			<p class="text-center ">
 				version 2.2
