@@ -25,8 +25,8 @@ class AddonApiController extends Zend_Controller_Action
 
 		$this->view->helpLink = $this->view->url( array('id'=>'addon'), 'helpView', true );
 
-		$this->view->title = 'Аддон';
-		$this->view->keywords = 'Аддон firefox, Аддон для браузера, Быстрый поиск игроков, Быстрый поиск сот';
+		$this->view->title = 'Быстрый поиск игроков';
+		$this->view->keywords = 'Аддон firefox, Аддон Opera, Аддон Chrome, Аддон для браузера, Быстрый поиск игроков, Быстрый поиск сот';
 		$this->view->description = 'Быстрый поиск игроков по адресу, нику и названии соты с помощью аддона для браузера';
 		$this->view->actTitle = 'Поиск игроков';
 

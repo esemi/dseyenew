@@ -96,7 +96,7 @@ class ServiceController extends Zend_Controller_Action
 
 		$this->view->addonUrls = $this->getFrontController()->getParam('bootstrap')->getOption('addon');
 
-		$this->view->keywords = 'Аддон firefox, Аддон для браузера, Быстрый поиск игроков';
+		$this->view->keywords = 'Аддон firefox, Аддон Opera, Аддон Chrome Аддон для браузера, Быстрый поиск игроков';
 		$this->view->description = 'Аддон для популярных браузеров, позволяющий быстро искать игроков не уходя со страницы стороннего сайта';
 		$this->view->actTitle = 'Аддон для браузера от нашего проекта';
 	}
