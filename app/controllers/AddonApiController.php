@@ -15,97 +15,13 @@ class AddonApiController extends Zend_Controller_Action
 
 	/**
 	 * Поиск сущности из аддона
-	 * если нашлась одна сущность - редиректим на страницу оной
-	 * если несколько или ни одной - оставляем тут и показываем список формой
-	 * @TODO делить поиск по адресам и нику/имени_соты
 	 */
 	public function searchAction()
 	{
-		$this->_helper->WorldsListing();
-
-		$this->view->helpLink = $this->view->url( array('id'=>'addon'), 'helpView', true );
-
-		$this->view->title = 'Быстрый поиск игроков';
-		$this->view->keywords = 'Аддон firefox, Аддон Opera, Аддон Chrome, Аддон для браузера, Быстрый поиск игроков, Быстрый поиск сот';
-		$this->view->description = 'Быстрый поиск игроков по адресу, нику и названии соты с помощью аддона для браузера';
-		$this->view->actTitle = 'Поиск игроков';
-
-		$result = array();
-		$conf = $this->getFrontController()->getParam('bootstrap')->getOption('limits');
-		$limit = $conf['addonSearch'];
-
-		//если есть гет параметр
-		$term = mb_substr(trim($this->_request->getParam('term', '')), 0, 50);
-
-		if( !empty($term) )
-		{
-			//запоминаем статсу
-			$this->_helper->modelLoad('AddonStat')->add('search', $this->_request, array('term' => $term));
-
-			$decodeIds = function($x){ return $x['id']; };
-			$findIds = array();
-
-			//строгое совпадение ника
-			$res = $this->_helper->modelLoad('Players')->findByNik($term, $limit);
-			if( count($res) > 0 )
-				$findIds = array_merge($findIds, array_map($decodeIds, $res));
-
-			//строгое совпадение домашней соты
-			$res = $this->_helper->modelLoad('Players')->findByDomName($term, $limit);
-			if( count($res) > 0 )
-				$findIds = array_merge($findIds, array_map($decodeIds, $res));
-
-			//строгое совпадение адреса дом соты
-			$res = $this->_helper->modelLoad('Players')->findByAddress($term);
-			if( count($res) > 0 )
-				$findIds = array_merge($findIds, array_map($decodeIds, $res));
-
-			//строгое совпадение имени колонии
-			$res = $this->_helper->modelLoad('PlayersColony')->findByName($term, $limit);
-			if( count($res) > 0 )
-				$findIds = array_merge($findIds, array_map($decodeIds, $res));
-
-			//строгое совпадение адреса колонии
-			$res = $this->_helper->modelLoad('PlayersColony')->findByAddress($term);
-			if( count($res) > 0 )
-				$findIds = array_merge($findIds, array_map($decodeIds, $res));
-
-			//если ничего не нашли - ищем ник и соты LIKE term%
-			if( count($findIds) === 0 )
-			{
-				//мягкое совпадение ника
-				$res = $this->_helper->modelLoad('Players')->findByNik($term, $limit, null, false);
-				if( count($res) > 0 )
-					$findIds = array_merge($findIds, array_map($decodeIds, $res));
-
-				//мягкое совпадение домашней соты
-				$res = $this->_helper->modelLoad('Players')->findByDomName($term, $limit, false);
-				if( count($res) > 0 )
-					$findIds = array_merge($findIds, array_map($decodeIds, $res));
-
-				//мягкое совпадение имени колонии
-				$res = $this->_helper->modelLoad('PlayersColony')->findByName($term, $limit, false);
-				if( count($res) > 0 )
-					$findIds = array_merge($findIds, array_map($decodeIds, $res));
-			}
-
-			//получаем результаты
-			$findIds = array_slice($findIds, 0, $limit);
-			foreach( $findIds as $idP ){
-				$tmp = $this->_helper->modelLoad('Players')->getInfo($idP);
-				$tmp['world'] = $this->_helper->modelLoad('Worlds')->getName($tmp['id_world']);
-				$result[] = $tmp;
-			}
-
-			//если результат один - редиректим на страницу игрока
-			if( count($result) === 1 ){
-				$this->_helper->redirector->gotoRouteAndExit(array( 'idW' => $result[0]['id_world'], 'idP' => $result[0]['id'] ),'playerStat', true);
-			}
-		}
-
-		$this->view->limit = $limit;
-		$this->view->term = $term;
-		$this->view->results = $result;
+		$term = mb_substr(trim( urldecode($this->_request->getParam('term', ''))), 0, 50);
+		$this->_helper->modelLoad('AddonStat')->add('search', $this->_request, array('term' => $term));
+		$url = $this->view->url(array(), 'globalSearch') . '?term=' . urlencode($term);
+		$this->_helper->getHelper('Redirector')->gotoUrlAndExit($url);
 	}
 
 	/**
