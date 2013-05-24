@@ -75,14 +75,15 @@ class CliController extends Zend_Controller_Action
 			$countC = $this->_helper->modelLoad('PlayersTransColony')->clearOld( $conf['worldstat'] );
 			$countD = $this->_helper->modelLoad('PlayersTransDom')->clearOld( $conf['worldstat'] );
 			$countG = $this->_helper->modelLoad('PlayersTransGate')->clearOld( $conf['worldstat'] );
-			$this->_log->add(sprintf('Удалено %d/%d/%d/%d записей переездов игроков (дом/мельс/ал/ворота)',$countD, $countC, $countA, $countG), true);
+			$countL = $this->_helper->modelLoad('PlayersTransLigue')->clearOld( $conf['worldstat'] );
+			$this->_log->add(sprintf('Удалено %d/%d/%d/%d/%d записей переездов игроков (дом/мельс/ал/ворота/лиги)',$countD, $countC, $countA, $countG, $countL), true);
 
 			//удаляем макс дельты игроков
 			$countR = $this->_helper->modelLoad('MaxDeltaRankOld')->clearOld($conf['worldstat']);
 			$countB = $this->_helper->modelLoad('MaxDeltaBo')->clearOld($conf['worldstat']);
 			$this->_log->add(sprintf('Удалено %d/%d макс дельт (рейтинг/БО)', $countR, $countB), true);
 
-			//удаляем макс дельты игроков
+			//удаляем пришли/ушли по игрокам
 			$countI = $this->_helper->modelLoad('PlayersInput')->clearOld($conf['worldstat']);
 			$countO = $this->_helper->modelLoad('PlayersOutput')->clearOld($conf['worldstat']);
 			$this->_log->add(sprintf('Удалено %d/%d пришли/ушли', $countI, $countO), true);
