@@ -13,8 +13,13 @@
 	<ul class="text-center mrg-top-34">
 
 		<!--li class="inline-block w-123 mrg-right-8">
-			<a href="<?php echo $this->addonUrls['amo_url']; ?>" class="block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5"></a>
-			<a href="<?php echo $this->addonUrls['amo_url']; ?>">Скачать</a>
+			<a href="" class="block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5"></a>
+			<a href="">Скачать</a>
+			<select>
+				<?php foreach($this->addonUrls['downloadUrl'] as $name => $url): ?>
+				<option value="<?php echo $url; ?>"><?php echo $name; ?></option>
+				<?php endforeach; ?>
+			</select>
 		</li-->
 		<li class="inline-block w-123 mrg-right-8">
 			<a href="<?php echo $this->url( array('id'=>'addon'), 'helpView', true ) ?>" class="block rubber-block box-for-pic-addon-page pic-go-to-faq mrg-bottom-5"></a>
