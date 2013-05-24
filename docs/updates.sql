@@ -70,3 +70,17 @@ UPDATE `dseye_new`.`game_versions` SET `forum_search_pattern` = 'http://alphafor
 
 UPDATE `dseye_new`.`game_versions` SET `forum_search_pattern` = 'http://alphaforum.destinysphere.ru/search.php?terms=all&author={-author-}&sc=1&sf=all&sr=posts&sk=t&sd=d&st=0&ch=300' WHERE `game_versions`.`id` =3;
 ALTER TABLE `cron_logs` ADD INDEX ( `date` );
+
+DROP TRIGGER IF EXISTS `players_delts`;
+CREATE TABLE IF NOT EXISTS `players_trans_ligue` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `id_player` int(10) unsigned NOT NULL,
+  `old_ligue` enum('I','II','III') NOT NULL,
+  `new_ligue` enum('I','II','III') NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_player` (`id_player`),
+  KEY `date` (`date`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
+
+ALTER TABLE `players_trans_ligue` ADD CONSTRAINT `players_trans_ligue_ibfk_1` FOREIGN KEY (`id_player`) REFERENCES `players` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
