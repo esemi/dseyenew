@@ -38,8 +38,9 @@ class App_Model_DbTable_PlayersTransOthers extends App_Model_Abstract_Trans
 					'date' => "DATE_FORMAT(`date`, '%H:%i %d.%m.%y')",
 					'sort_date' => 'date',
 					'old_val' => 'old_gate',
+					'old_name' => new Zend_Db_Expr('""'),
 					'new_val' => 'new_gate',
-					'old_name' => new Zend_Db_Expr('""'), 'new_name' => new Zend_Db_Expr('""')))
+					'new_name' => new Zend_Db_Expr('""')))
 				->where("{$this->_name2}.id_player = ?", $idP, Zend_Db::INT_TYPE);
 
 		$selectLigue = $this->select()
@@ -49,8 +50,9 @@ class App_Model_DbTable_PlayersTransOthers extends App_Model_Abstract_Trans
 					'date' => "DATE_FORMAT(`date`, '%H:%i %d.%m.%y')",
 					'sort_date' => 'date',
 					'old_val' => 'old_ligue',
+					'old_name' => new Zend_Db_Expr('""'),
 					'new_val' => 'new_ligue',
-					'old_name' => new Zend_Db_Expr('""'), 'new_name' => new Zend_Db_Expr('""')))
+					'new_name' => new Zend_Db_Expr('""')))
 				->where("{$this->_name3}.id_player = ?", $idP, Zend_Db::INT_TYPE);
 
 		$select = $this->select()
