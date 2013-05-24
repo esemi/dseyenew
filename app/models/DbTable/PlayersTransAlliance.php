@@ -19,18 +19,7 @@ class App_Model_DbTable_PlayersTransAlliance extends App_Model_Abstract_Trans
 	/*
 	 * переходы игрока по альянсам
 	 */
-	protected function notcached_getTransByPlayer( $idP, $limit )
-	{
-		$select = $this->select()
-				->setIntegrityCheck(false)
-				->from($this, array( 'date' => "DATE_FORMAT(`date` , '%H:%i %d.%m.%y')" ))
-				->join(array( 'al1' => 'alliances' ), 'al1.id = old_alliance', array( 'old_id' => 'id', 'old_name' => 'name' ))
-				->join(array( 'al2' => 'alliances' ), 'al2.id = new_alliance', array( 'new_id' => 'id', 'new_name' => 'name' ))
-				->where('id_player = ?', $idP, Zend_Db::INT_TYPE)
-				->order("{$this->_name}.date DESC")
-				->limit($limit);
-		return $this->fetchAll($select)->toArray();
-	}
+	protected function notcached_getTransByPlayer( $idP, $limit ){}
 
 
     /*
