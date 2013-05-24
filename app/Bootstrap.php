@@ -214,7 +214,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 	protected function _initZFDebug()
 	{
-		return false;
+		//return false;
 
 		//для крона дебаг не работает
 		if( APPLICATION_ENV === 'cli' )

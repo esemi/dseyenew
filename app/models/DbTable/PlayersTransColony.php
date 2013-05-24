@@ -4,7 +4,6 @@
  * переезды колоний игроков
  */
 class App_Model_DbTable_PlayersTransColony extends App_Model_Abstract_Trans
-	implements App_Model_Interface_Clearable
 {
 
 	protected $_name = 'players_trans_colony';
