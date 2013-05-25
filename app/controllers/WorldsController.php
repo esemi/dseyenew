@@ -59,8 +59,8 @@ class WorldsController extends Zend_Controller_Action
 		$this->view->output = $this->_helper->modelLoad('PlayersOutput')->getOutputWorld($this->idW, 20);
 
 		$this->view->transSots = $this->_helper->modelLoad('PlayersTransSots')->getTransByWorld($this->idW, 10);
-		$this->view->transGate = $this->_helper->modelLoad('PlayersTransGate')->getTransByWorld($this->idW, 10);
-		$this->view->transAlliance = $this->_helper->modelLoad('PlayersTransAlliance')->getTransByWorld($this->idW, 10);
+		$this->view->transOthers = $this->_helper->modelLoad('PlayersTransOthers')->getTransByWorld($this->idW, 10);
+
 		$this->view->maxRankDelts = $this->_helper->modelLoad('MaxDeltaRankOld')->getDeltsByWorld($this->idW, 10);
 		$this->view->maxBoDelts = $this->_helper->modelLoad('MaxDeltaBo')->getDeltsByWorld($this->idW, 10);
 	}
@@ -111,8 +111,7 @@ class WorldsController extends Zend_Controller_Action
 		$this->view->output = $this->_helper->modelLoad('PlayersOutput')->getOutputWorld($this->idW, $limit, $selectDate, false);
 
 		$this->view->transSots = $this->_helper->modelLoad('PlayersTransSots')->getTransByWorld($this->idW, $limit, $selectDate, false);
-		$this->view->transGate = $this->_helper->modelLoad('PlayersTransGate')->getTransByWorld($this->idW, $limit, $selectDate, false);
-		$this->view->transAlliance = $this->_helper->modelLoad('PlayersTransAlliance')->getTransByWorld($this->idW, $limit, $selectDate, false);
+		$this->view->transOthers = $this->_helper->modelLoad('PlayersTransOthers')->getTransByWorld($this->idW, $limit, $selectDate, false);
 		$this->view->maxRankDelts = $this->_helper->modelLoad('MaxDeltaRankOld')->getDeltsByWorld($this->idW, $limit, $selectDate, false);
 		$this->view->maxBoDelts = $this->_helper->modelLoad('MaxDeltaBo')->getDeltsByWorld($this->idW, $limit, $selectDate, false);
 	}

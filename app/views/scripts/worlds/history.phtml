@@ -30,12 +30,8 @@ $this->breadCrumb( array(sprintf('<a href="%s">%s</a>',$this->url(array( 'idW' =
 					<?php if( count($this->output['players']) > 0 ) echo '('.count($this->output['players']).')'; ?>
 				</th>
 				<th>
-					статус&nbsp;ворот<br>
-					<?php if( count($this->transGate['transes']) > 0 ) echo '('.count($this->transGate['transes']).')'; ?>
-				</th>
-				<th>
-					переходы&nbsp;по&nbsp;альянсам<br>
-					<?php if( count($this->transAlliance['transes']) > 0 ) echo '('.count($this->transAlliance['transes']).')'; ?>
+					прочие&nbsp;изменения<br>
+					<?php if( count($this->transOthers['transes']) > 0 ) echo '('.count($this->transOthers['transes']).')'; ?>
 				</th>
 				<th>
 					переезды<br>
@@ -80,11 +76,11 @@ $this->breadCrumb( array(sprintf('<a href="%s">%s</a>',$this->url(array( 'idW' =
 					<?php endif; ?>
 				</td>
 				<td>
-				   <?php if (count($this->transGate['transes']) > 0):?>
-					<ul>
-						<?php
-						$dateHead = '';
-						foreach ($this->transGate['transes'] as $value):
+				<?php if (count($this->transOthers['transes']) > 0):?>
+				<ul>
+					<?php
+					$dateHead = '';
+					foreach ($this->transOthers['transes'] as $value):
 						if ( $value['date'] != $dateHead )
 						{
 							$dateHead = $value['date'];
@@ -92,45 +88,44 @@ $this->breadCrumb( array(sprintf('<a href="%s">%s</a>',$this->url(array( 'idW' =
 						}
 						?>
 						<li>
-							<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
-							<div class="rubber-block mrg-top-2">
-								<?php echo $this->GateIcon($value['old_gate']) .' &rarr; '. $this->GateIcon($value['new_gate']); ?>
-							</div>
-						</li>
-					   <?php endforeach; ?>
-					</ul>
-					<?php if ($this->transGate['count'] > 0):?>
-						<a href="<?php echo $this->url(array('idW' => $this->idWorld), 'worldHistory', true) ?>">остальные (<?php echo $this->transGate['count']?>)</a>
-					<?php endif;?>
-					<?php else:?>
-						<span class="empty-td">Всё как прежде</span>
-					<?php endif;?>
-				</td>
-				<td>
-				<?php if( count($this->transAlliance['transes']) > 0 ): ?>
-					<ul>
-					<?php  $dateHead = ''; foreach($this->transAlliance['transes'] as $value): ?>
 							<?php
-							if ( $value['date'] != $dateHead )
+							switch ($value['type'])
 							{
-								$dateHead = $value['date'];
-								echo "<div class='time-separation'>{$value['date']}</div>";
+								case 'alliance':
+								?>
+									<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true) ?>">
+										<?php echo $value['nik'] ?>
+									</a>
+									<br>
+									<?php echo $this->allianceLink($this->idWorld, $value['old_val'], $value['old_name']) .' &rarr; '. $this->allianceLink($this->idWorld, $value['new_val'], $value['new_name']); ?>
+								<?php
+								break;
+
+								case 'gate':
+								?>
+									<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+									<div class="rubber-block mrg-top-2">
+										<?php echo $this->GateIcon($value['old_val']) .' &rarr; '. $this->GateIcon($value['new_val']); ?>
+									</div>
+								<?php
+								break;
+
+								case 'ligue':
+								?>
+									<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+									<div class="rubber-block mrg-top-2">
+										<?php echo "{$value['old_val']} &rarr; {$value['new_val']}"; ?>
+									</div>
+								<?php
+								break;
 							}
 							?>
-						<li>
-							<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $value['id'] ), 'playerStat', true) ?>">
-								 <?php echo $value['nik'] ?>
-							</a>
-							<br>
-							<?php echo $this->allianceLink($this->idWorld, $value['old_id'], $value['old_name']); ?>
-							&rarr;
-							<?php echo $this->allianceLink($this->idWorld, $value['new_id'], $value['new_name']); ?>
 						</li>
 					<?php endforeach; ?>
-					</ul>
-					<?php else: ?>
+				</ul>
+				<?php else:?>
 					<span class="empty-td">Всё как прежде</span>
-				<?php endif; ?>
+				<?php endif;?>
 				</td>
 				<td>
 					<?php if (count($this->transSots['transes']) > 0):?>
