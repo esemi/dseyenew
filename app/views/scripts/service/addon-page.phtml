@@ -12,15 +12,52 @@
 
 	<ul class="text-center mrg-top-34">
 
-		<!--li class="inline-block w-123 mrg-right-8">
-			<a href="" class="block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5"></a>
-			<a href="">Скачать</a>
-			<select>
+
+		<li class="inline-block w-123 mrg-right-8">
+			<a class="js-link-addon-code block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5" href=""></a>
+			<a class="js-link-addon-code" href="">Скачать</a>
+	<!--		<select>
 				<?php foreach($this->addonUrls['downloadUrl'] as $name => $url): ?>
 				<option value="<?php echo $url; ?>"><?php echo $name; ?></option>
 				<?php endforeach; ?>
-			</select>
-		</li-->
+			</select-->
+		</li>
+
+			<script type="text/javascript">
+			function browserDetect(){
+
+				var
+
+				link = '',
+
+				UA = window.navigator.userAgent,
+				OperaB = /Opera/i,
+				FirefoxB = /Firefox/i,
+				ChromeB = /Chrome/i,
+
+				Opera = UA.match(OperaB),
+				Firefox = UA.match(FirefoxB),
+				Chrome = UA.match(ChromeB);
+
+				if (Firefox !== "")
+					link="https://github.com/esemi/dseye_firefox_addon"
+				else if (Chrome !== "")
+					link="https://github.com/esemi/dseye_chrome_addon"
+				else if (Opera !== "")
+					link="https://github.com/esemi/dseye_opera_addon";
+
+				var tagsForLinks = document.getElementsByClassName("js-link-addon-code");
+				for ( var i in tagsForLinks){
+					tagsForLinks[i].href = link;
+				}
+
+				return true;
+			}
+
+			browserDetect();
+		</script>
+
+
 		<li class="inline-block w-123 mrg-right-8">
 			<a href="<?php echo $this->url( array('id'=>'addon'), 'helpView', true ) ?>" class="block rubber-block box-for-pic-addon-page pic-go-to-faq mrg-bottom-5"></a>
 			<a href="<?php echo $this->url( array('id'=>'addon'), 'helpView', true ) ?>">Как это работает</a>
@@ -31,5 +68,5 @@
 		</li>
 	</ul>
 
-	<p class="color-red text-center">На данный момент аддон проходит проверку перед добавлением в браузерные магазины расширений. Как только проверка будет пройдена &mdash; аддон станет доступен для скачивания и установки.</p>
+	<!--p class="color-red text-center">На данный момент аддон проходит проверку перед добавлением в браузерные магазины расширений. Как только проверка будет пройдена &mdash; аддон станет доступен для скачивания и установки.</p-->
 </div>
