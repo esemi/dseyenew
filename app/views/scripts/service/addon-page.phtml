@@ -13,56 +13,61 @@
 	<ul class="text-center mrg-top-34">
 
 
-		<li class="inline-block w-123 mrg-right-8">
+		<li class="inline-block w-123 mrg-right-8 text-top">
 			<a class="js-link-addon-code block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5" href=""></a>
 			<a class="js-link-addon-code" href="">Скачать</a>
-	<!--		<select>
+			<p id ="js-hide-me-show-next" class=" inline-block font-13 finger pseudo">Выбрать вручную</p>
+			<select class="">
 				<?php foreach($this->addonUrls['downloadUrl'] as $name => $url): ?>
 				<option value="<?php echo $url; ?>"><?php echo $name; ?></option>
 				<?php endforeach; ?>
-			</select-->
+			</select>
 		</li>
 
 			<script type="text/javascript">
-			function browserDetect(){
+				function DownloadAddonLinkChooser(){
 
-				var
+					var
 
-				link = '',
+					link = '',
 
-				UA = window.navigator.userAgent,
-				OperaB = /Opera/i,
-				FirefoxB = /Firefox/i,
-				ChromeB = /Chrome/i,
+					UA = window.navigator.userAgent,
+					OperaB = /Opera/i,
+					FirefoxB = /Firefox/i,
+					ChromeB = /Chrome/i,
 
-				Opera = UA.match(OperaB),
-				Firefox = UA.match(FirefoxB),
-				Chrome = UA.match(ChromeB);
+					Opera = UA.match(OperaB),
+					Firefox = UA.match(FirefoxB),
+					Chrome = UA.match(ChromeB);
 
-				if (Firefox !== "")
-					link="https://github.com/esemi/dseye_firefox_addon"
-				else if (Chrome !== "")
-					link="https://github.com/esemi/dseye_chrome_addon"
-				else if (Opera !== "")
-					link="https://github.com/esemi/dseye_opera_addon";
+					if (Firefox !== null)
+						link="https://github.com/esemi/dseye_firefox_addon"
+					else if (Chrome !== null)
+						link="https://github.com/esemi/dseye_chrome_addon"
+					else if (Opera !== null)
+						link="https://github.com/esemi/dseye_opera_addon";
 
-				var tagsForLinks = document.getElementsByClassName("js-link-addon-code");
-				for ( var i in tagsForLinks){
-					tagsForLinks[i].href = link;
+					var tagsForLinks = document.getElementsByClassName("js-link-addon-code");
+					for ( var i in tagsForLinks){
+						tagsForLinks[i].href = link;
+					}
 				}
 
-				return true;
+			DownloadAddonLinkChooser();
+
+			function hideMeShowNext(){
+
 			}
 
-			browserDetect();
+			hideMeShowNext();
 		</script>
 
 
-		<li class="inline-block w-123 mrg-right-8">
+		<li class="inline-block w-123 mrg-right-8 text-top">
 			<a href="<?php echo $this->url( array('id'=>'addon'), 'helpView', true ) ?>" class="block rubber-block box-for-pic-addon-page pic-go-to-faq mrg-bottom-5"></a>
 			<a href="<?php echo $this->url( array('id'=>'addon'), 'helpView', true ) ?>">Как это работает</a>
 		</li>
-		<li class="inline-block w-123">
+		<li class="inline-block w-123 text-top">
 			<a href="<?php echo $this->addonUrls['repo_url']; ?>" class="block rubber-block box-for-pic-addon-page pic-code mrg-bottom-5"></a>
 			<a href="<?php echo $this->addonUrls['repo_url']; ?>">Исходный код</a>
 		</li>
