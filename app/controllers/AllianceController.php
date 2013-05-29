@@ -44,9 +44,10 @@ class AllianceController extends Zend_Controller_Action
 		//параметры
 		$this->view->propData = $this->_helper->modelLoad('AlliancesProperty')->getProp($this->idA);
 
-		$this->view->transAlliance = $this->_helper->modelLoad('PlayersTransAlliance')->getTransByAlliance($this->idA, 14);
-		$this->view->transSots = $this->_helper->modelLoad('PlayersTransSots')->getTransByAlliance($this->idA, 10);
-		$this->view->transGate = $this->_helper->modelLoad('PlayersTransGate')->getTransByAlliance($this->idA, 26);
+		$this->view->transAlliance = $this->_helper->modelLoad('PlayersTransAlliance')->getTransByAlliance($this->idA, 20);
+		$this->view->transSots = $this->_helper->modelLoad('PlayersTransSots')->getTransByAlliance($this->idA, 20);
+		$this->view->transGate = $this->_helper->modelLoad('PlayersTransGate')->getTransByAlliance($this->idA, 20);
+		$this->view->transLigue = $this->_helper->modelLoad('PlayersTransLigue')->getTransByAlliance($this->idA, 20);
 	}
 
 	/*

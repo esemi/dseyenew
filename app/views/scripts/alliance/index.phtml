@@ -137,98 +137,134 @@ $this->breadCrumb( array(
 </div>
 
 
-<div class=" mrg-right-21 mrg-left-269" >
-    <table class="float-left mrg-right-42 tr-outline">
-        <caption class="text-left mrg-bottom-8">
-            <strong class="bold">Статус&nbsp;ворот</strong>
-        </caption>
-    <?php if( count($this->transGate) > 0 ): ?>
-        <?php foreach($this->transGate as $value): ?>
-            <tr>
-                <td class="pad-left-8 pad-right-8">
-                    <?php echo $value['date'] ?>
-                </td>
-                <td class="pad-right-8">
-                   <a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>">
-                   <b><?php echo $value['nik'] ?></b>
-                   </a>
-                </td>
-                <td class="pad-right-8">
-                    <?php echo $this->GateIcon($value['old_gate']) .' &rarr; '. $this->GateIcon($value['new_gate']); ?>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    <?php else: ?>
-            <tr>
-                <td colspan="3">Нет изменений</td>
-            </tr>
-    <?php endif; ?>
-    </table>
-    <div class="inline-block">
-        <table class="tr-outline">
-            <caption class="text-left mrg-bottom-8">
-                <strong class="bold">Последние&nbsp;переходы</strong>
-            </caption>
-        <?php if( count($this->transAlliance) > 0 ): ?>
-            <?php foreach($this->transAlliance as $value): ?>
-                <tr>
-                    <td class="pad-left-8 pad-right-8">
-                        <?php echo $value['date'] ?>
-                    </td>
-                    <td class="pad-right-8">
-                        <a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $value['id'] ), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>
-                    </td>
-                    <td class="text-right">
-                        <?php echo $this->allianceLink($this->idWorld, $value['old_id'], $value['old_name']); ?>
-                    </td>
-                    <td class="text-center pad-lr-3">
-                        &rarr;
-                    </td>
-                    <td class="text-left">
-                        <?php echo $this->allianceLink($this->idWorld, $value['new_id'], $value['new_name']); ?>
-                    </td>
+<div>
 
-                </tr>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <tr>
-                <td colspan="5">Нет изменений</td>
-            </tr>
-        <?php endif; ?>
-        </table>
+	<div>
+		<table class="float-left mrg-right-42 tr-outline">
+			<caption class="text-left mrg-bottom-8">
+				<strong class="bold">Статус&nbsp;ворот</strong>
+			</caption>
+		<?php if( count($this->transGate) > 0 ): ?>
+			<?php foreach($this->transGate as $value): ?>
+				<tr>
+					<td class="pad-left-8 pad-right-8">
+						<?php echo $value['date'] ?>
+					</td>
+					<td class="pad-right-8">
+					   <a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>">
+					   <b><?php echo $value['nik'] ?></b>
+					   </a>
+					</td>
+					<td class="pad-right-8">
+						<?php echo $this->GateIcon($value['old_gate']) .' &rarr; '. $this->GateIcon($value['new_gate']); ?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+		<?php else: ?>
+				<tr>
+					<td colspan="3">Нет изменений</td>
+				</tr>
+		<?php endif; ?>
+		</table>
+	</div>
 
-        <table class=" mrg-top-21 tr-outline">
-             <caption class="text-left  mrg-bottom-8">
-                <strong class="bold">Последние&nbsp;переезды</strong>
-            </caption>
-        <?php if( count($this->transSots) > 0 ): ?>
-            <?php foreach($this->transSots as $value): ?>
-                <tr>
-                    <td class="pad-left-8 pad-right-8">
-                        <?php echo $value['date'] ?>
-                    </td>
-                    <td class="pad-right-8">
-                        <a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $value['id'] ), 'playerStat', true) ?>">
-                            <b><?php echo $value['nik'] ?></b>
-                        </a>
-                    </td>
-                    <td class="text-right">
-                        <?php echo ( is_null($value['old_adr']) ) ? "<span class='color-green'>new</span>" : $value['old_adr']; ?>
-                    </td>
-                    <td class="text-center pad-lr-3">
-                        &rarr;
-                    </td>
-                    <td class="text-left">
-                        <?php echo ( is_null($value['new_adr']) ) ? "<span class='color-red'>del</span>" : $value['new_adr']; ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <tr>
-                <td colspan="5">Нет изменений</td>
-            </tr>
-        <?php endif; ?>
-        </table>
-    </div>
+	<div>
+		<table class="float-left mrg-right-42 tr-outline">
+			<caption class="text-left mrg-bottom-8">
+				<strong class="bold">Изменения&nbsp;лиги</strong>
+			</caption>
+		<?php if( count($this->transLigue) > 0 ): ?>
+			<?php foreach($this->transLigue as $value): ?>
+				<tr>
+					<td class="pad-left-8 pad-right-8">
+						<?php echo $value['date'] ?>
+					</td>
+					<td class="pad-right-8">
+						<a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>">
+							<b><?php echo $value['nik'] ?></b>
+						</a>
+					</td>
+					<td class="pad-right-8">
+						<?php echo "{$value['old_ligue']} &rarr; {$value['new_ligue']}"; ?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+		<?php else: ?>
+				<tr>
+					<td colspan="3">Нет изменений</td>
+				</tr>
+		<?php endif; ?>
+		</table>
+	</div>
+
+
+	<div>
+		<table class="float-left mrg-right-42 tr-outline">
+			<caption class="text-left mrg-bottom-8">
+				<strong class="bold">Последние&nbsp;переходы</strong>
+			</caption>
+		<?php if( count($this->transAlliance) > 0 ): ?>
+			<?php foreach($this->transAlliance as $value): ?>
+				<tr>
+					<td class="pad-left-8 pad-right-8">
+						<?php echo $value['date'] ?>
+					</td>
+					<td class="pad-right-8">
+						<a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $value['id'] ), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>
+					</td>
+					<td class="text-right">
+						<?php echo $this->allianceLink($this->idWorld, $value['old_id'], $value['old_name']); ?>
+					</td>
+					<td class="text-center pad-lr-3">
+						&rarr;
+					</td>
+					<td class="text-left">
+						<?php echo $this->allianceLink($this->idWorld, $value['new_id'], $value['new_name']); ?>
+					</td>
+
+				</tr>
+			<?php endforeach; ?>
+		<?php else: ?>
+			<tr>
+				<td colspan="5">Нет изменений</td>
+			</tr>
+		<?php endif; ?>
+		</table>
+	</div>
+
+	<div>
+		<table class="float-left mrg-right-42 tr-outline">
+			 <caption class="text-left  mrg-bottom-8">
+				<strong class="bold">Последние&nbsp;переезды</strong>
+			</caption>
+		<?php if( count($this->transSots) > 0 ): ?>
+			<?php foreach($this->transSots as $value): ?>
+				<tr>
+					<td class="pad-left-8 pad-right-8">
+						<?php echo $value['date'] ?>
+					</td>
+					<td class="pad-right-8">
+						<a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $value['id'] ), 'playerStat', true) ?>">
+							<b><?php echo $value['nik'] ?></b>
+						</a>
+					</td>
+					<td class="text-right">
+						<?php echo ( is_null($value['old_adr']) ) ? "<span class='color-green'>new</span>" : $value['old_adr']; ?>
+					</td>
+					<td class="text-center pad-lr-3">
+						&rarr;
+					</td>
+					<td class="text-left">
+						<?php echo ( is_null($value['new_adr']) ) ? "<span class='color-red'>del</span>" : $value['new_adr']; ?>
+					</td>
+				</tr>
+			<?php endforeach; ?>
+		<?php else: ?>
+			<tr>
+				<td colspan="5">Нет изменений</td>
+			</tr>
+		<?php endif; ?>
+		</table>
+	</div>
 </div>
 
