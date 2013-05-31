@@ -33,7 +33,6 @@ class AllianceController extends Zend_Controller_Action
 	public function indexAction()
 	{
 		$this->view->helpLink = $this->view->url( array('id'=>'alliance_page'), 'helpView', true );
-		$this->view->rubberPage = false;
 
 		$this->view->keywords = "{$this->view->nameAlliance}, Альянс, Информация";
 		$this->view->description = "Альянс {$this->view->nameAlliance}, общая информация";
