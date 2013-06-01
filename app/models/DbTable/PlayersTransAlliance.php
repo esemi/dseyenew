@@ -10,9 +10,7 @@ class App_Model_DbTable_PlayersTransAlliance extends App_Model_Abstract_Trans
     protected $_name = 'players_trans_alliance';
     protected $_cacheName = 'up';
     protected $_tagsMap = array(
-        'getTransByWorld' => array('up'),
         'getTransByAlliance' => array('up'),
-        'getTransByPlayer' => array('up'),
     );
 
 
