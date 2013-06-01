@@ -9,226 +9,259 @@ $this->breadCrumb( array(
 ?>
 
 <div class="float-left mrg-left-21 w-234">
-    <h3 class="subtitle mrg-bottom-13">Общие данные</h3>
-        <ul class="indicators">
-            <li>
-                <strong class="bold">В базе с </strong><?php echo $this->mainProperty['date_create'] ?>
-            </li>
-            <li>
-                <strong class="bold">Статус:</strong> <?php $this->printStatus($this->mainProperty['status']); ?>
-                <?php if( $this->mainProperty['status'] === 'delete' && !is_null($this->mainProperty['date_delete']) ): ?>
-                    <?php echo "&nbsp;{$this->mainProperty['date_delete']}"; ?>
-                <?php endif; ?>
-            </li>
-        </ul>
-    <h3 class="subtitle mrg-top-13 mrg-bottom-13">Текущие показатели</h3>
-    <?php if( is_null($this->propData) ): ?>
-            @TODO Empty Property
-    <?php else: ?>
-        <ul class="indicators">
-            <li>
-                <?php echo $this->formatItemCounters('Игроков',
-                            $this->propData['count'],
-                            $this->propData['count_voran'],
-                            $this->propData['count_liens'],
-                            $this->propData['count_psol']) ?>
-            </li>
-            <li>
-                <?php echo $this->formatItemCounters('Колоний',
-                            $this->propData['count_colony'],
-                            $this->propData['count_colony_voran'],
-                            $this->propData['count_colony_liens'],
-                            $this->propData['count_colony_psol']) ?>
-            </li>
+	<h3 class="subtitle mrg-bottom-13">Общие данные</h3>
+		<ul class="indicators">
+			<li>
+				<strong class="bold">В базе с </strong><?php echo $this->mainProperty['date_create'] ?>
+			</li>
+			<li>
+				<strong class="bold">Статус:</strong> <?php $this->printStatus($this->mainProperty['status']); ?>
+				<?php if( $this->mainProperty['status'] === 'delete' && !is_null($this->mainProperty['date_delete']) ): ?>
+					<?php echo "&nbsp;{$this->mainProperty['date_delete']}"; ?>
+				<?php endif; ?>
+			</li>
+		</ul>
+	<h3 class="subtitle mrg-top-13 mrg-bottom-13">Текущие показатели</h3>
+	<?php if( is_null($this->propData) ): ?>
+			@TODO Empty Property
+	<?php else: ?>
+		<ul class="indicators">
+			<li>
+				<?php echo $this->formatItemCounters('Игроков',
+							$this->propData['count'],
+							$this->propData['count_voran'],
+							$this->propData['count_liens'],
+							$this->propData['count_psol']) ?>
+			</li>
+			<li>
+				<?php echo $this->formatItemCounters('Колоний',
+							$this->propData['count_colony'],
+							$this->propData['count_colony_voran'],
+							$this->propData['count_colony_liens'],
+							$this->propData['count_colony_psol']) ?>
+			</li>
 
-            <li>
-                <?php echo $this->formatItemCounters('Ср. рейтинг (стар.)',
-                        $this->propData['avg_rank_old'],
-                        $this->propData['avg_rank_old_voran'],
-                        $this->propData['avg_rank_old_liens'],
-                        $this->propData['avg_rank_old_psol']) ?>
-            </li>
-            <li>
-                <?php echo $this->formatItemCounters('Ср. <acronym title="Боевые очки">БО</acronym>',
-                        $this->propData['avg_bo'],
-                        $this->propData['avg_bo_voran'],
-                        $this->propData['avg_bo_liens'],
-                        $this->propData['avg_bo_psol']) ?>
-            </li>
+			<li>
+				<?php echo $this->formatItemCounters('Ср. рейтинг (стар.)',
+						$this->propData['avg_rank_old'],
+						$this->propData['avg_rank_old_voran'],
+						$this->propData['avg_rank_old_liens'],
+						$this->propData['avg_rank_old_psol']) ?>
+			</li>
+			<li>
+				<?php echo $this->formatItemCounters('Ср. <acronym title="Боевые очки">БО</acronym>',
+						$this->propData['avg_bo'],
+						$this->propData['avg_bo_voran'],
+						$this->propData['avg_bo_liens'],
+						$this->propData['avg_bo_psol']) ?>
+			</li>
 
-            <li>
-                <?php echo $this->formatItemCounters('Ср. <acronym title="Новый рейтинг активности">НРА</acronym>',
-                            $this->propData['avg_nra'],
-                            $this->propData['avg_nra_voran'],
-                            $this->propData['avg_nra_liens'],
-                            $this->propData['avg_nra_psol'],
-                            false); ?>
-            </li>
-            <li>
-                <?php echo $this->formatItemCounters('Ср. <acronym title="Рейтинг активности">РА</acronym>',
-                            $this->propData['avg_ra'],
-                            $this->propData['avg_ra_voran'],
-                            $this->propData['avg_ra_liens'],
-                            $this->propData['avg_ra_psol'],
-                            false); ?>
-            </li>
-            <li>
-                <?php echo $this->formatItemCounters('Ср. уровень',
-                            $this->propData['avg_level'],
-                            $this->propData['avg_level_voran'],
-                            $this->propData['avg_level_liens'],
-                            $this->propData['avg_level_psol']) ?>
-            </li>
+			<li>
+				<?php echo $this->formatItemCounters('Ср. <acronym title="Новый рейтинг активности">НРА</acronym>',
+							$this->propData['avg_nra'],
+							$this->propData['avg_nra_voran'],
+							$this->propData['avg_nra_liens'],
+							$this->propData['avg_nra_psol'],
+							false); ?>
+			</li>
+			<li>
+				<?php echo $this->formatItemCounters('Ср. <acronym title="Рейтинг активности">РА</acronym>',
+							$this->propData['avg_ra'],
+							$this->propData['avg_ra_voran'],
+							$this->propData['avg_ra_liens'],
+							$this->propData['avg_ra_psol'],
+							false); ?>
+			</li>
+			<li>
+				<?php echo $this->formatItemCounters('Ср. уровень',
+							$this->propData['avg_level'],
+							$this->propData['avg_level_voran'],
+							$this->propData['avg_level_liens'],
+							$this->propData['avg_level_psol']) ?>
+			</li>
 
-            <li>
-                <?php echo $this->formatItemCounters('Ср. рейтинг (нов.)', $this->propData['avg_rank_new']) ?>
-            </li>
-            <li>
-                <?php echo $this->formatItemCounters('Ср. археология', $this->propData['avg_arch']) ?>
-            </li>
-            <li>
-                <?php echo $this->formatItemCounters('Ср. строительство', $this->propData['avg_build']) ?>
-            </li>
-            <li>
-                <?php echo $this->formatItemCounters('Ср. наука', $this->propData['avg_scien']) ?>
-            </li>
-        </ul>
-    <?php endif; ?>
+			<li>
+				<?php echo $this->formatItemCounters('Ср. рейтинг (нов.)', $this->propData['avg_rank_new']) ?>
+			</li>
+			<li>
+				<?php echo $this->formatItemCounters('Ср. археология', $this->propData['avg_arch']) ?>
+			</li>
+			<li>
+				<?php echo $this->formatItemCounters('Ср. строительство', $this->propData['avg_build']) ?>
+			</li>
+			<li>
+				<?php echo $this->formatItemCounters('Ср. наука', $this->propData['avg_scien']) ?>
+			</li>
+		</ul>
+	<?php endif; ?>
 </div>
 
 
-<div>
-	<div class=" inline-block text-right text-top mrg-top-75" style="width:30%;">
-	<ul class="indicators inline-block text-left js-graph-menu-alliance" selectclass="color-liens bold no-underline">
-			<li>
-					<strong class="bold">Количество:</strong><a href="#count_player">игроков</a>/<a href="#count_colony">колоний</a>
+<div class=" mrg-left-269 clearfix">
+	<ul class="indicators justify-blocks inline-li aliance-grafic-menu js-graph-menu-alliance" selectclass="color-liens bold no-underline">
+		<li>
+					<strong class="bold">Количество:</strong>
+					<br><a href="#count_player">игроков</a><br><a href="#count_colony">колоний</a>
 			</li>
 			<li>
-					<strong class="bold">Рейтинг (стар.):</strong><a href="#rank_old_sum">общий</a>/<a href="#rank_old_avg">средний</a>
+					<strong class="bold">Рейтинг (стар.):</strong>
+					<br><a href="#rank_old_sum">общий</a><br><a href="#rank_old_avg">средний</a>
 			</li>
 			<li>
-					<strong class="bold"><acronym title="Боевые очки">БО</acronym>:</strong><a href="#bo_sum">общий</a>/<a href="#bo_avg">средний</a>
+					<strong class="bold"><acronym title="Боевые очки">БО</acronym>:</strong>
+					<br><a href="#bo_sum">общий</a><br><a href="#bo_avg">средний</a>
 			</li>
 			<li>
-					<strong class="bold"><acronym title="Новый рейтинг активности">НРА</acronym>:</strong><a href="#nra_sum">общий</a>/<a href="#nra_avg">средний</a>
+					<strong class="bold"><acronym title="Новый рейтинг активности">НРА</acronym>:</strong>
+					<br><a href="#nra_sum">общий</a><br><a href="#nra_avg">средний</a>
 			</li>
 			<li>
-					<strong class="bold"><acronym title="Рейтинг активности">РА</acronym>:</strong><a href="#ra_sum">общий</a>/<a href="#ra_avg">средний</a>
+					<strong class="bold"><acronym title="Рейтинг активности">РА</acronym>:</strong>
+					<br><a href="#ra_sum">общий</a><br><a href="#ra_avg">средний</a>
 			</li>
 			<li>
 					<a href="#level_avg">Средний уровень</a>
 			</li>
 			<li>
-					<strong class="bold">Рейтинг (нов.):</strong><a href="#rank_new_sum">общий</a>/<a href="#rank_new_avg">средний</a>
+					<strong class="bold">Рейтинг (нов.):</strong>
+					<br><a href="#rank_new_sum">общий</a><br><a href="#rank_new_avg">средний</a>
 			</li>
 			<li>
-					<strong class="bold">Археология:</strong><a href="#arch_sum">общий</a>/<a href="#arch_avg">средний</a>
+					<strong class="bold">Археология:</strong>
+					<br><a href="#arch_sum">общий</a><br><a href="#arch_avg">средний</a>
 			</li>
 			<li>
-					<strong class="bold">Cтроительство:</strong><a href="#build_sum">общий</a>/<a href="#build_avg">средний</a>
+					<strong class="bold">Cтроительство:</strong>
+					<br><a href="#build_sum">общий</a><br><a href="#build_avg">средний</a>
 			</li>
 			<li>
-					<strong class="bold">Наука:</strong><a href="#scien_sum">общий</a>/<a href="#scien_avg">средний</a>
+					<strong class="bold">Наука:</strong>
+					<br><a href="#scien_sum">общий</a><br><a href="#scien_avg">средний</a>
 			</li>
 	</ul>
-	</div>
-	<div id="graph-container" class="inline-block text-center" style="width:68%;" iditem="<?php echo $this->idAlliance; ?>">
+	<div id="graph-container" class=" mrg-top-13 text-center text-top " iditem="<?php echo $this->idAlliance; ?>">
 	</div>
 </div>
 
 
-<div class=" mrg-right-21 mrg-left-269" >
-    <table class="float-left mrg-right-42 tr-outline">
-        <caption class="text-left mrg-bottom-8">
-            <strong class="bold">Статус&nbsp;ворот</strong>
-        </caption>
-    <?php if( count($this->transGate) > 0 ): ?>
-        <?php foreach($this->transGate as $value): ?>
-            <tr>
-                <td class="pad-left-8 pad-right-8">
-                    <?php echo $value['date'] ?>
-                </td>
-                <td class="pad-right-8">
-                   <a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>">
-                   <b><?php echo $value['nik'] ?></b>
-                   </a>
-                </td>
-                <td class="pad-right-8">
-                    <?php echo $this->GateIcon($value['old_gate']) .' &rarr; '. $this->GateIcon($value['new_gate']); ?>
-                </td>
-            </tr>
-        <?php endforeach; ?>
-    <?php else: ?>
-            <tr>
-                <td colspan="3">Нет изменений</td>
-            </tr>
-    <?php endif; ?>
-    </table>
-    <div class="inline-block">
-        <table class="tr-outline">
-            <caption class="text-left mrg-bottom-8">
-                <strong class="bold">Последние&nbsp;переходы</strong>
-            </caption>
-        <?php if( count($this->transAlliance) > 0 ): ?>
-            <?php foreach($this->transAlliance as $value): ?>
-                <tr>
-                    <td class="pad-left-8 pad-right-8">
-                        <?php echo $value['date'] ?>
-                    </td>
-                    <td class="pad-right-8">
-                        <a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $value['id'] ), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>
-                    </td>
-                    <td class="text-right">
-                        <?php echo $this->allianceLink($this->idWorld, $value['old_id'], $value['old_name']); ?>
-                    </td>
-                    <td class="text-center pad-lr-3">
-                        &rarr;
-                    </td>
-                    <td class="text-left">
-                        <?php echo $this->allianceLink($this->idWorld, $value['new_id'], $value['new_name']); ?>
-                    </td>
+<div class="mrg-left-21 mrg-top-13 text-center">
+	<table class=" inline-block mrg-right-42 tr-outline text-top mrg-bottom-13">
+		<caption class="text-left mrg-bottom-8">
+			<strong class="bold">Статус&nbsp;ворот</strong>
+		</caption>
+	<?php if( count($this->transGate) > 0 ): ?>
+		<?php foreach($this->transGate as $value): ?>
+			<tr>
+				<td class="pad-left-8 pad-right-8">
+					<?php echo $value['date'] ?>
+				</td>
+				<td class="pad-right-8">
+					<a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>">
+					<b><?php echo $value['nik'] ?></b>
+					</a>
+				</td>
+				<td class="pad-right-8">
+					<?php echo $this->GateIcon($value['old_gate']) .' &rarr; '. $this->GateIcon($value['new_gate']); ?>
+				</td>
+			</tr>
+		<?php endforeach; ?>
+	<?php else: ?>
+			<tr>
+				<td colspan="3">Нет изменений</td>
+			</tr>
+	<?php endif; ?>
+	</table>
 
-                </tr>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <tr>
-                <td colspan="5">Нет изменений</td>
-            </tr>
-        <?php endif; ?>
-        </table>
+	<table class="inline-block mrg-right-42 tr-outline text-top mrg-bottom-13">
+		<caption class="text-left mrg-bottom-8">
+			<strong class="bold">Изменения&nbsp;лиги</strong>
+		</caption>
+	<?php if( count($this->transLigue) > 0 ): ?>
+		<?php foreach($this->transLigue as $value): ?>
+			<tr>
+				<td class="pad-left-8 pad-right-8">
+					<?php echo $value['date'] ?>
+				</td>
+				<td class="pad-right-8">
+					<a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>">
+						<b><?php echo $value['nik'] ?></b>
+					</a>
+				</td>
+				<td class="pad-right-8">
+					<?php echo "{$value['old_ligue']} &rarr; {$value['new_ligue']}"; ?>
+				</td>
+			</tr>
+		<?php endforeach; ?>
+	<?php else: ?>
+			<tr>
+				<td colspan="3">Нет изменений</td>
+			</tr>
+	<?php endif; ?>
+	</table>
 
-        <table class=" mrg-top-21 tr-outline">
-             <caption class="text-left  mrg-bottom-8">
-                <strong class="bold">Последние&nbsp;переезды</strong>
-            </caption>
-        <?php if( count($this->transSots) > 0 ): ?>
-            <?php foreach($this->transSots as $value): ?>
-                <tr>
-                    <td class="pad-left-8 pad-right-8">
-                        <?php echo $value['date'] ?>
-                    </td>
-                    <td class="pad-right-8">
-                        <a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $value['id'] ), 'playerStat', true) ?>">
-                            <b><?php echo $value['nik'] ?></b>
-                        </a>
-                    </td>
-                    <td class="text-right">
-                        <?php echo ( is_null($value['old_adr']) ) ? "<span class='color-green'>new</span>" : $value['old_adr']; ?>
-                    </td>
-                    <td class="text-center pad-lr-3">
-                        &rarr;
-                    </td>
-                    <td class="text-left">
-                        <?php echo ( is_null($value['new_adr']) ) ? "<span class='color-red'>del</span>" : $value['new_adr']; ?>
-                    </td>
-                </tr>
-            <?php endforeach; ?>
-        <?php else: ?>
-            <tr>
-                <td colspan="5">Нет изменений</td>
-            </tr>
-        <?php endif; ?>
-        </table>
-    </div>
+	<table class="inline-block mrg-right-42 tr-outline text-top mrg-bottom-13">
+		<caption class="text-left mrg-bottom-8">
+			<strong class="bold">Последние&nbsp;переходы</strong>
+		</caption>
+	<?php if( count($this->transAlliance) > 0 ): ?>
+		<?php foreach($this->transAlliance as $value): ?>
+			<tr>
+				<td class="pad-left-8 pad-right-8">
+					<?php echo $value['date'] ?>
+				</td>
+				<td class="pad-right-8">
+					<a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $value['id'] ), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>
+				</td>
+				<td class="text-right">
+					<?php echo $this->allianceLink($this->idWorld, $value['old_id'], $value['old_name']); ?>
+				</td>
+				<td class="text-center pad-lr-3">
+					&rarr;
+				</td>
+				<td class="text-left">
+					<?php echo $this->allianceLink($this->idWorld, $value['new_id'], $value['new_name']); ?>
+				</td>
+
+			</tr>
+		<?php endforeach; ?>
+	<?php else: ?>
+		<tr>
+			<td colspan="5">Нет изменений</td>
+		</tr>
+	<?php endif; ?>
+	</table>
+
+	<table class="inline-block mrg-right-42 tr-outline text-top mrg-bottom-13">
+			<caption class="text-left  mrg-bottom-8">
+			<strong class="bold">Последние&nbsp;переезды</strong>
+		</caption>
+	<?php if( count($this->transSots) > 0 ): ?>
+		<?php foreach($this->transSots as $value): ?>
+			<tr>
+				<td class="pad-left-8 pad-right-8">
+					<?php echo $value['date'] ?>
+				</td>
+				<td class="pad-right-8">
+					<a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $value['id'] ), 'playerStat', true) ?>">
+						<b><?php echo $value['nik'] ?></b>
+					</a>
+				</td>
+				<td class="text-right">
+					<?php echo ( is_null($value['old_adr']) ) ? "<span class='color-green'>new</span>" : $value['old_adr']; ?>
+				</td>
+				<td class="text-center pad-lr-3">
+					&rarr;
+				</td>
+				<td class="text-left">
+					<?php echo ( is_null($value['new_adr']) ) ? "<span class='color-red'>del</span>" : $value['new_adr']; ?>
+				</td>
+			</tr>
+		<?php endforeach; ?>
+	<?php else: ?>
+		<tr>
+			<td colspan="5">Нет изменений</td>
+		</tr>
+	<?php endif; ?>
+	</table>
 </div>
 

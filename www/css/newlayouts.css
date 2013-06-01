@@ -323,6 +323,10 @@
 		.marked-ul li{
 			margin-bottom: 2px;
 		}
+		.inline-li li{
+			display: inline-block;
+		}
+
 	/*Links
 	----------------------------------------*/
 		.main-a{
@@ -543,6 +547,7 @@
 		.mrg-left-271{
 		margin-left: 271px;
 		}
+
 		.pad-left-3{
 					padding-left: 3px;
 				}
@@ -1225,6 +1230,17 @@
 		}
 		.pic-go-to-faq{
 			background: url('/img/sprite_addon_page.png') -140px 0px no-repeat;
+		}
+
+		/* 5.11 ALIANCE PAGE
+	--------------------------------------------------*/
+		.aliance-grafic-menu li{
+			text-align: center;
+			margin-right: 10px;
+			vertical-align: middle;
+		}
+		.aliance-grafic-menu:after{
+			width: 20%;
 		}
 /*End 5. PAGES*/
 
