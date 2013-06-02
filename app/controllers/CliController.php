@@ -243,7 +243,87 @@ class CliController extends Zend_Controller_Action
 	{
 		$this->_type = 'gate';
 
+		$prop = $this->getFrontController()->getParam('bootstrap')->getOption('cronupd');
+
+		//пробуем получить мир для обновения
+		$worldProp = $this->_helper->modelLoad('WorldsGameParse')->getWorldForParse($prop['gate']);
+		if( is_null($worldProp) )
+		{
+			$this->_log->add('Миров для обновления не найдено');
+			$this->_log->setResultNone();
+			exit();
+		}
+
+		//проверяем локи
+		$lockProp = $this->getFrontController()->getParam('bootstrap')->getOption('lock_boost');
+		$curThreadCount = $this->_helper->modelLoad('CronLock')->getCurrentCounter('gate');
+		$this->_log->add(sprintf('Нашли %d текущих скриптов (%d лимит)', $curThreadCount, $lockProp['gate']));
+		if( $curThreadCount >= $lockProp['gate'] )
+		{
+			$this->_log->add('Превышен лимит локов');
+			$this->_log->setResultError();
+			exit();
+		}
+		$this->_helper->modelLoad('CronLock')->incCounter('gate');
+
+		//обновляем время проверки
+		//$this->_helper->modelLoad('WorldsGameParse')->updCheck($worldProp['id_world']); @TODO uncomment
+
+		//различные данные по миру
+		$worldData = $this->_helper->modelLoad('Worlds')->getData($worldProp['id_world']);
+		$this->_log->add(sprintf('Мир <b>%s</b>', $worldData['name']));
+
+		//взяли комплексы по кольцам для обновления
+		$compls = $this->_helper->modelLoad('Players')->getUsedCompls($worldProp['id_world']);
+		$this->_log->add(sprintf('нашли %d сочетаний компл-кольцо', count($compls)));
 		
+		$countUpd = 0; // количество обновлённых игроков
+
+		$db = $this->getInvokeArg('bootstrap')->getPluginResource('db')->getDbAdapter();
+
+		//логинимся
+
+		//перебираем комплы
+			//грузим каждый компл
+
+			//парсим ответ
+
+			//обновляем игроков в транзакции
+
+			//если ошибка про логин - релогинимся
+
+
+		if($countUpd > 0)
+		{
+			$this->getFrontController()
+					->getParam('bootstrap')
+					->getResource('cachemanager')
+					->getCache('up')
+					->clean('matchingTag', array('gate'));
+		}
+
+		$this->_helper->modelLoad('CronLock')->decCounter('gate');
+		//$this->_helper->modelLoad('WorldsGameParse')->updCheck($worldProp['id_world']); @TODO uncomment
+
+		/*
+		$this->_log->add(sprintf('Страниц %d; Получено %d; Распарсено %d; Обновлено %d.', $i, $countFind, $countParse, $countUpd));
+
+		$errors = $this->_dshelpMap->getErrors();
+		if(count($errors) > 0)
+		{
+			$this->_log->add('Ошибки cURL');
+			$this->_log->add($errors);
+			$flagWarn = true;
+		}
+
+
+		if($flagFail)
+			$this->_log->setResultError();
+		elseif($flagWarn)
+			$this->_log->setResultWarn();
+		else
+			$this->_log->setResultSuccess();*/
+
 	}
 
 
