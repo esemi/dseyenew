@@ -271,17 +271,41 @@ class CliController extends Zend_Controller_Action
 
 		//различные данные по миру
 		$worldData = $this->_helper->modelLoad('Worlds')->getData($worldProp['id_world']);
+		$versionData = $this->_helper->modelLoad('GameVersions')->getData($worldData['id_version']);
 		$this->_log->add(sprintf('Мир <b>%s</b>', $worldData['name']));
 
 		//взяли комплексы по кольцам для обновления
 		$compls = $this->_helper->modelLoad('Players')->getUsedCompls($worldProp['id_world']);
 		$this->_log->add(sprintf('нашли %d сочетаний компл-кольцо', count($compls)));
-		
+
 		$countUpd = 0; // количество обновлённых игроков
 
 		$db = $this->getInvokeArg('bootstrap')->getPluginResource('db')->getDbAdapter();
 
+		$gameClient = new App_Model_GameClient(); //@TODO add logger to client
+		$gameClient->setGameUrl($versionData['game_url']);
+
 		//логинимся
+		$this->_log->add('логинимся');
+		$res = $gameClient->login($worldProp['login'], $worldProp['password']);
+		if( $res !== true )
+		{
+			$this->_log->add('не смогли залогиниться');
+			$this->_log->add($res);
+			$this->_log->setResultError();
+			exit();
+		}
+
+		//чекинимся в мире
+		$this->_log->add('чекинимся');
+		$res = $gameClient->checkin('33758_7_2'); //@TODO release
+		if( $res !== true )
+		{
+			$this->_log->add('не смогли зачекиниться в мире');
+			$this->_log->add($res);
+			$this->_log->setResultError();
+			exit();
+		}
 
 		//перебираем комплы
 			//грузим каждый компл
