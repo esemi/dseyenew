@@ -338,7 +338,7 @@
 				text-decoration: underline;
 			}
 		.no-underline, .hover-no-underline:hover, .hover-no-underline:active{
-				text-decoration: none;
+				text-decoration: none !important;
 			}
 		.pseudo{
 			border-bottom:1px dashed #6e0022;
@@ -1239,8 +1239,17 @@
 			margin-right: 10px;
 			vertical-align: middle;
 		}
-		.aliance-grafic-menu:after{
-			width: 20%;
+
+		.aliance-grafic-menu a{
+			display: block;
+			margin-top: 3px;
+			text-decoration: none;
+		}
+		.aliance-grafic-menu a:hover{
+			text-decoration: underline;
+		}
+		.aliance-grafic-menu div{
+			margin-top: 5px;
 		}
 /*End 5. PAGES*/
 
