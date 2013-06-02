@@ -323,6 +323,10 @@
 		.marked-ul li{
 			margin-bottom: 2px;
 		}
+		.inline-li li{
+			display: inline-block;
+		}
+
 	/*Links
 	----------------------------------------*/
 		.main-a{
@@ -334,7 +338,7 @@
 				text-decoration: underline;
 			}
 		.no-underline, .hover-no-underline:hover, .hover-no-underline:active{
-				text-decoration: none;
+				text-decoration: none !important;
 			}
 		.pseudo{
 			border-bottom:1px dashed #6e0022;
@@ -547,6 +551,7 @@
 		.mrg-left-271{
 		margin-left: 271px;
 		}
+
 		.pad-left-3{
 					padding-left: 3px;
 				}
@@ -1234,6 +1239,26 @@
 		}
 		.pic-go-to-faq{
 			background: url('/img/sprite_2.png') -140px -224px no-repeat;
+		}
+
+		/* 5.11 ALIANCE PAGE
+	--------------------------------------------------*/
+		.aliance-grafic-menu li{
+			text-align: center;
+			margin-right: 10px;
+			vertical-align: middle;
+		}
+
+		.aliance-grafic-menu a{
+			display: block;
+			margin-top: 3px;
+			text-decoration: none;
+		}
+		.aliance-grafic-menu a:hover{
+			text-decoration: underline;
+		}
+		.aliance-grafic-menu div{
+			margin-top: 5px;
 		}
 /*End 5. PAGES*/
 

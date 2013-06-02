@@ -191,10 +191,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 							'count' => '^(10|20|50)$',
 							'sort' => '^(nik|nik_r|colony|colony_r|rank_old|rank_old_r|rank_new|rank_new_r|delta_rank|delta_rank_r|bo|bo_r|delta_bo|delta_bo_r|ra|ra_r|nra|nra_r|level|level_r|liga|liga_r|arch|arch_r|build|build_r|scien|scien_r)$'
 							)));
-		$router->addRoute('allianceStat',
-				new Zend_Controller_Router_Route('/world/:idW/alliance/:idA/stat.html',
-						array( 'controller' => 'alliance', 'action' => 'stat'),
-						array( 'idW' => '\d+', 'idA' => '\d+')));
 
 
 		//player

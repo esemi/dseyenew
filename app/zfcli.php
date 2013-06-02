@@ -28,7 +28,7 @@ try
 	$opts = new Zend_Console_Getopt(
 		array(
 			'help|h' => 'Displays usage information.',
-			'action|a=s' => 'onlinestat | dshelpra | oldranks | newranks | csv | scavenger | up | day | nra',
+			'action|a=s' => 'onlinestat | dshelpra | oldranks | newranks | csv | scavenger | up | day | nra | gate',
 		)
 	);
 	$opts->parse();
@@ -62,6 +62,8 @@ switch( $opts->a )
 	case 'newranks':
 	//обновление НРА
 	case 'nra':
+	//обновление статуса ворот
+	case 'gate':
 
 		$request = new Zend_Controller_Request_Simple($opts->a,'cli');
 	break;

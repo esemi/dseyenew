@@ -1,7 +1,7 @@
 <?php
 
 /*
- * переезды сот
+ * переезды сот (виртуальная таблица над двумя табличками - переездов колоний и домашек)
  */
 class App_Model_DbTable_PlayersTransSots extends App_Model_Abstract_Trans
 {
@@ -158,6 +158,6 @@ class App_Model_DbTable_PlayersTransSots extends App_Model_Abstract_Trans
 		return $data;
 	}
 
-	
+
 
 }

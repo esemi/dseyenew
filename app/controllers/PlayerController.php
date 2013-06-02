@@ -52,9 +52,8 @@ class PlayerController extends Zend_Controller_Action
 		$this->view->neighbors->dom = $this->_helper->modelLoad('Players')->getNeighborsDom( $this->idW, $this->idP, $info['compl'], $info['ring'] );
 		$this->view->neighbors->mels = $this->_helper->modelLoad('Players')->getNeighborsMels( $this->idW, $this->idP, $info['colony'] );
 
-		$this->view->transAlliance = $this->_helper->modelLoad('PlayersTransAlliance')->getTransByPlayer($this->idP, 5);
-		$this->view->transGate = $this->_helper->modelLoad('PlayersTransGate')->getTransByPlayer($this->idP, 10);
-		$this->view->transSots = $this->_helper->modelLoad('PlayersTransSots')->getTransByPlayer($this->idP, 5 );
+		$this->view->transSots = $this->_helper->modelLoad('PlayersTransSots')->getTransByPlayer($this->idP, 20);
+		$this->view->transOthers = $this->_helper->modelLoad('PlayersTransOthers')->getTransByPlayer($this->idP, 20);
 
 		$this->view->title = "Игрок {$info['nik']}";
 		$this->view->keywords = "{$info['nik']}, Игрок, {$this->view->nameWorld}";

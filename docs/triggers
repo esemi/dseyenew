@@ -2,6 +2,10 @@ DROP TRIGGER IF EXISTS `players_increment_stat`//
 CREATE TRIGGER `players_increment_stat` AFTER UPDATE ON `players`
  FOR EACH ROW BEGIN
 
+	IF OLD.`liga` != NEW.`liga`
+		THEN INSERT DELAYED INTO players_trans_ligue (`id_player`, `old_ligue`, `new_ligue`, `date`) VALUES (OLD.id, OLD.`liga`, NEW.`liga`, now() );
+	END IF;
+
 	IF OLD.`gate` != NEW.`gate`
 		THEN INSERT DELAYED INTO players_trans_gate (`id_player`, `old_gate`, `new_gate`, `date`) VALUES (OLD.id, OLD.`gate`, NEW.`gate`,  now() );
 	END IF;
