@@ -5,8 +5,10 @@
  */
 class App_Model_DbTable_WorldsGameParse extends Mylib_DbTable_Cached
 {
-	protected $_name = 'worlds_game_parse';
-	protected $_primary = 'id_world';
+	protected
+			$_name = 'worlds_game_parse',
+			$_primary = 'id_world',
+			$_cacheName = 'default';
 
 	/*
 	 * мир для обновления
@@ -29,6 +31,4 @@ class App_Model_DbTable_WorldsGameParse extends Mylib_DbTable_Cached
 					$this->_db->quoteInto('id_world = ?', $idW, Zend_Db::INT_TYPE)
 					);
 	}
-
-
 }

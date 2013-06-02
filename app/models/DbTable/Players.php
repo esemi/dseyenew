@@ -26,6 +26,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 		'findByDomName' => array('up'),
 		'findByAddress' => array('up'),
 		'fastSearch' => array('up'),
+		'getUsedCompls' => array('up'),
 	);
 
 	/*
@@ -476,6 +477,22 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 		return $this->fetchAll($select)->toArray();
 	}
 
+	/*
+	 * получение инфы по заселённым комплексам (все кольца кроме мельса)
+	 */
+	protected function notcached_getUsedCompls( $idW )
+	{
+		$select = $this->select()
+				->setIntegrityCheck(false)
+				->from($this, array( 'ring', 'compl' ))
+				->where('id_world = ?', $idW, Zend_Db::INT_TYPE)
+				->where("status = 'active'")
+				->group('ring')
+				->group('compl');
+		$out = $this->fetchAll($select)->toArray();
+
+		return $out;
+	}
 
 	/*
 	 * получение инфы по одному игроку
