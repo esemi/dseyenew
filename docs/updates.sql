@@ -71,6 +71,7 @@ UPDATE `dseye_new`.`game_versions` SET `forum_search_pattern` = 'http://alphafor
 UPDATE `dseye_new`.`game_versions` SET `forum_search_pattern` = 'http://alphaforum.destinysphere.ru/search.php?terms=all&author={-author-}&sc=1&sf=all&sr=posts&sk=t&sd=d&st=0&ch=300' WHERE `game_versions`.`id` =3;
 ALTER TABLE `cron_logs` ADD INDEX ( `date` );
 
+<<<<<<< Updated upstream
 DROP TRIGGER IF EXISTS `players_delts`;
 CREATE TABLE IF NOT EXISTS `players_trans_ligue` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
@@ -84,3 +85,16 @@ CREATE TABLE IF NOT EXISTS `players_trans_ligue` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;
 
 ALTER TABLE `players_trans_ligue` ADD CONSTRAINT `players_trans_ligue_ibfk_1` FOREIGN KEY (`id_player`) REFERENCES `players` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+=======
+ALTER TABLE `game_versions` ADD `game_url` VARCHAR( 100 ) NOT NULL;
+
+CREATE TABLE IF NOT EXISTS `worlds_game_parse` (
+  `id_world` smallint(5) unsigned NOT NULL,
+  `login` varchar(50) NOT NULL,
+  `password` varchar(50) NOT NULL,
+  `date_check` datetime NOT NULL,
+  UNIQUE KEY `id_world` (`id_world`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+ALTER TABLE `worlds_game_parse` ADD CONSTRAINT `worlds_game_parse_ibfk_1` FOREIGN KEY (`id_world`) REFERENCES `worlds` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+>>>>>>> Stashed changes

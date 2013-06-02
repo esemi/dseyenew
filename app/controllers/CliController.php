@@ -236,6 +236,16 @@ class CliController extends Zend_Controller_Action
 	}
 
 
+	/**
+	 * обновление расширенных статусов ворот
+	 */
+	public function gateAction()
+	{
+		$this->_type = 'gate';
+
+		
+	}
+
 
 	/**
 	 * обновление РА игроков одого мира
