@@ -279,11 +279,11 @@ class CliController extends Zend_Controller_Action
 		$this->_log->add(sprintf('нашли %d сочетаний компл-кольцо', count($compls)));
 
 		$countUpd = 0; // количество обновлённых игроков
+		$flagFail = false;
 
 		$db = $this->getInvokeArg('bootstrap')->getPluginResource('db')->getDbAdapter();
 
-		$gameClient = new App_Model_GameClient(); //@TODO add logger to client
-		$gameClient->setGameUrl($versionData['game_url']);
+		$gameClient = new App_Model_GameClient($versionData['game_url'], $this->_log);
 
 		//логинимся
 		$this->_log->add('логинимся');
@@ -292,19 +292,20 @@ class CliController extends Zend_Controller_Action
 		{
 			$this->_log->add('не смогли залогиниться');
 			$this->_log->add($res);
-			$this->_log->setResultError();
-			exit();
+			$flagFail = true;
 		}
 
-		//чекинимся в мире
-		$this->_log->add('чекинимся');
-		$res = $gameClient->checkin('33758_7_2'); //@TODO release
-		if( $res !== true )
+		if( !$flagFail )
 		{
-			$this->_log->add('не смогли зачекиниться в мире');
-			$this->_log->add($res);
-			$this->_log->setResultError();
-			exit();
+			//чекинимся в мире
+			$this->_log->add('чекинимся');
+			$res = $gameClient->checkin('33758_7_2'); //@TODO release
+			if( $res !== true )
+			{
+				$this->_log->add('не смогли зачекиниться в мире');
+				$this->_log->add($res);
+				$flagFail = true;
+			}
 		}
 
 		//перебираем комплы

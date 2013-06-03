@@ -7,6 +7,7 @@ class App_Model_GameClient
 {
 
 	protected
+			$_log,
 			$_timeoutLogin,
 			$_timeoutOther,
 			$_userAgent,
@@ -17,7 +18,7 @@ class App_Model_GameClient
 			$_ck = '';
 
 
-	public function __construct()
+	public function __construct($url, $log)
 	{
 		$this->_userAgent = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOption('botname');
 
@@ -26,6 +27,9 @@ class App_Model_GameClient
 		$this->_timeoutOther = $timeouts['gameClient']['other'];
 
 		$this->_curlInit();
+
+		$this->setGameUrl($url);
+		$this->setLogger($log);
 	}
 
 	public function __destruct()
@@ -36,6 +40,10 @@ class App_Model_GameClient
 	public function setGameUrl($url)
 	{
 		$this->_url = $url;
+	}
+	public function setLogger($log)
+	{
+		$this->_log = $log;
 	}
 
 	public function login($login, $pass)
@@ -76,6 +84,7 @@ class App_Model_GameClient
 			'uiid' => $uiid
 		));
 		$result = curl_exec($this->_curl);
+		var_dump(curl_getinfo($this->_curl));
 		if( $result === false ){
 			return curl_error($this->_curl);
 		}
@@ -95,15 +104,17 @@ class App_Model_GameClient
 		{
 			$this->_ck = $matches[1];
 			$this->_sidix = $matches[2];
+			$this->_log->add($matches);
 			return true;
 		}
+
 		return false;
 	}
 
 	protected function _parseCheckinResponse($headers)
 	{
 		$matches = array();
-		var_dump($headers);
+		$this->_log->add($headers);
 		if( preg_match('/Location:\s\.\.\/ds\/index.php\?ck=([\d\w]{10})&/iu', $headers, $matches) )
 		{
 			var_dump($matches);
@@ -131,6 +142,7 @@ class App_Model_GameClient
 		curl_setopt($this->_curl, CURLOPT_FAILONERROR, true);
 		curl_setopt($this->_curl, CURLOPT_HEADER, true);
 		curl_setopt($this->_curl, CURLOPT_RETURNTRANSFER, true);
+		curl_setopt($this->_curl, CURLOPT_FOLLOWLOCATION, true);
 		curl_setopt($this->_curl, CURLOPT_POST, true);
 		curl_setopt($this->_curl, CURLOPT_USERAGENT, $this->_userAgent);
 		curl_setopt($this->_curl, CURLOPT_COOKIEFILE, $this->_cookieFilename);

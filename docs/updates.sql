@@ -96,3 +96,5 @@ CREATE TABLE IF NOT EXISTS `worlds_game_parse` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 ALTER TABLE `worlds_game_parse` ADD CONSTRAINT `worlds_game_parse_ibfk_1` FOREIGN KEY (`id_world`) REFERENCES `worlds` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `date_check`) VALUES (8, 'dseye_voda', '8185b208378a44ab', '2013-02-04 20:42:57');
