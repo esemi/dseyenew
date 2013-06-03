@@ -30,7 +30,7 @@ class App_Model_Cronlog
 
 	public function add($mes, $addStat = false)
 	{
-		if(is_array($mes) || is_object($mes))
+		if(!is_string($mes))
 			$mes = print_r($mes, true);
 
 		fwrite( $this->_log,  date('H:i:s') . " - {$mes}<br>");
