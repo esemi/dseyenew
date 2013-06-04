@@ -243,6 +243,7 @@ class CliController extends Zend_Controller_Action
 		$this->_type = 'gate';
 
 		$prop = $this->getFrontController()->getParam('bootstrap')->getOption('cronupd');
+		$clientProp = $this->getFrontController()->getParam('bootstrap')->getOption('game_client');
 
 		//пробуем получить мир для обновения
 		$worldProp = $this->_helper->modelLoad('WorldsGameParse')->getWorldForParse($prop['gate']);
@@ -275,12 +276,11 @@ class CliController extends Zend_Controller_Action
 
 		//взяли комплексы по кольцам для обновления
 		$compls = $this->_helper->modelLoad('Players')->getUsedCompls($worldProp['id_world']);
-		shuffle($compls);
+		//shuffle($compls);
 		$this->_log->add(sprintf('нашли %d сочетаний компл-кольцо', count($compls)));
 
 		$countUpdCompls = 0; // количество обработанных комплов
 		$countUpd = 0; // количество обновлённых игроков
-		$countFail = 0; // количество фэйлов при получении данных о компле
 		$countWarn = 0; // количество варнингов (не смогли распарсить соту)
 		$flagFail = false;
 		$flagWarn = false;
@@ -296,22 +296,42 @@ class CliController extends Zend_Controller_Action
 			$this->_log->add('не смогли войти в мир');
 			$flagFail = true;
 		}else{
-			$loginTryCount = 0; //количество произведённых попыток логина
-			foreach($compls as $compl)
+			$loginTryLimit = $clientProp['relogin_try_limit'];
+			$currentComplNum = 0;
+			$countCompls = count($compls);
+			while( $currentComplNum < $countCompls )
 			{
+				$compl = $compls[$currentComplNum];
+
 				//грузим компл
 				$this->_log->add(sprintf('грузим компл %d - %d', $compl['ring'], $compl['compl']));
 				$res = $gameClient->viewCompl($compl['ring'], $compl['compl']);
 				if( $res !== true )
 				{
-					$this->_log->add('не смогли получить данные о комплексе');
-					$flagFail = true;
-					$countFail++;
+					$this->_log->add('не смогли получить данные о комплексе - релогинимся');
+					$this->_log->add(sprintf('осталось попыток релогина %d', $loginTryLimit));
 
-					//если ошибка про логин - релогинимся //@TODO
-					break;
+					//релогинимся, если есть лимит
+					$connectedFlag = false;
+					while($loginTryLimit > 0 && $connectedFlag === false)
+					{
+						$loginTryLimit--;
+						$connectedFlag = $gameClient->doEnter($worldProp['login'], $worldProp['password'], $worldProp['uiid'], true);
+						$this->_log->add(sprintf('осталось попыток релогина %d', $loginTryLimit));
+					}
+
+					if( $connectedFlag === false )
+					{
+						$flagFail = true;
+						$this->_log->add('релогин не сработал (или не осталось лимитов)');
+						break;
+					}else{
+						$this->_log->add('релогин сработал - повторим последний комплекс');
+						continue;
+					}
 				}
 
+				$currentComplNum++; //чтобы ни случилось переходим к следующему комплу
 				$countUpdCompls++;
 
 				//парсим ответ
@@ -324,7 +344,6 @@ class CliController extends Zend_Controller_Action
 					continue;
 				}
 				$this->_log->add(sprintf('нашли %d сот для обновления', count($res)));
-				$this->_log->add($res);
 
 				//обновляем игроков в транзакции
 				$db->beginTransaction(); //СТАРТ ТРАНЗАКЦИИ
@@ -341,9 +360,9 @@ class CliController extends Zend_Controller_Action
 						$countUpd += $updateRes;
 
 						if($updateRes === 1)
-							$this->_log->add(sprintf('Игрок %s обновлён',$player->nik));
+							$this->_log->add(sprintf('Игрок %s обновлён ("%s", "%s", "%s", "%s")',$player->nik,$player->shield,$player->newbee,$player->ban,$player->premium));
 						else
-							$this->_log->add(sprintf('Игрок %s релевантен',$player->nik));
+							$this->_log->add(sprintf('Игрок %s релевантен ("%s", "%s", "%s", "%s")',$player->nik,$player->shield,$player->newbee,$player->ban,$player->premium));
 					}
 					$db->commit();
 				}catch(Exception $e){
@@ -367,11 +386,10 @@ class CliController extends Zend_Controller_Action
 		$this->_helper->modelLoad('CronLock')->decCounter('gate');
 		//$this->_helper->modelLoad('WorldsGameParse')->updCheck($worldProp['id_world']); @TODO uncomment
 
-		$this->_log->add(sprintf('Комплексов выбрано %d;Комплов загружено %d; Игроков обновлено %d; Не получили данные %d комплов; Ошибок парсинга сот %d.',
+		$this->_log->add(sprintf('Комплексов выбрано %d;Комплов загружено %d; Игроков обновлено %d; Ошибок парсинга сот %d.',
 				count($compls),
 				$countUpdCompls,
 				$countUpd,
-				$countFail,
 				$countWarn));
 
 		if($flagFail)

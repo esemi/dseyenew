@@ -13,7 +13,7 @@ class App_Model_GameClient
 			$_timeoutLogin,
 			$_timeoutOther,
 			$_userAgent,
-			$_curl,
+			$_curl = null,
 			$_url = '',
 			$_cookieFilename,
 			$_sidix = '',
@@ -49,8 +49,11 @@ class App_Model_GameClient
 		$this->_log = $log;
 	}
 
-	public function doEnter($login, $pass, $uiid)
+	public function doEnter($login, $pass, $uiid, $reset=false)
 	{
+		if( $reset === true )
+			$this->_curlReset();
+
 		//логинимся
 		$this->_log->add('логинимся');
 		$res = $this->login($login, $pass);
@@ -255,12 +258,10 @@ class App_Model_GameClient
 	{
 		return "{$this->_url}ds/index_login.php";
 	}
-
 	protected function _getCheckinUrl()
 	{
 		return "{$this->_url}ds/index_start.php";
 	}
-
 	protected function _getViewComplUrl()
 	{
 		return "{$this->_url}ds/useraction.php?SIDIX={$this->_sidix}";
@@ -281,11 +282,19 @@ class App_Model_GameClient
 		curl_setopt($this->_curl, CURLOPT_COOKIEFILE, $this->_cookieFilename);
 		curl_setopt($this->_curl, CURLOPT_COOKIEJAR, $this->_cookieFilename);
 	}
-
 	protected function _curlClose()
 	{
-		curl_close($this->_curl);
-		unlink($this->_cookieFilename);
+		if( !is_null($this->_curl) )
+			curl_close($this->_curl);
+
+		if( file_exists($this->_cookieFilename) )
+			unlink($this->_cookieFilename);
+	}
+	protected function _curlReset()
+	{
+		$this->_curlClose();
+		$this->_curlInit();
 	}
 }
 ?>
+	{
