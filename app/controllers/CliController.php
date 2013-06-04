@@ -296,7 +296,7 @@ class CliController extends Zend_Controller_Action
 		}else{
 			//чекинимся в мире
 			$this->_log->add('чекинимся');
-			$res = $gameClient->checkin('36969_7_2'); //@TODO release parse uiid or save it for every accounts?
+			$res = $gameClient->checkin($worldProp['uiid']); //@TODO release parse uiid or save it for every accounts?
 			if( $res !== true )
 			{
 				$this->_log->add('не смогли зачекиниться в мире');
@@ -332,7 +332,7 @@ class CliController extends Zend_Controller_Action
 					}
 					$this->_log->add(sprintf('нашли %d сот для обновления', count($res)));
 					$this->_log->add($res);
-
+					
 					//обновляем игроков в транзакции //@TODO
 				}
 			}
