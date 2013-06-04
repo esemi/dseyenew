@@ -193,7 +193,7 @@ class App_Model_GameClient
 		if( count($res) !== 6 ){
 			return false;
 		}
-		
+
 		foreach( $res as $compl )
 		{
 			$nik = $compl->getAttribute('uname');

@@ -273,11 +273,13 @@ class CliController extends Zend_Controller_Action
 		$versionData = $this->_helper->modelLoad('GameVersions')->getData($worldData['id_version']);
 		$this->_log->add(sprintf('Мир <b>%s</b>', $worldData['name']));
 
-		//взяли комплексы по кольцам для обновления @TODO ограничиться только открытыми воротами?
+		//взяли комплексы по кольцам для обновления
 		$compls = $this->_helper->modelLoad('Players')->getUsedCompls($worldProp['id_world']);
 		$this->_log->add(sprintf('нашли %d сочетаний компл-кольцо', count($compls)));
 
 		$countUpd = 0; // количество обновлённых игроков
+		$countFail = 0; // количество фэйлов при получении данных о компле
+		$countWarn = 0; // количество варнингов (не смогли распарсить соту)
 		$flagFail = false;
 		$flagWarn = false;
 
@@ -314,8 +316,10 @@ class CliController extends Zend_Controller_Action
 				{
 					$this->_log->add('не смогли получить данные о комплексе');
 					$flagFail = true;
+					$countFail++;
 
 					//если ошибка про логин - релогинимся //@TODO
+					break;
 				}else{
 					//парсим ответ
 					$res = $gameClient->parseComplData();
@@ -323,12 +327,13 @@ class CliController extends Zend_Controller_Action
 					{
 						$this->_log->add('не смогли распарсить ответ');
 						$flagWarn = true;
+						$countWarn++;
 						continue;
 					}
 					$this->_log->add(sprintf('нашли %d сот для обновления', count($res)));
 					$this->_log->add($res);
 
-					//обновляем игроков в транзакции
+					//обновляем игроков в транзакции //@TODO
 				}
 			}
 		}
@@ -345,17 +350,18 @@ class CliController extends Zend_Controller_Action
 		$this->_helper->modelLoad('CronLock')->decCounter('gate');
 		//$this->_helper->modelLoad('WorldsGameParse')->updCheck($worldProp['id_world']); @TODO uncomment
 
-		/*
-		$this->_log->add(sprintf('Страниц %d; Получено %d; Распарсено %d; Обновлено %d.', $i, $countFind, $countParse, $countUpd));
-
+		$this->_log->add(sprintf('Комплексов выбрано %d; Игроков обновлено %d; Не получили данные о %d комплах; Ошибок парсинга сот %d.',
+				count($compls),
+				$countUpd,
+				$countFail,
+				$countWarn));
 
 		if($flagFail)
 			$this->_log->setResultError();
 		elseif($flagWarn)
 			$this->_log->setResultWarn();
 		else
-			$this->_log->setResultSuccess();*/
-
+			$this->_log->setResultSuccess();
 	}
 
 
