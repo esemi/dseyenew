@@ -275,8 +275,10 @@ class CliController extends Zend_Controller_Action
 
 		//взяли комплексы по кольцам для обновления
 		$compls = $this->_helper->modelLoad('Players')->getUsedCompls($worldProp['id_world']);
+		shuffle($compls);
 		$this->_log->add(sprintf('нашли %d сочетаний компл-кольцо', count($compls)));
 
+		$countUpdCompls = 0; // количество обработанных комплов
 		$countUpd = 0; // количество обновлённых игроков
 		$countFail = 0; // количество фэйлов при получении данных о компле
 		$countWarn = 0; // количество варнингов (не смогли распарсить соту)
@@ -287,25 +289,13 @@ class CliController extends Zend_Controller_Action
 		$gameClient = new App_Model_GameClient($versionData['game_url'], $this->_log);
 
 		//логинимся
-		$this->_log->add('логинимся');
-		$res = $gameClient->login($worldProp['login'], $worldProp['password']);
+		$this->_log->add('первичный вход в мир');
+		$res = $gameClient->doEnter($worldProp['login'], $worldProp['password'], $worldProp['uiid']);
 		if( $res !== true )
 		{
-			$this->_log->add('не смогли залогиниться');
+			$this->_log->add('не смогли войти в мир');
 			$flagFail = true;
 		}else{
-			//чекинимся в мире
-			$this->_log->add('чекинимся');
-			$res = $gameClient->checkin($worldProp['uiid']); //@TODO release parse uiid or save it for every accounts?
-			if( $res !== true )
-			{
-				$this->_log->add('не смогли зачекиниться в мире');
-				$flagFail = true;
-			}
-		}
-
-		if( !$flagFail )
-		{
 			$loginTryCount = 0; //количество произведённых попыток логина
 			foreach($compls as $compl)
 			{
@@ -320,20 +310,47 @@ class CliController extends Zend_Controller_Action
 
 					//если ошибка про логин - релогинимся //@TODO
 					break;
-				}else{
-					//парсим ответ
-					$res = $gameClient->parseComplData();
-					if($res === false)
-					{
-						$this->_log->add('не смогли распарсить ответ');
-						$flagWarn = true;
-						$countWarn++;
-						continue;
+				}
+
+				$countUpdCompls++;
+
+				//парсим ответ
+				$res = $gameClient->parseComplData();
+				if($res === false)
+				{
+					$this->_log->add('не смогли распарсить ответ');
+					$flagWarn = true;
+					$countWarn++;
+					continue;
+				}
+				$this->_log->add(sprintf('нашли %d сот для обновления', count($res)));
+				$this->_log->add($res);
+
+				//обновляем игроков в транзакции
+				$db->beginTransaction(); //СТАРТ ТРАНЗАКЦИИ
+				try{
+					foreach($res as $player){
+						$updateRes = $this->_helper->modelLoad('Players')->updateGateStatuses(
+								$worldProp['id_world'],
+								$player->nik,
+								$player->shield,
+								$player->newbee,
+								$player->ban,
+								$player->premium);
+
+						$countUpd += $updateRes;
+
+						if($updateRes === 1)
+							$this->_log->add(sprintf('Игрок %s обновлён',$player->nik));
+						else
+							$this->_log->add(sprintf('Игрок %s релевантен',$player->nik));
 					}
-					$this->_log->add(sprintf('нашли %d сот для обновления', count($res)));
-					$this->_log->add($res);
-					
-					//обновляем игроков в транзакции //@TODO
+					$db->commit();
+				}catch(Exception $e){
+					$db->rollBack();
+					$this->_log->add('<b>Транзакция отменена</b>');
+					$this->_log->add($e->getMessage());
+					$flagFail = true;
 				}
 			}
 		}
@@ -350,8 +367,9 @@ class CliController extends Zend_Controller_Action
 		$this->_helper->modelLoad('CronLock')->decCounter('gate');
 		//$this->_helper->modelLoad('WorldsGameParse')->updCheck($worldProp['id_world']); @TODO uncomment
 
-		$this->_log->add(sprintf('Комплексов выбрано %d; Игроков обновлено %d; Не получили данные о %d комплах; Ошибок парсинга сот %d.',
+		$this->_log->add(sprintf('Комплексов выбрано %d;Комплов загружено %d; Игроков обновлено %d; Не получили данные %d комплов; Ошибок парсинга сот %d.',
 				count($compls),
+				$countUpdCompls,
 				$countUpd,
 				$countFail,
 				$countWarn));
