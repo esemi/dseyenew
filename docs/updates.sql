@@ -98,3 +98,12 @@ CREATE TABLE IF NOT EXISTS `worlds_game_parse` (
 ALTER TABLE `worlds_game_parse` ADD CONSTRAINT `worlds_game_parse_ibfk_1` FOREIGN KEY (`id_world`) REFERENCES `worlds` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `date_check`) VALUES (8, 'dseye_voda', '8185b208378a44ab', '2013-02-04 20:42:57');
+
+ALTER TABLE `players` ADD `gate_shield` TINYINT( 1 ) UNSIGNED NOT NULL COMMENT 'Включен ли щит' AFTER `gate` ,
+ADD `gate_newbee` TINYINT( 1 ) UNSIGNED NOT NULL COMMENT 'Работает ли защита новичка' AFTER `gate_shield` ,
+ADD `gate_ban` TINYINT( 1 ) UNSIGNED NOT NULL COMMENT 'Забанен ли игрок' AFTER `gate_newbee` ,
+ADD `premium` TINYINT( 1 ) UNSIGNED NOT NULL COMMENT 'Куплен премиум' AFTER `gate_ban`;
+
+ALTER TABLE `worlds_game_parse` ADD `uiid` VARCHAR( 15 ) NOT NULL AFTER `password`;
+UPDATE `dseye_new`.`worlds_game_parse` SET `uiid` = '36969_7_2' WHERE `worlds_game_parse`.`id_world` =8;
+
