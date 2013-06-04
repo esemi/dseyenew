@@ -16,8 +16,8 @@
 		<li class="inline-block w-123 mrg-right-8 text-top">
 			<a class="js-link-addon-code block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5" href=""></a>
 			<a class="js-link-addon-code" href="">Скачать</a>
-			<p id ="js-hide-me-show-next" class=" inline-block font-13 finger pseudo">Выбрать вручную</p>
-			<select class="">
+			<p class="js-hide-me inline-block font-13 finger pseudo">Выбрать вручную</p>
+			<select class="js-show-me hide">
 				<?php foreach($this->addonUrls['downloadUrl'] as $name => $url): ?>
 				<option value="<?php echo $url; ?>"><?php echo $name; ?></option>
 				<?php endforeach; ?>
@@ -55,11 +55,18 @@
 
 			DownloadAddonLinkChooser();
 
-			function hideMeShowNext(){
-
+			//скрывашкаотрывашка
+			var elementToHide = document.getElementsByClassName("js-hide-me")[0];
+			var elementToShow = document.getElementsByClassName("js-show-me")[0];
+			elementToHide.onclick = function() {
+				//скрываем elementToHide
+				console.log(elementToHide.className);
+				elementToHide.parentNode.removeChild(elementToHide);
+				//открываем elementToShow
+				elementToShow.classList.remove("hide");
 			}
 
-			hideMeShowNext();
+
 		</script>
 
 
