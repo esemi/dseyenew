@@ -6,6 +6,8 @@
 class App_Model_GameClient
 {
 
+	protected $_RINGS = array(1 => 'RING_TECH', 2 => 'RING_BIO', 3 => 'RING_PSI');
+
 	protected
 			$_log,
 			$_timeoutLogin,
@@ -15,7 +17,8 @@ class App_Model_GameClient
 			$_url = '',
 			$_cookieFilename,
 			$_sidix = '',
-			$_ck = '';
+			$_ck = '',
+			$_lastComplData = '';
 
 
 	public function __construct($url, $log)
@@ -61,12 +64,15 @@ class App_Model_GameClient
 		));
 		$result = curl_exec($this->_curl);
 		if( $result === false ){
-			return curl_error($this->_curl);
+			$this->_log->add(curl_error($this->_curl));
+			return false;
 		}
 
 		$res = $this->_parseLoginResponse($result);
 		if( $res !== true ){
-			return 'Not parsed login response';
+			$this->_log->add('Not parsed login response');
+			$this->_log->add($result);
+			return false;
 		}
 
 		return true;
@@ -84,18 +90,49 @@ class App_Model_GameClient
 			'uiid' => $uiid
 		));
 		$result = curl_exec($this->_curl);
-		var_dump(curl_getinfo($this->_curl));
 		if( $result === false ){
-			return curl_error($this->_curl);
+			$this->_log->add(curl_error($this->_curl));
+			return false;
 		}
 
 		$res = $this->_parseCheckinResponse($result);
 		if( $res !== true ){
-			return 'Not parsed checkin response';
+			$this->_log->add('Not parsed checkin response');
+			$this->_log->add($result);
+			return false;
 		}
 
 		return true;
 	}
+
+	public function viewCompl($ringNum, $complNum)
+	{
+		curl_setopt($this->_curl, CURLOPT_URL, $this->_getViewComplUrl());
+		curl_setopt($this->_curl, CURLOPT_CONNECTTIMEOUT, $this->_timeoutOther);
+		curl_setopt($this->_curl, CURLOPT_TIMEOUT, $this->_timeoutOther);
+		curl_setopt($this->_curl, CURLOPT_POSTFIELDS, array(
+			'ck' => $this->_ck,
+			'onLoad' => '[type Function]',
+			'xmldata' => sprintf('<complexview direction="" ring="%s" complexnum="%d"/>',
+					$this->_RINGS[$ringNum],
+					$complNum)
+		));
+		$result = curl_exec($this->_curl);
+		if( $result === false ){
+			$this->_log->add(curl_error($this->_curl));
+			return false;
+		}
+
+		$res = $this->_parseViewCompl($result);
+		if( $res !== true ){
+			$this->_log->add('Not parsed view compl response');
+			$this->_log->add($result);
+			return false;
+		}
+
+		return true;
+	}
+
 
 	protected function _parseLoginResponse($headers)
 	{
@@ -104,6 +141,7 @@ class App_Model_GameClient
 		{
 			$this->_ck = $matches[1];
 			$this->_sidix = $matches[2];
+			$this->_log->add('login matches');
 			$this->_log->add($matches);
 			return true;
 		}
@@ -114,14 +152,81 @@ class App_Model_GameClient
 	protected function _parseCheckinResponse($headers)
 	{
 		$matches = array();
-		$this->_log->add($headers);
 		if( preg_match('/Location:\s\.\.\/ds\/index.php\?ck=([\d\w]{10})&/iu', $headers, $matches) )
 		{
-			var_dump($matches);
+			$this->_log->add('checkin matches');
+			$this->_log->add($matches);
 			$this->_ck = $matches[1];
 			return true;
 		}
 		return false;
+	}
+
+	protected function _parseViewCompl($content)
+	{
+		$matches = array();
+		$complData = array();
+		if(
+				mb_strpos($content, '<key valid="1"') !== false &&
+				preg_match('/&ck=([\d\w]{10})&loadkey=/iu', $content, $matches) &&
+				preg_match('/<combcomplex.*<\/combcomplex>/iu', $content, $complData)
+		){
+			$this->_log->add('compl matches');
+			$this->_log->add(array($matches, $complData));
+			$this->_ck = $matches[1];
+			$this->_lastComplData = $complData[0];
+
+			return true;
+		}
+		return false;
+	}
+
+	/**
+	 * Определяет следующие статусы:  защита новичка, силовой щит, защита богов, премиум.
+	 * @return array
+	 */
+	public function parseComplData()
+	{
+		$data = array();
+		$dom = new Zend_Dom_Query('<?xml version="1.0" encoding="utf-8"?>' . $this->_lastComplData);
+		$res = $dom->queryXpath('/combcomplex/comb');
+		if( count($res) !== 6 ){
+			return false;
+		}
+		
+		foreach( $res as $compl )
+		{
+			$nik = $compl->getAttribute('uname');
+			if( empty($nik) ){
+				continue;
+			}
+
+			$player = new stdClass();
+			$player->nik = $nik;
+			$player->shield = false;
+			$player->newbee = false;
+			$player->ban = false;
+			$player->premium = false;
+
+			//щит/дом отпуска
+			if( $compl->hasAttribute('freez') &&  $compl->getAttribute('freez') == 1 )
+				$player->shield = true;
+
+			//защита новичка
+			if( $compl->hasAttribute('newbee') &&  $compl->getAttribute('newbee') == 1 )
+				$player->newbee = true;
+
+			//защита богов/бан
+			if( $compl->hasAttribute('cban') &&  $compl->getAttribute('cban') == 1 )
+				$player->ban = true;
+
+			//премиум
+			if( $compl->hasAttribute('premic') &&  $compl->getAttribute('premic') == 1 )
+				$player->premium = true;
+
+			$data[] = $player;
+		}
+		return $data;
 	}
 
 	protected function _getLoginUrl()
@@ -134,6 +239,11 @@ class App_Model_GameClient
 		return "{$this->_url}ds/index_start.php";
 	}
 
+	protected function _getViewComplUrl()
+	{
+		return "{$this->_url}ds/useraction.php?SIDIX={$this->_sidix}";
+	}
+
 	protected function _curlInit()
 	{
 		$this->_cookieFilename = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOption('tmp_folder') . uniqid('cookie') . '.txt';
@@ -142,7 +252,8 @@ class App_Model_GameClient
 		curl_setopt($this->_curl, CURLOPT_FAILONERROR, true);
 		curl_setopt($this->_curl, CURLOPT_HEADER, true);
 		curl_setopt($this->_curl, CURLOPT_RETURNTRANSFER, true);
-		curl_setopt($this->_curl, CURLOPT_FOLLOWLOCATION, true);
+		//curl_setopt($this->_curl, CURLOPT_FOLLOWLOCATION, true);
+		//curl_setopt($this->_curl, CURLOPT_VERBOSE, true);
 		curl_setopt($this->_curl, CURLOPT_POST, true);
 		curl_setopt($this->_curl, CURLOPT_USERAGENT, $this->_userAgent);
 		curl_setopt($this->_curl, CURLOPT_COOKIEFILE, $this->_cookieFilename);
@@ -154,8 +265,5 @@ class App_Model_GameClient
 		curl_close($this->_curl);
 		unlink($this->_cookieFilename);
 	}
-
-
-
 }
 ?>

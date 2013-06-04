@@ -86,6 +86,7 @@ CREATE TABLE IF NOT EXISTS `players_trans_ligue` (
 ALTER TABLE `players_trans_ligue` ADD CONSTRAINT `players_trans_ligue_ibfk_1` FOREIGN KEY (`id_player`) REFERENCES `players` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 ALTER TABLE `game_versions` ADD `game_url` VARCHAR( 100 ) NOT NULL;
+UPDATE `dseye_new`.`game_versions` SET `game_url` = 'http://destinysphere.ru/' WHERE `game_versions`.`id` =1;
 
 CREATE TABLE IF NOT EXISTS `worlds_game_parse` (
   `id_world` smallint(5) unsigned NOT NULL,
@@ -94,7 +95,6 @@ CREATE TABLE IF NOT EXISTS `worlds_game_parse` (
   `date_check` datetime NOT NULL,
   UNIQUE KEY `id_world` (`id_world`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
 ALTER TABLE `worlds_game_parse` ADD CONSTRAINT `worlds_game_parse_ibfk_1` FOREIGN KEY (`id_world`) REFERENCES `worlds` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `date_check`) VALUES (8, 'dseye_voda', '8185b208378a44ab', '2013-02-04 20:42:57');

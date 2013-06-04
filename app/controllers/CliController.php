@@ -235,7 +235,6 @@ class CliController extends Zend_Controller_Action
 		$this->_log->setResultSuccess();
 	}
 
-
 	/**
 	 * обновление расширенных статусов ворот
 	 */
@@ -274,15 +273,15 @@ class CliController extends Zend_Controller_Action
 		$versionData = $this->_helper->modelLoad('GameVersions')->getData($worldData['id_version']);
 		$this->_log->add(sprintf('Мир <b>%s</b>', $worldData['name']));
 
-		//взяли комплексы по кольцам для обновления
+		//взяли комплексы по кольцам для обновления @TODO ограничиться только открытыми воротами?
 		$compls = $this->_helper->modelLoad('Players')->getUsedCompls($worldProp['id_world']);
 		$this->_log->add(sprintf('нашли %d сочетаний компл-кольцо', count($compls)));
 
 		$countUpd = 0; // количество обновлённых игроков
 		$flagFail = false;
+		$flagWarn = false;
 
 		$db = $this->getInvokeArg('bootstrap')->getPluginResource('db')->getDbAdapter();
-
 		$gameClient = new App_Model_GameClient($versionData['game_url'], $this->_log);
 
 		//логинимся
@@ -291,32 +290,48 @@ class CliController extends Zend_Controller_Action
 		if( $res !== true )
 		{
 			$this->_log->add('не смогли залогиниться');
-			$this->_log->add($res);
 			$flagFail = true;
-		}
-
-		if( !$flagFail )
-		{
+		}else{
 			//чекинимся в мире
 			$this->_log->add('чекинимся');
-			$res = $gameClient->checkin('33758_7_2'); //@TODO release
+			$res = $gameClient->checkin('36969_7_2'); //@TODO release parse uiid or save it for every accounts?
 			if( $res !== true )
 			{
 				$this->_log->add('не смогли зачекиниться в мире');
-				$this->_log->add($res);
 				$flagFail = true;
 			}
 		}
 
-		//перебираем комплы
-			//грузим каждый компл
+		if( !$flagFail )
+		{
+			$loginTryCount = 0; //количество произведённых попыток логина
+			foreach($compls as $compl)
+			{
+				//грузим компл
+				$this->_log->add(sprintf('грузим компл %d - %d', $compl['ring'], $compl['compl']));
+				$res = $gameClient->viewCompl($compl['ring'], $compl['compl']);
+				if( $res !== true )
+				{
+					$this->_log->add('не смогли получить данные о комплексе');
+					$flagFail = true;
 
-			//парсим ответ
+					//если ошибка про логин - релогинимся //@TODO
+				}else{
+					//парсим ответ
+					$res = $gameClient->parseComplData();
+					if($res === false)
+					{
+						$this->_log->add('не смогли распарсить ответ');
+						$flagWarn = true;
+						continue;
+					}
+					$this->_log->add(sprintf('нашли %d сот для обновления', count($res)));
+					$this->_log->add($res);
 
-			//обновляем игроков в транзакции
-
-			//если ошибка про логин - релогинимся
-
+					//обновляем игроков в транзакции
+				}
+			}
+		}
 
 		if($countUpd > 0)
 		{
@@ -332,14 +347,6 @@ class CliController extends Zend_Controller_Action
 
 		/*
 		$this->_log->add(sprintf('Страниц %d; Получено %d; Распарсено %d; Обновлено %d.', $i, $countFind, $countParse, $countUpd));
-
-		$errors = $this->_dshelpMap->getErrors();
-		if(count($errors) > 0)
-		{
-			$this->_log->add('Ошибки cURL');
-			$this->_log->add($errors);
-			$flagWarn = true;
-		}
 
 
 		if($flagFail)
