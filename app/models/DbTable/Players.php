@@ -54,6 +54,24 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 				array($this->_db->quoteInto('id = ?', $idP, Zend_Db::INT_TYPE)));
 	}
 
+	/**
+	 * обновить старые рейтинги игроку мира
+	 * gate cli
+	 */
+	public function updateGateStatuses($idW, $nik, $shield, $newbee, $ban, $prem)
+	{
+		return $this->update(
+				array(
+					'gate_shield' => ($shield) ? 1 : 0,
+					'gate_newbee' => ($newbee) ? 1 : 0,
+					'gate_ban' => ($ban) ? 1 : 0,
+					'premium' => ($prem) ? 1 : 0,
+					),
+				array(
+					$this->_db->quoteInto( 'id_world = ?', $idW, Zend_Db::INT_TYPE ),
+					$this->_db->quoteInto( 'nik = ?', $nik ))
+				);
+	}
 
 	/*
 	 * обновить старые рейтинги игроку мира

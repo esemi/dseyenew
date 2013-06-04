@@ -49,6 +49,28 @@ class App_Model_GameClient
 		$this->_log = $log;
 	}
 
+	public function doEnter($login, $pass, $uiid)
+	{
+		//логинимся
+		$this->_log->add('логинимся');
+		$res = $this->login($login, $pass);
+		if( $res !== true )
+		{
+			$this->_log->add('не смогли залогиниться');
+			return false;
+		}
+
+		//чекинимся в мире
+		$this->_log->add('чекинимся');
+		$res = $this->checkin($uiid);
+		if( $res !== true )
+		{
+			$this->_log->add('не смогли зачекиниться в мире');
+			return false;
+		}
+		return true;
+	}
+
 	public function login($login, $pass)
 	{
 		curl_setopt($this->_curl, CURLOPT_URL, $this->_getLoginUrl());
