@@ -18,9 +18,12 @@
 			<a class="js-link-addon-code" href="">Скачать</a>
 			<p class="js-hide-me inline-block font-13 finger pseudo">Выбрать вручную</p>
 			<select class="js-show-me hide">
-				<?php foreach($this->addonUrls['downloadUrl'] as $name => $url): ?>
+			<!--	<?php foreach($this->addonUrls['downloadUrl'] as $name => $url): ?>
 				<option value="<?php echo $url; ?>"><?php echo $name; ?></option>
-				<?php endforeach; ?>
+				<?php endforeach; ?>-->
+				<option value="firefox">Firefox</option>
+				<option value="opera">Opera</option>
+				<option value="chrome">Chrome</option>
 			</select>
 		</li>
 
@@ -40,27 +43,55 @@
 					Firefox = UA.match(FirefoxB),
 					Chrome = UA.match(ChromeB);
 
-					if (Firefox !== null)
-						link="https://github.com/esemi/dseye_firefox_addon"
-					else if (Chrome !== null)
-						link="https://github.com/esemi/dseye_chrome_addon"
-					else if (Opera !== null)
+					if (Firefox !== null){
+						link="https://github.com/esemi/dseye_firefox_addon";
+						document.getElementsByClassName("js-show-me")[0].options[0].defaultSelected = true;
+					}
+					else if (Chrome !== null){
+						link="https://github.com/esemi/dseye_chrome_addon";
+						document.getElementsByClassName("js-show-me")[0].options[2].defaultSelected = true;
+					}
+					else if (Opera !== null){
 						link="https://github.com/esemi/dseye_opera_addon";
+						document.getElementsByClassName("js-show-me")[0].options[1].defaultSelected = true;
+					}
 
-					var tagsForLinks = document.getElementsByClassName("js-link-addon-code");
-					for ( var i in tagsForLinks){
-						tagsForLinks[i].href = link;
+					//добавление адреса ссылки объектам
+					function setLinks(){
+						var tagsForLinks = document.getElementsByClassName("js-link-addon-code");
+
+						for ( var i in tagsForLinks){
+							tagsForLinks[i].href = link;
+						}
+					}
+					setLinks();
+
+					//изменение ссылки по изменению option
+					var selectList = document.getElementsByClassName("js-show-me")[0];
+					selectList.onchange = function(){
+						if (selectList.selectedIndex === 0){
+								link="https://github.com/esemi/dseye_firefox_addon";
+						}
+						else if (selectList.selectedIndex === 1){
+								link="https://github.com/esemi/dseye_opera_addon";
+						}
+						else if (selectList.selectedIndex === 2){
+								link="https://github.com/esemi/dseye_chrome_addon";
+						}
+						setLinks();
 					}
 				}
 
 			DownloadAddonLinkChooser();
+
+
+
 
 			//скрывашкаотрывашка
 			var elementToHide = document.getElementsByClassName("js-hide-me")[0];
 			var elementToShow = document.getElementsByClassName("js-show-me")[0];
 			elementToHide.onclick = function() {
 				//скрываем elementToHide
-				console.log(elementToHide.className);
 				elementToHide.parentNode.removeChild(elementToHide);
 				//открываем elementToShow
 				elementToShow.classList.remove("hide");
