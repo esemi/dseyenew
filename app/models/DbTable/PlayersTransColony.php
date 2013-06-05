@@ -4,26 +4,16 @@
  * переезды колоний игроков
  */
 class App_Model_DbTable_PlayersTransColony extends App_Model_Abstract_Trans
-	implements App_Model_Interface_Clearable
 {
 
 	protected $_name = 'players_trans_colony';
 	protected $_cacheName = 'up';
 
-	protected function notcached_getTransByPlayer( $idP, $limit )
-	{
-		return false;
-	}
+	protected function notcached_getTransByPlayer( $idP, $limit ){}
 
-	protected function notcached_getTransByAlliance( $idA, $limit)
-	{
-		return false;
-	}
+	protected function notcached_getTransByAlliance( $idA, $limit){}
 
-	protected function notcached_getTransByWorld($idW, $date = null, $returnCount = false, $limit = 10)
-	{
-		return false;
-	}
+	protected function notcached_getTransByWorld($idW, $date = null, $returnCount = false, $limit = 10){}
 
 	public function addTransColony($idP, $oldC=null, $oldS=null, $newC=null, $newS=null)
 	{

@@ -27,95 +27,83 @@ class AllianceController extends Zend_Controller_Action
 		$this->view->rubberPage = true;
 	}
 
-    /*
-     * последние изменения и общие данные альянса
-     */
-    public function indexAction()
-    {
-        $this->view->helpLink = $this->view->url( array('id'=>'alliance_page'), 'helpView', true );
-        $this->view->rubberPage = false;
-
-        $this->view->keywords = "{$this->view->nameAlliance}, Альянс, Информация";
-        $this->view->description = "Альянс {$this->view->nameAlliance}, общая информация";
-        $this->view->actTitle = "Об альянсе";
-
-        $this->view->mainProperty = $this->_helper->modelLoad('Alliances')->getData($this->idA);
-
-        //параметры
-        $this->view->propData = $this->_helper->modelLoad('AlliancesProperty')->getProp($this->idA);
-
-        $this->view->transAlliance = $this->_helper->modelLoad('PlayersTransAlliance')->getTransByAlliance($this->idA, 14);
-        $this->view->transSots = $this->_helper->modelLoad('PlayersTransSots')->getTransByAlliance($this->idA, 10);
-        $this->view->transGate = $this->_helper->modelLoad('PlayersTransGate')->getTransByAlliance($this->idA, 26);
-    }
-
-    /*
-     * список игроков альянса
-     */
-    public function playersAction()
-    {
-        $this->view->helpLink = $this->view->url( array('id'=>'lists'), 'helpView', true );
-
-        $page = (int) $this->_getParam('page', 1);
-        $this->view->sort = $sort = $this->_getParam('sort');
-
-        $this->view->paginator = $paginator =  $this->_helper->modelLoad('Players')->listAlliancePlayers(
-                $this->idA,
-                $page,
-                $this->_helper->modelLoad('AlliancesProperty')->getPlayersCount($this->idA),
-                $sort,
-                (int)$this->_getParam('count') );
-
-        $page = $paginator->getCurrentPageNumber();
-
-        $this->view->countPerPage = $paginator->getItemCountPerPage();
-        $this->view->numbered = ($page - 1) * $paginator->getItemCountPerPage() + 1;
-
-        $this->view->keywords = "{$this->view->nameAlliance}, Альянс, Игроки";
-        $this->view->description = "Альянс {$this->view->nameAlliance}, список игроков (страница {$page})";
-        $this->view->actTitle = "Список игроков, страница {$page}";
-
-    }
-
 	/*
-	 * статистика альянса
+	 * последние изменения и общие данные альянса
 	 */
-	public function statAction()
+	public function indexAction()
 	{
-		$this->view->helpLink = $this->view->url( array('id'=>'graph'), 'helpView', true );
+		$this->view->helpLink = $this->view->url( array('id'=>'alliance_page'), 'helpView', true );
 
-		$this->view->actTitle = 'Статистика по основным показателям и графики';
-		$this->view->keywords = "{$this->view->nameAlliance}, Альянс, Статистика";
-		$this->view->description = "Альянс {$this->view->nameAlliance}. Статистика по основным показателям и графики.";
+		$this->view->keywords = "{$this->view->nameAlliance}, Альянс, Информация";
+		$this->view->description = "Альянс {$this->view->nameAlliance}, общая информация";
+		$this->view->actTitle = "Об альянсе";
+
+		$this->view->mainProperty = $this->_helper->modelLoad('Alliances')->getData($this->idA);
+
+		//параметры
+		$this->view->propData = $this->_helper->modelLoad('AlliancesProperty')->getProp($this->idA);
+
+		$this->view->transAlliance = $this->_helper->modelLoad('PlayersTransAlliance')->getTransByAlliance($this->idA, 20);
+		$this->view->transSots = $this->_helper->modelLoad('PlayersTransSots')->getTransByAlliance($this->idA, 20);
+		$this->view->transGate = $this->_helper->modelLoad('PlayersTransGate')->getTransByAlliance($this->idA, 20);
+		$this->view->transLigue = $this->_helper->modelLoad('PlayersTransLigue')->getTransByAlliance($this->idA, 20);
 	}
 
-    /*
-     * список колоний альянса
-     */
-    public function colonyAction()
-    {
-        $this->view->helpLink = $this->view->url( array('id'=>'alliance_colony'), 'helpView', true );
+	/*
+	 * список игроков альянса
+	 */
+	public function playersAction()
+	{
+		$this->view->helpLink = $this->view->url( array('id'=>'lists'), 'helpView', true );
 
-        $page = (int) $this->_getParam('page', 1);
-        $this->view->sort = $sort = $this->_getParam('sort');
+		$page = (int) $this->_getParam('page', 1);
+		$this->view->sort = $sort = $this->_getParam('sort');
 
-        $this->view->paginator = $paginator =  $this->_helper->modelLoad('Players')->listAllianceColony(
-                $this->idA,
-                $page,
-                $this->_helper->modelLoad('AlliancesProperty')->getColonyCount($this->idA),
-                $sort,
-                (int)$this->_getParam('count') );
+		$this->view->paginator = $paginator =  $this->_helper->modelLoad('Players')->listAlliancePlayers(
+				$this->idA,
+				$page,
+				$this->_helper->modelLoad('AlliancesProperty')->getPlayersCount($this->idA),
+				$sort,
+				(int)$this->_getParam('count') );
 
-        $page = $paginator->getCurrentPageNumber();
+		$page = $paginator->getCurrentPageNumber();
 
-        $this->view->countPerPage = $paginator->getItemCountPerPage();
-        $this->view->numbered = ($page - 1) * $paginator->getItemCountPerPage() + 1;
+		$this->view->countPerPage = $paginator->getItemCountPerPage();
+		$this->view->numbered = ($page - 1) * $paginator->getItemCountPerPage() + 1;
 
-        $this->view->keywords = "{$this->view->nameAlliance}, Альянс, Колонии";
-        $this->view->description = "Альянс {$this->view->nameAlliance}, список колоний (страница {$page})";
-        $this->view->actTitle = "Список колоний, страница {$page}";
+		$this->view->keywords = "{$this->view->nameAlliance}, Альянс, Игроки";
+		$this->view->description = "Альянс {$this->view->nameAlliance}, список игроков (страница {$page})";
+		$this->view->actTitle = "Список игроков, страница {$page}";
 
-    }
+	}
+
+	/*
+	 * список колоний альянса
+	 */
+	public function colonyAction()
+	{
+		$this->view->helpLink = $this->view->url( array('id'=>'alliance_colony'), 'helpView', true );
+
+		$page = (int) $this->_getParam('page', 1);
+		$this->view->sort = $sort = $this->_getParam('sort');
+
+		$this->view->paginator = $paginator =  $this->_helper->modelLoad('Players')->listAllianceColony(
+				$this->idA,
+				$page,
+				$this->_helper->modelLoad('AlliancesProperty')->getColonyCount($this->idA),
+				$sort,
+				(int)$this->_getParam('count') );
+
+		$page = $paginator->getCurrentPageNumber();
+
+		$this->view->countPerPage = $paginator->getItemCountPerPage();
+		$this->view->numbered = ($page - 1) * $paginator->getItemCountPerPage() + 1;
+
+		$this->view->keywords = "{$this->view->nameAlliance}, Альянс, Колонии";
+		$this->view->description = "Альянс {$this->view->nameAlliance}, список колоний (страница {$page})";
+		$this->view->actTitle = "Список колоний, страница {$page}";
+
+	}
 
 
 }

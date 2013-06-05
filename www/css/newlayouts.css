@@ -323,6 +323,10 @@
 		.marked-ul li{
 			margin-bottom: 2px;
 		}
+		.inline-li li{
+			display: inline-block;
+		}
+
 	/*Links
 	----------------------------------------*/
 		.main-a{
@@ -334,7 +338,7 @@
 				text-decoration: underline;
 			}
 		.no-underline, .hover-no-underline:hover, .hover-no-underline:active{
-				text-decoration: none;
+				text-decoration: none !important;
 			}
 		.pseudo{
 			border-bottom:1px dashed #6e0022;
@@ -348,27 +352,31 @@
 			background: url('/img/sprite_2.png')  0px 0px;
 		}
 		.arrow-left{
-		   background: url('/img/sprite_2.png')  238px 0px;
+			background: url('/img/sprite_2.png') -37px 0px;
 		}
 		.arrow-left:hover{
-			  background: url('/img/sprite_2.png') 204px 0px;
+			  background: url('/img/sprite_2.png') -72px 0px;
 		}
 		.arrow-left:active{
-			background: url('/img/sprite_2.png') 170px 0px;
+			background: url('/img/sprite_2.png') -107px 0px;
 		}
-		.arrow-right-off{
-			background: url('/img/sprite_2.png') 34px 0px;
-		}
+
 		.arrow-right{
-			background: url('/img/sprite_2.png') 68px 0px;
+			background: url('/img/sprite_2.png') -212px 0px;
 
 		}
 		.arrow-right:hover{
-			background: url('/img/sprite_2.png') 102px 0px;
+			background: url('/img/sprite_2.png') -177px 0px;
 		}
 		.arrow-right:active{
-			background: url('/img/sprite_2.png') 136px 0px;
+			background: url('/img/sprite_2.png') -142px 0px;
 		}
+		.arrow-right-off{
+			background: url('/img/sprite_2.png') -247px 0px;
+		}
+
+
+
 
 	/*Width
 	----------------------------------------*/
@@ -543,6 +551,7 @@
 		.mrg-left-271{
 		margin-left: 271px;
 		}
+
 		.pad-left-3{
 					padding-left: 3px;
 				}
@@ -704,6 +713,11 @@
 
 	}
 
+	.humantxt{
+		width: 81px;
+		height: 16px;
+		background: url('/img/sprite_2.png') -132px 112px;
+	}
 	.unimp-text{
 		color:#a5a5a5;
 		font-size: 13px;
@@ -1218,13 +1232,33 @@
 			height: 70px;
 		}
 		.pic-code{
-			background: url('/img/sprite_addon_page.png') 0px 0px no-repeat;
+			background: url('/img/sprite_2.png') 0px -224px no-repeat;
 		}
 		.pic-download{
-			background: url('/img/sprite_addon_page.png') -70px 0px no-repeat;
+			background: url('/img/sprite_2.png') -70px -224px no-repeat;
 		}
 		.pic-go-to-faq{
-			background: url('/img/sprite_addon_page.png') -140px 0px no-repeat;
+			background: url('/img/sprite_2.png') -140px -224px no-repeat;
+		}
+
+		/* 5.11 ALIANCE PAGE
+	--------------------------------------------------*/
+		.aliance-grafic-menu li{
+			text-align: center;
+			margin-right: 10px;
+			vertical-align: middle;
+		}
+
+		.aliance-grafic-menu a{
+			display: block;
+			margin-top: 3px;
+			text-decoration: none;
+		}
+		.aliance-grafic-menu a:hover{
+			text-decoration: underline;
+		}
+		.aliance-grafic-menu div{
+			margin-top: 5px;
 		}
 /*End 5. PAGES*/
 

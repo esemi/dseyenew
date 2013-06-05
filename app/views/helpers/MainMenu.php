@@ -183,14 +183,12 @@ class Zend_View_Helper_MainMenu extends Zend_View_Helper_Abstract
 				array(
 			array( 'href' => $this->view->url(array( 'idW' => $this->view->idWorld, 'idA' => $this->view->idAlliance ), 'allianceIndex', true), 'name' => 'об&nbsp;альянсе', 'cntr' => 'alliance', 'act' => 'index' ),
 			array( 'href' => $this->view->url(array( 'idW' => $this->view->idWorld, 'idA' => $this->view->idAlliance ), 'alliancePlayers', true), 'name' => 'игроки', 'cntr' => 'alliance', 'act' => 'players' ),
-			array( 'href' => $this->view->url(array( 'idW' => $this->view->idWorld, 'idA' => $this->view->idAlliance ), 'allianceColony', true), 'name' => 'колонии', 'cntr' => 'alliance', 'act' => 'colony' ),
-			array( 'href' => $this->view->url(array( 'idW' => $this->view->idWorld, 'idA' => $this->view->idAlliance ), 'allianceStat', true), 'name' => 'статистика', 'cntr' => 'alliance', 'act' => 'stat' )
+			array( 'href' => $this->view->url(array( 'idW' => $this->view->idWorld, 'idA' => $this->view->idAlliance ), 'allianceColony', true), 'name' => 'колонии', 'cntr' => 'alliance', 'act' => 'colony' )
 				) :
 				array(
 			array( 'href' => null, 'name' => 'об альянсе' ),
 			array( 'href' => null, 'name' => 'игроки' ),
-			array( 'href' => null, 'name' => 'колонии' ),
-			array( 'href' => null, 'name' => 'статистика' )
+			array( 'href' => null, 'name' => 'колонии' )
 				);
 
 
