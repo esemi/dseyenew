@@ -521,10 +521,8 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 		$select = $this->select()
 				->setIntegrityCheck(false)
 				->from($this, array(
-					'id','nik','id_rase','id_alliance', 'id_world', 'ring', 'compl',
+					new Zend_Db_Expr('*'),
 					'dom' => "CONCAT_WS('.', ring, compl, sota )",
-					'dom_name', 'rank_old','rank_new', 'bo', 'nra', 'ra', 'gate', 'level', 'liga',
-					'archeology', 'building', 'science', 'status',
 					'date_create' => 'DATE_FORMAT(players.`date_create` , \'%d.%m.%Y\')',
 					'date_delete' => 'DATE_FORMAT(players.`date_delete` , \'%d.%m.%Y\')' ))
 				->joinLeft('alliances', 'players.id_alliance = alliances.id', array( 'all' => 'name', 'idA' => 'id' ))

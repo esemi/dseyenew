@@ -31,4 +31,13 @@ class App_Model_DbTable_WorldsGameParse extends Mylib_DbTable_Cached
 					$this->_db->quoteInto('id_world = ?', $idW, Zend_Db::INT_TYPE)
 					);
 	}
+
+	public function notcached_statusAvaliable($idW)
+	{
+		$select = $this->select()
+						->where('id_world = ?', $idW, Zend_Db::INT_TYPE)
+						->limit(1);
+		return !is_null($this->fetchRow($select));
+	}
+
 }

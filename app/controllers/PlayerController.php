@@ -34,6 +34,9 @@ class PlayerController extends Zend_Controller_Action
 		//если не false - доступен график с хелпера
 		$this->view->dshelp = $this->_helper->modelLoad('WorldsDshelp')->graphAvailable( $this->idW );
 
+		//доступны ли расширенные статусы ворот
+		$this->view->extendedStatus = $this->_helper->modelLoad('WorldsGameParse')->statusAvaliable( $this->idW );
+
 		//если true - доступен поиск сообщений на форуме
 		$version = $this->_helper->modelLoad('Worlds')->getVersion($this->idW);
 		$this->view->forum = $this->_helper->modelLoad('GameVersions')->availableForumSearch($version);

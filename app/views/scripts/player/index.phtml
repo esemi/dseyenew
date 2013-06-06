@@ -30,6 +30,22 @@ $this->breadCrumb( array(
 
 	<h3 class="subtitle mrg-top-13 mrg-bottom-8">Основные показатели</h3>
 		<ul>
+			<?php
+			if( $this->extendedStatus ){
+				$statuses = array();
+				if($data['gate_shield'] == 1)
+					$statuses[] = 'щит';
+				if($data['gate_newbee'] == 1)
+					$statuses[] = 'новичок';
+				if($data['gate_ban'] == 1)
+					$statuses[] = 'бан';
+			?>
+			<?php if( count($statuses) > 0 ): ?>
+					<li>
+						Недоступен (<?php echo implode(', ', $statuses); ?>)
+					</li>
+			<?php endif; ?>
+			<?php } ?>
 			<li>
 				<strong class="bold">Адрес:</strong> <?php echo "{$data['dom']} ". $this->GateIcon($data['gate']) ." {$data['dom_name']}"; ?>
 			</li>
@@ -99,13 +115,22 @@ $this->breadCrumb( array(
 <div class="mrg-left-21 float-left mrg-bottom-13">
 	<h3 class="subtitle mrg-bottom-8">Общие данные</h3>
 		<ul>
-			<li>
-				<strong class="bold">В базе с</strong> <?php echo $data['date_create'] ?>
-			</li>
+			<?php if( $this->extendedStatus ): ?>
+				<li>
+					<strong class="bold">Премиум:</strong>
+					<?php echo ($data['premium'] == 1) ?
+					'<span class="color-green">включен</>'
+					:
+					'<span class="color-red">выключен</>'; ?>
+				</li>
+			<?php endif; ?>
 			<li>
 				<strong class="bold">Статус:</strong> <?php $this->printStatus($data['status']);
 				if( $data['status'] == 'delete' && !is_null($data['date_delete']) )
 				echo " от {$data['date_delete']}"; ?>
+			</li>
+			<li>
+				<strong class="bold">В базе с</strong> <?php echo $data['date_create'] ?>
 			</li>
 		</ul>
 	<table class="mrg-top-13">
