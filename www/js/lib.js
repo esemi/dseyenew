@@ -73,6 +73,17 @@ jQuery(document).ready(function()
 			return true;
 		});
 
+	/**страница аддона*******************************************************************/
+		//выбор ссылки по умолчанию
+		if( jQuery(".js-addon-selector").length >0){
+			var browser = DetectBrowserForAddon(window.navigator.userAgent);
+
+			if (browser !== false){
+				var link = jQuery(".js-addon-selector option:contains('" + browser + "')").val();
+				console.log(link);
+			}
+		}
+
 	/**табличка археологии***************************************************************/
 		//подсветка строк/столбцов в табличке
 		jQuery('.js-arch-rank-table td').hover(
@@ -618,7 +629,7 @@ jQuery(document).ready(function()
 		});
 
 
-	}); //end of document.ready
+}); //end of document.ready
 
 
 //цвета для графиков
@@ -2074,4 +2085,22 @@ function getDelta( hash, index, reversed )
 
 String.prototype.reverse=function(){
 	return this.split("").reverse().join("");
+}
+
+
+function DetectBrowserForAddon(userAgent)
+{
+	var result = false;
+
+	if( /Firefox/i.test(userAgent) ){
+		result = "firefox";
+	}
+	if( /Chrome/i.test(userAgent) ){
+		result = "chrome";
+	}
+	if ( /Opera/i.test(userAgent) ){
+		result = "opera";
+	}
+
+	return result;
 }
