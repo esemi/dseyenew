@@ -384,7 +384,8 @@ class AjaxController extends Zend_Controller_Action
 			return;
 		}
 
-		$this->view->html = $this->view->partial( 'Partials/mapPlayer.phtml', array( 'player' => $info ) );
+		$extended = $this->_helper->modelLoad('WorldsGameParse')->statusAvaliable( $info['id_world'] );
+		$this->view->html = $this->view->partial( 'Partials/mapPlayer.phtml', array( 'player' => $info, 'extendedStatusAvaliable' => $extended ) );
 	}
 
 	/*

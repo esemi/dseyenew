@@ -3,48 +3,59 @@ $item = $this->player;
 ?>
 
 <a target="_blank" class="<?php echo $this->RaseColor($item['id_rase'], true); ?> no-underline hover-underline font-14" href="<?php echo $this->url(array( 'idW' => $item['id_world'], 'idP' => $item['id'] ), 'playerStat', true) ?>">
-    <?php echo $item['nik']; ?>
+	<?php echo $item['nik']; ?>
 </a>
 <?php echo $this->allianceLink($item['id_world'], $item['idA'], $item['all'], true); ?>
+<?php if( $this->extendedStatusAvaliable && $item['premium'] == 1 ) echo 'premium icon'; ?>
 <br>
-<ul class="inline-block">
-    <li>
-        <?php echo "{$item['dom']} ". $this->GateIcon($item['gate']) ." {$item['dom_name']}" ?>
-    </li>
-    <li class="mrg-top-3">
-        <strong class="bold">Уровень:</strong> <?php echo $item['level'] ?>; <strong class="bold">Лига:</strong> <?php echo $item['liga'] ?>
-    </li>
-    <li>
-        <strong class="bold">НРА:</strong> <?php echo $item['nra'] ?>; <strong class="bold">РА:</strong> <?php echo $item['ra'] ?>
-    </li>
-    <li>
-        <strong class="bold">Рейтинг (стар.):</strong> <?php echo $this->NumFormat($item['rank_old']) ?>
-    </li>
-    <li>
-        <strong class="bold">Боевой рейтинг:</strong> <?php echo $this->NumFormat($item['bo'], true) ?>
-    </li>
-</ul>
-<ul class="inline-block mrg-left-5">
-    <li>
-        <strong class="bold">Рейтинг (нов.):</strong> <?php echo $this->NumFormat($item['rank_new']) ?>
-    </li>
-    <li>
-        <strong class="bold">Археология:</strong> <?php echo $this->NumFormat($item['archeology']) ?>
-    </li>
-    <li>
-        <strong class="bold">Строительство:</strong> <?php echo $this->NumFormat($item['building']) ?>
-    </li>
-    <li>
-        <strong class="bold">Наука:</strong> <?php echo $this->NumFormat($item['science']) ?>
-    </li>
-</ul>
-    <div>
-        <strong class="bold">Колонии:</strong>
-    </div>
-<ul class="mrg-li-13">
 
-    <?php
-    foreach($item['colony'] as $col)
-        echo "<li>{$col['col']} &mdash; {$col['col_name']}</li>";
-    ?>
+<ul class="inline-block">
+	<?php
+	if( $this->extendedStatusAvaliable ){
+		$extendStatus = $this->decodeExtendedGateStatus($item);
+		if( !empty($extendStatus) )
+			echo "<li>{$extendStatus}</li>";
+	}
+	?>
+	<li>
+		<?php echo "{$item['dom']} ". $this->GateIcon($item['gate']) ." {$item['dom_name']}" ?>
+	</li>
+	<li class="mrg-top-3">
+		<strong class="bold">Уровень:</strong> <?php echo $item['level'] ?>; <strong class="bold">Лига:</strong> <?php echo $item['liga'] ?>
+	</li>
+	<li>
+		<strong class="bold">НРА:</strong> <?php echo $item['nra'] ?>; <strong class="bold">РА:</strong> <?php echo $item['ra'] ?>
+	</li>
+	<li>
+		<strong class="bold">Рейтинг (стар.):</strong> <?php echo $this->NumFormat($item['rank_old']) ?>
+	</li>
+	<li>
+		<strong class="bold">Боевой рейтинг:</strong> <?php echo $this->NumFormat($item['bo'], true) ?>
+	</li>
+</ul>
+
+<ul class="inline-block mrg-left-5">
+	<li>
+		<strong class="bold">Рейтинг (нов.):</strong> <?php echo $this->NumFormat($item['rank_new']) ?>
+	</li>
+	<li>
+		<strong class="bold">Археология:</strong> <?php echo $this->NumFormat($item['archeology']) ?>
+	</li>
+	<li>
+		<strong class="bold">Строительство:</strong> <?php echo $this->NumFormat($item['building']) ?>
+	</li>
+	<li>
+		<strong class="bold">Наука:</strong> <?php echo $this->NumFormat($item['science']) ?>
+	</li>
+</ul>
+
+<div>
+	<strong class="bold">Колонии:</strong>
+</div>
+
+<ul class="mrg-li-13">
+	<?php
+	foreach($item['colony'] as $col)
+		echo "<li>{$col['col']} &mdash; {$col['col_name']}</li>";
+	?>
 </ul>

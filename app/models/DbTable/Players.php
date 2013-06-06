@@ -16,8 +16,8 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 		'listWorldPlayers' => array('up','dshelpra','ranks', 'nra'),
 		'listAlliancePlayers' => array('up','dshelpra','ranks', 'nra'),
 		'listAllianceColony' => array('up','dshelpra','ranks', 'nra'),
-		'getInfo' => array('up','dshelpra','ranks', 'nra'),
-		'getRingMap' => array('up','dshelpra','ranks', 'nra'),
+		'getInfo' => array('up','dshelpra','ranks', 'nra', 'gate'),
+		'getRingMap' => array('up','dshelpra','ranks', 'nra', 'gate'),
 		'getMaxRanks' => array('up','dshelpra','ranks', 'nra'),
 		'sotsWithoutWorld' => array('up'),
 		'getNeighborsDom' => array('up'),
@@ -521,7 +521,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 		$select = $this->select()
 				->setIntegrityCheck(false)
 				->from($this, array(
-					new Zend_Db_Expr('*'),
+					new Zend_Db_Expr('players.*'),
 					'dom' => "CONCAT_WS('.', ring, compl, sota )",
 					'date_create' => 'DATE_FORMAT(players.`date_create` , \'%d.%m.%Y\')',
 					'date_delete' => 'DATE_FORMAT(players.`date_delete` , \'%d.%m.%Y\')' ))
@@ -629,34 +629,29 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 						'main_sota' => 'sota',
 						'sota_name' => 'col_name',
 						'main_addr' => 'CONCAT( "4.", players_colony.compl, ".", players_colony.sota )') )
-				   ->join('players', 'players_colony.id_player = players.id', array(
-							  'id', 'id_rase', 'id_alliance', 'nik', 'rank_old', 'bo', 'ra', 'nra',
-							  'liga','level', 'arch' => 'archeology', 'build' => 'building', 'scien' => 'science' ));
+					->join('players', 'players_colony.id_player = players.id', array(new Zend_Db_Expr('players.*')));
 			$this->_setWhereSlider( $select, 'players_colony.compl', $first, $last );
 		}else{
 			$select->from($this, array(
+						new Zend_Db_Expr('players.*'),
 						'main_compl' => 'compl',
 						'main_sota' => 'sota',
 						'sota_name' => 'dom_name',
-						'main_addr' => 'CONCAT_WS(".", players.ring, players.compl, players.sota )',
-						'id', 'id_rase', 'id_alliance', 'nik', 'rank_old', 'bo', 'ra', 'nra', 'gate',
-						'liga', 'level', 'arch' => 'archeology', 'build' => 'building', 'scien' => 'science' ))
+						'main_addr' => 'CONCAT_WS(".", players.ring, players.compl, players.sota )'))
 				->where('players.ring = ?', $ring, Zend_Db::INT_TYPE);
 			$this->_setWhereSlider( $select, 'players.compl', $first, $last );
 		}
 
-
 		//общие параметры
 		$select->setIntegrityCheck(false)
-				->limit(40*6)
 				->join('alliances', 'alliances.id = players.id_alliance', array( 'alliance' => 'name' ))
 				->where('players.id_world = ?', $idW, Zend_Db::INT_TYPE)
 				->where("players.status = 'active'")
 				->order('main_compl ASC')
 				->order('main_sota ASC');
 
-		$result = $this->fetchAll($select);
 		//var_dump($select->__toString());die;
+		$result = $this->fetchAll($select);
 
 		return $this->_prepareMapArray($result, $first, $last);
 	}

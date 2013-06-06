@@ -32,20 +32,11 @@ $this->breadCrumb( array(
 		<ul>
 			<?php
 			if( $this->extendedStatus ){
-				$statuses = array();
-				if($data['gate_shield'] == 1)
-					$statuses[] = 'щит';
-				if($data['gate_newbee'] == 1)
-					$statuses[] = 'новичок';
-				if($data['gate_ban'] == 1)
-					$statuses[] = 'бан';
+				$extendStatus = $this->decodeExtendedGateStatus($data);
+				if( !empty($extendStatus) )
+					echo "<li>{$extendStatus}</li>";
+			}
 			?>
-			<?php if( count($statuses) > 0 ): ?>
-					<li>
-						Недоступен (<?php echo implode(', ', $statuses); ?>)
-					</li>
-			<?php endif; ?>
-			<?php } ?>
 			<li>
 				<strong class="bold">Адрес:</strong> <?php echo "{$data['dom']} ". $this->GateIcon($data['gate']) ." {$data['dom_name']}"; ?>
 			</li>
