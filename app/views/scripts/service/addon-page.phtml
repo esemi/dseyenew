@@ -11,13 +11,11 @@
 	</p>
 
 	<ul class="text-center mrg-top-34">
-
-
 		<li class="inline-block w-123 mrg-right-8 text-top">
 			<a class="js-link-addon-code block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5" href="" target="_blank" rel="nofollow"></a>
 			<a class="js-link-addon-code" href="" target="_blank" rel="nofollow">Скачать</a>
 			<p class="js-hide-me inline-block font-13 finger pseudo">Выбрать вручную</p><br>
-			<select class="js-show-me hide">
+			<select class="js-show-me hide js-addon-selector">
 				<?php foreach($this->addonUrls['downloadUrl'] as $name => $url): ?>
 				<option value="<?php echo $url; ?>"><?php echo $name; ?></option>
 				<?php endforeach; ?>
