@@ -39,5 +39,4 @@ class App_Model_DbTable_WorldsGameParse extends Mylib_DbTable_Cached
 						->limit(1);
 		return !is_null($this->fetchRow($select));
 	}
-
 }
