@@ -14,16 +14,13 @@
 
 
 		<li class="inline-block w-123 mrg-right-8 text-top">
-			<a class="js-link-addon-code block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5" href=""></a>
-			<a class="js-link-addon-code" href="">Скачать</a>
-			<p class="js-hide-me inline-block font-13 finger pseudo">Выбрать вручную</p>
+			<a class="js-link-addon-code block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5" href="" target="_blank" rel="nofollow"></a>
+			<a class="js-link-addon-code" href="" target="_blank" rel="nofollow">Скачать</a>
+			<p class="js-hide-me inline-block font-13 finger pseudo">Выбрать вручную</p><br>
 			<select class="js-show-me hide">
-			<!--	<?php foreach($this->addonUrls['downloadUrl'] as $name => $url): ?>
+				<?php foreach($this->addonUrls['downloadUrl'] as $name => $url): ?>
 				<option value="<?php echo $url; ?>"><?php echo $name; ?></option>
-				<?php endforeach; ?>-->
-				<option value="firefox">Firefox</option>
-				<option value="opera">Opera</option>
-				<option value="chrome">Chrome</option>
+				<?php endforeach; ?>
 			</select>
 		</li>
 
@@ -41,18 +38,22 @@
 
 					Opera = UA.match(OperaB),
 					Firefox = UA.match(FirefoxB),
-					Chrome = UA.match(ChromeB);
+					Chrome = UA.match(ChromeB),
+
+					firefoxLink = document.getElementsByClassName("js-show-me")[0].options[0].value,
+					operaLink = document.getElementsByClassName("js-show-me")[0].options[1].value,
+					chromeLink = document.getElementsByClassName("js-show-me")[0].options[2].value;
 
 					if (Firefox !== null){
-						link="https://github.com/esemi/dseye_firefox_addon";
+						link=firefoxLink;
 						document.getElementsByClassName("js-show-me")[0].options[0].defaultSelected = true;
 					}
 					else if (Chrome !== null){
-						link="https://github.com/esemi/dseye_chrome_addon";
+						link=chromeLink;
 						document.getElementsByClassName("js-show-me")[0].options[2].defaultSelected = true;
 					}
 					else if (Opera !== null){
-						link="https://github.com/esemi/dseye_opera_addon";
+						link=operaLink;
 						document.getElementsByClassName("js-show-me")[0].options[1].defaultSelected = true;
 					}
 
@@ -70,13 +71,13 @@
 					var selectList = document.getElementsByClassName("js-show-me")[0];
 					selectList.onchange = function(){
 						if (selectList.selectedIndex === 0){
-								link="https://github.com/esemi/dseye_firefox_addon";
+								link=firefoxLink;
 						}
 						else if (selectList.selectedIndex === 1){
-								link="https://github.com/esemi/dseye_opera_addon";
+								link=operaLink;
 						}
 						else if (selectList.selectedIndex === 2){
-								link="https://github.com/esemi/dseye_chrome_addon";
+								link=chromeLink;
 						}
 						setLinks();
 					}
