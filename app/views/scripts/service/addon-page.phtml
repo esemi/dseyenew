@@ -12,94 +12,15 @@
 
 	<ul class="text-center mrg-top-34">
 		<li class="inline-block w-123 mrg-right-8 text-top">
-			<a class="js-link-addon-code block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5" href="" target="_blank" rel="nofollow"></a>
-			<a class="js-link-addon-code" href="" target="_blank" rel="nofollow">Скачать</a>
-			<p class="js-hide-me inline-block font-13 finger pseudo">Выбрать вручную</p><br>
-			<select class="js-show-me hide js-addon-selector">
+			<a class="js-addon-link block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5" href="<?php echo $this->addonUrls['downloadUrl']['firefox']; ?>" target="_blank" rel="nofollow"></a>
+			<a class="js-addon-link" href="<?php echo $this->addonUrls['downloadUrl']['firefox']; ?>" target="_blank" rel="nofollow">Скачать</a>
+			<p class="js-addon-select-opener inline-block font-13 finger pseudo">Выбрать вручную</p><br>
+			<select class="hide js-addon-selector">
 				<?php foreach($this->addonUrls['downloadUrl'] as $name => $url): ?>
 				<option value="<?php echo $url; ?>"><?php echo $name; ?></option>
 				<?php endforeach; ?>
 			</select>
 		</li>
-
-			<script type="text/javascript">
-				function DownloadAddonLinkChooser(){
-
-					var
-
-					link = '',
-
-					UA = window.navigator.userAgent,
-					OperaB = /Opera/i,
-					FirefoxB = /Firefox/i,
-					ChromeB = /Chrome/i,
-
-					Opera = UA.match(OperaB),
-					Firefox = UA.match(FirefoxB),
-					Chrome = UA.match(ChromeB),
-
-					firefoxLink = document.getElementsByClassName("js-show-me")[0].options[0].value,
-					operaLink = document.getElementsByClassName("js-show-me")[0].options[1].value,
-					chromeLink = document.getElementsByClassName("js-show-me")[0].options[2].value;
-
-					if (Firefox !== null){
-						link=firefoxLink;
-						document.getElementsByClassName("js-show-me")[0].options[0].defaultSelected = true;
-					}
-					else if (Chrome !== null){
-						link=chromeLink;
-						document.getElementsByClassName("js-show-me")[0].options[2].defaultSelected = true;
-					}
-					else if (Opera !== null){
-						link=operaLink;
-						document.getElementsByClassName("js-show-me")[0].options[1].defaultSelected = true;
-					}
-
-					//добавление адреса ссылки объектам
-					function setLinks(){
-						var tagsForLinks = document.getElementsByClassName("js-link-addon-code");
-
-						for ( var i in tagsForLinks){
-							tagsForLinks[i].href = link;
-						}
-					}
-					setLinks();
-
-					//изменение ссылки по изменению option
-					var selectList = document.getElementsByClassName("js-show-me")[0];
-					selectList.onchange = function(){
-						if (selectList.selectedIndex === 0){
-								link=firefoxLink;
-						}
-						else if (selectList.selectedIndex === 1){
-								link=operaLink;
-						}
-						else if (selectList.selectedIndex === 2){
-								link=chromeLink;
-						}
-						setLinks();
-					}
-				}
-
-			DownloadAddonLinkChooser();
-
-
-
-
-			//скрывашкаотрывашка
-			var elementToHide = document.getElementsByClassName("js-hide-me")[0];
-			var elementToShow = document.getElementsByClassName("js-show-me")[0];
-			elementToHide.onclick = function() {
-				//скрываем elementToHide
-				elementToHide.parentNode.removeChild(elementToHide);
-				//открываем elementToShow
-				elementToShow.classList.remove("hide");
-			}
-
-
-		</script>
-
-
 		<li class="inline-block w-123 mrg-right-8 text-top">
 			<a href="<?php echo $this->url( array('id'=>'addon'), 'helpView', true ) ?>" class="block rubber-block box-for-pic-addon-page pic-go-to-faq mrg-bottom-5"></a>
 			<a href="<?php echo $this->url( array('id'=>'addon'), 'helpView', true ) ?>">Как это работает</a>
