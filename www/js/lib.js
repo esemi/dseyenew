@@ -79,10 +79,23 @@ jQuery(document).ready(function()
 			var browser = DetectBrowserForAddon(window.navigator.userAgent);
 
 			if (browser !== false){
-				var link = jQuery(".js-addon-selector option:contains('" + browser + "')").val();
-				console.log(link);
+				var currentOption = jQuery(".js-addon-selector option:contains('" + browser + "')");
+				currentOption.attr("selected","selected");
+				jQuery(".js-addon-link").attr("href",currentOption.val());
 			}
 		}
+
+		//открытие селектора
+		jQuery(".js-addon-select-opener").click(function(){
+			jQuery(this).remove();
+			jQuery(".js-addon-selector").removeClass("hide");
+		});
+
+		//изменение ссылки по селектору
+		jQuery(".js-addon-selector").change(function(){
+			jQuery(".js-addon-link").attr("href",jQuery(this).val());
+			jQuery(".js-addon-link")[0].click();
+		});
 
 	/**табличка археологии***************************************************************/
 		//подсветка строк/столбцов в табличке
