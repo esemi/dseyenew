@@ -207,6 +207,8 @@ class WorldsController extends Zend_Controller_Action
 		//получаем id-name альянсов для фильтра
 		$this->view->filterAlliances = $this->_helper->modelLoad('Alliances')->getFilterAlliance( $this->idW, 20 );
 
+		//доступность расширенного статуса ворот и према
+		$this->view->extendedGateStatus = $extendedGateStatus = $this->_helper->modelLoad('WorldsGameParse')->statusAvaliable( $this->idW );
 
 		if( $this->_request->isPost() )
 		{
@@ -215,7 +217,7 @@ class WorldsController extends Zend_Controller_Action
 			$savedProps = $this->_helper->modelLoad('SearchProps')->getByUid($this->_getParam('save'));
 			$save = ( !is_null($savedProps) ) ? @unserialize($savedProps->prop) : false;
 
-			if( $save === false || $this->_helper->modelLoad('Players')->_issetSearchFormValuesValues($save) !== true )
+			if( $save === false || $this->_helper->modelLoad('Players')->_issetSearchFormValues($save) !== true )
 			{
 				//@TODO ошибку в логи
 				$this->view->error = 'Ваша ссылка испортилась =( Надо поиск повторить и новую ссылку сохранить.';
@@ -301,6 +303,7 @@ class WorldsController extends Zend_Controller_Action
 	protected function _parseSearchForm()
 	{
 		$saveProp = new stdClass();
+
 		$saveProp->gate = $this->_request->getPost('gate');
 		$saveProp->ring = $this->_request->getPost('ring');
 		$saveProp->liga = $this->_request->getPost('liga');
@@ -339,6 +342,9 @@ class WorldsController extends Zend_Controller_Action
 
 		$saveProp->scienMin = $this->_request->getPost('scien_min');
 		$saveProp->scienMax = $this->_request->getPost('scien_max');
+
+		$saveProp->onlyGateAvaliable = $this->_request->getPost('onlyGateAvaliable');
+		$saveProp->premium = $this->_request->getPost('premium');
 
 		return $saveProp;
 	}

@@ -170,7 +170,7 @@ class AjaxController extends Zend_Controller_Action
 		$prop = @urldecode($this->_request->getPost('prop'));
 		$prop = @unserialize($prop);
 		if( $prop === false ||
-			$this->_helper->modelLoad('Players')->_issetSearchFormValuesValues($prop) !== true ||
+			$this->_helper->modelLoad('Players')->_issetSearchFormValues($prop) !== true ||
 			$this->_helper->modelLoad('Players')->_validateSearchForm($prop, $rases) !== true )
 		{
 			$this->view->error = 'Некорректные настройки поиска';
@@ -230,7 +230,7 @@ class AjaxController extends Zend_Controller_Action
 		$prop = @urldecode($this->_request->getPost('prop'));
 		$prop = @unserialize($prop);
 		if( $prop === false ||
-			$this->_helper->modelLoad('Players')->_issetSearchFormValuesValues($prop) !== true ||
+			$this->_helper->modelLoad('Players')->_issetSearchFormValues($prop) !== true ||
 			$this->_helper->modelLoad('Players')->_validateSearchForm($prop, $rases) !== true )
 		{
 			$this->view->error = 'Некорректные настройки поиска';

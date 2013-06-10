@@ -2,9 +2,9 @@
 $cycle = $this->cycle(array( 'odd', 'even' ));
 $num = 0;
 
-$this->headScript()->captureStart() ?>
-var worldID = <?php echo $this->idWorld; ?>;
-<?php $this->headScript()->captureEnd();
+$this->headScript()->captureStart();
+	echo "var worldID = {$this->idWorld}";
+$this->headScript()->captureEnd();
 
 $this->breadCrumb( array(
 			sprintf('<a href="%s">%s</a>',
@@ -133,6 +133,29 @@ if( isset($this->error) )
 						<?php endif; ?>
 
 					</li>
+					<?php if( $this->extendedGateStatus ): ?>
+						<li>
+							<strong class="bold text-top">Премиум:</strong>
+							<?php
+							echo $this->formSelect(
+									'premium',
+									isset($this->searchProp->premium) ? $this->searchProp->premium : null,
+									array('size'=>1, 'class' => 'text-top'),
+									array('all' =>'все','yes' => 'вкл.','none' => 'выкл.'));
+							?>
+						</li>
+						<li class="float-right mrg-right-470"><strong class="bold text-top">Показывать недоступных (щит/бан/новичок):</strong>
+							<div class="inline-block">
+								<?php
+								echo $this->formCheckbox(
+										'onlyGateAvaliable',
+										null,
+										array('checked' => (isset($this->searchProp->onlyGateAvaliable) && $this->searchProp->onlyGateAvaliable == 1)),
+										array(1, 0));
+								?>
+							</div>
+						</li>
+					<?php endif; ?>
 					<li class="mrg-top-34">
 						<?php echo $this->FormSlider('<strong class="bold">Комплекс</strong>', 'compl', $this->maxParams, $this->searchProp ); ?>
 					</li>

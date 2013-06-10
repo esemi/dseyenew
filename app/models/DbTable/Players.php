@@ -953,6 +953,14 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 						  ||
 					( is_array($searchProp->rase) && count(array_diff( $searchProp->rase, array_keys($rases) ) ) == 0 ) ) && //расса
 
+				  ( empty($searchProp->premium)
+						  ||
+					in_array($searchProp->premium, array('all','yes','none') ) ) && //премиум
+
+				  ( empty($searchProp->onlyGateAvaliable)
+						  ||
+					in_array($searchProp->onlyGateAvaliable, array('all','yes','none') ) ) && //
+
 				  ( Mylib_Utils::validateSlide($searchProp->complMin, $searchProp->complMax) ) &&
 				  ( Mylib_Utils::validateSlide($searchProp->rankoldMin, $searchProp->rankoldMax) ) &&
 				  ( Mylib_Utils::validateSlide($searchProp->ranknewMin, $searchProp->ranknewMax) ) &&
@@ -971,7 +979,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 	 * @var saveProp - stdClass
 	 * @return bool
 	 */
-	public function _issetSearchFormValuesValues($saveProp)
+	public function _issetSearchFormValues($saveProp)
 	{
 		return (
 				property_exists( $saveProp, 'gate')    &&
