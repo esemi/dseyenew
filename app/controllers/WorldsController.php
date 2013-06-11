@@ -208,7 +208,7 @@ class WorldsController extends Zend_Controller_Action
 		$this->view->filterAlliances = $this->_helper->modelLoad('Alliances')->getFilterAlliance( $this->idW, 20 );
 
 		//доступность расширенного статуса ворот и према
-		$this->view->extendedGateStatus = $extendedGateStatus = $this->_helper->modelLoad('WorldsGameParse')->statusAvaliable( $this->idW );
+		$this->view->extendedGateStatus = $this->_helper->modelLoad('WorldsGameParse')->statusAvaliable( $this->idW );
 
 		if( $this->_request->isPost() )
 		{

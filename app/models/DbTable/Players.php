@@ -368,6 +368,27 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 			break;
 		}
 
+		//скрывать недоступных по расширенным статусам ворот
+		if( !empty($searchOpt->onlyGateAvaliable) )
+		{
+			$select->where('players.gate_shield = 0');
+			$select->where('players.gate_newbee = 0');
+			$select->where('players.gate_ban = 0');
+		}
+
+		//фильтровать премиум/нет
+		if( !empty($searchOpt->premium) )
+		{
+			switch ($searchOpt->premium)
+			{
+				case 'yes':
+					$select->where('players.premium = 1');
+				break;
+				case 'none':
+					$select->where('players.premium = 0');
+				break;
+			}
+		}
 
 		//альянс
 		//var_dump($searchOpt->alliance);
@@ -959,7 +980,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 
 				  ( empty($searchProp->onlyGateAvaliable)
 						  ||
-					in_array($searchProp->onlyGateAvaliable, array('all','yes','none') ) ) && //
+					in_array($searchProp->onlyGateAvaliable, array('1','0') ) ) && //скрывание недоступных по расширенным статусам ворот
 
 				  ( Mylib_Utils::validateSlide($searchProp->complMin, $searchProp->complMax) ) &&
 				  ( Mylib_Utils::validateSlide($searchProp->rankoldMin, $searchProp->rankoldMax) ) &&
