@@ -1127,8 +1127,9 @@
 		.map-tooltip {
 
 		}
-		.map.viewport-right {
-
+		.map-viewport{
+			padding: 5px 13px 8px;
+			position: relative;
 		}
 
 		.active{
@@ -1142,6 +1143,16 @@
 			background: #f3f3f3;
 			min-height: 187px;
 		}
+
+		.premium-viewport{
+			position: absolute;
+			top:8px;
+			right: 13px;
+			width: 26px;
+			height: 26px;
+			background: url('/img/sprite_2.png')  -26px -198px no-repeat;
+		}
+
 	/* 5.7 HELP
 	--------------------------------------------------*/
 

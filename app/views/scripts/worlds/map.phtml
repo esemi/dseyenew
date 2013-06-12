@@ -3,98 +3,98 @@ var worldID = <?php echo $this->idWorld; ?>;
 var maxCompl = <?php echo $this->numMax; ?>;
 <?php $this->headScript()->captureEnd(); ?>
 <div class="rubber-block main-width">
-    <?php
-    $this->breadCrumb( array(
-                sprintf('<a href="%s">%s</a>',
-                        $this->url(array( 'idW' => $this->idWorld ), 'worldIndex', true), $this->nameWorld),
-                'Карта колец') );
-    ?>
+	<?php
+	$this->breadCrumb( array(
+				sprintf('<a href="%s">%s</a>',
+						$this->url(array( 'idW' => $this->idWorld ), 'worldIndex', true), $this->nameWorld),
+				'Карта колец') );
+	?>
 </div>
 <div class="carousell-option text-center">
-        <select class="js-map-ring font-17 mrg-left-157">
-           <option value="1" class="color-voran"> Ворания
-           </option>
-           <option value="2" class="color-liens"> Лиенсорд
-           </option>
-           <option value="3" class="color-psol"> Псолеон
-           </option>
-           <option value="4" selected="selected" class="color-main"> Мельсион
-           </option>
-        </select>
-        <select class="js-map-scroll font-17">
-           <option value="1"> Scroll 1
-           </option>
-           <option value="3" selected> Scroll 3
-           </option>
-           <option  value="5" > Scroll 5
-           </option>
-           <option value="10"> Scroll 10
-           </option>
-        </select>
-        <input class="js-map-goto w-157 mrg-left-21 font-17" type="text" maxlength="4" value="" title="Быстрый переход" placeholder="Быстрый переход" />
-    </div>
-    <div class="js-map-info text-center h-25"></div>
+		<select class="js-map-ring font-17 mrg-left-157">
+		<option value="1" class="color-voran"> Ворания
+		</option>
+		<option value="2" class="color-liens"> Лиенсорд
+		</option>
+		<option value="3" class="color-psol"> Псолеон
+		</option>
+		<option value="4" selected="selected" class="color-main"> Мельсион
+		</option>
+		</select>
+		<select class="js-map-scroll font-17">
+		<option value="1"> Scroll 1
+		</option>
+		<option value="3" selected> Scroll 3
+		</option>
+		<option  value="5" > Scroll 5
+		</option>
+		<option value="10"> Scroll 10
+		</option>
+		</select>
+		<input class="js-map-goto w-157 mrg-left-21 font-17" type="text" maxlength="4" value="" title="Быстрый переход" placeholder="Быстрый переход" />
+	</div>
+	<div class="js-map-info text-center h-25"></div>
 
 
 <div class="text-center w-100pr" id="mycarousel">
-    <div class="js-map-left inline-block arrow arrow-left text-bottom mrg-bottom-160"></div>
-    <div class="js-map-container inline-block text-bottom" >
-        <!--карусель влетает сюда-->
-    </div>
-    <div class="js-map-right inline-block arrow arrow-right mrg-bottom-160 text-bottom"></div>
-    
-    <div class="js-map-full-info hide mrg-top-5">
-        <div class="js-map-full-info-window inline-block   active w-400 text-left pad-lr-13 text-top" empty="empty"></div>        
-        <div class="js-map-full-info-window inline-block deactive w-400 mrg-left-21 text-left pad-lr-13 text-top" empty="empty">
-            <div class="color-gray-map font-20 text-center mrg-top-75">Нажмите чтобы активировать</div>            
-        </div>        
-    </div>
+	<div class="js-map-left inline-block arrow arrow-left text-bottom mrg-bottom-160"></div>
+	<div class="js-map-container inline-block text-bottom" >
+		<!--карусель влетает сюда-->
+	</div>
+	<div class="js-map-right inline-block arrow arrow-right mrg-bottom-160 text-bottom"></div>
+
+	<div class="js-map-full-info hide mrg-top-5">
+		<div class="js-map-full-info-window inline-block active w-400 text-left map-viewport text-top" empty="empty"></div>
+		<div class="js-map-full-info-window inline-block deactive w-400 mrg-left-21 text-left map-viewport text-top" empty="empty">
+			<div class="color-gray-map font-20 text-center mrg-top-75">Нажмите чтобы активировать</div>
+		</div>
+	</div>
 </div>
 
 
 
 <div class="rubber-block main-width">
-    <h4 class="subtitle mrg-top-13"><span>Легенда</span></h4>
-    <div class="mrg-left-21">
-        <div class="inline-block">
-            <strong class="bold">Рейтинг (новый):</strong>
-            <ul class="mrg-left-5">
-                <li><div class="map-icons map-icon-rank-1"></div> &Chi; &le; <?php echo $this->NumFormat($this->ranks['rank_old']['min']); ?></li>
-                <li><div class="map-icons map-icon-rank-2"></div> <?php echo $this->NumFormat($this->ranks['rank_old']['min']); ?> &lt; &Chi; &le; <?php echo $this->NumFormat($this->ranks['rank_old']['mid']); ?></li>
-                <li><div class="map-icons map-icon-rank-3"></div> &Chi; &gt; <?php echo $this->NumFormat($this->ranks['rank_old']['mid']); ?></li>
-            </ul>
-        </div>
-        <div class="inline-block mrg-left-3">
-            <strong class="bold">БО:</strong>
-            <ul class="mrg-left-5">
-                <li><div class="map-icons map-icon-bo-1"></div> &Chi; &le; <?php echo $this->ranks['bo']['min']; ?></li>
-                <li><div class="map-icons map-icon-bo-2"></div> <?php echo $this->ranks['bo']['min']; ?> &lt; &Chi; &le; <?php echo $this->ranks['bo']['mid']; ?></li>
-                <li><div class="map-icons map-icon-bo-3"></div> &Chi; &gt; <?php echo $this->ranks['bo']['mid']; ?></li>
-            </ul>
-        </div>
-        <div class="inline-block mrg-left-3">
-            <strong class="bold">Археология:</strong>
-            <ul class="mrg-left-5">
-                <li><div class="map-icons map-icon-arch-1"></div> &Chi; &le; <?php echo $this->NumFormat($this->ranks['arch']['min']); ?></li>
-                <li><div class="map-icons map-icon-arch-2"></div> <?php echo $this->NumFormat($this->ranks['arch']['min']); ?> &lt; &Chi; &le; <?php echo $this->NumFormat($this->ranks['arch']['mid']); ?></li>
-                <li><div class="map-icons map-icon-arch-3"></div> &Chi; &gt; <?php echo $this->NumFormat($this->ranks['arch']['mid']); ?></li>
-            </ul>
-        </div>
-        <div class="inline-block mrg-left-3">
-            <strong class="bold">Наука:</strong>
-            <ul class="mrg-left-5">
-                <li><div class="map-icons map-icon-scien-1"></div> &Chi; &le; <?php echo $this->NumFormat($this->ranks['scien']['min']); ?></li>
-                <li><div class="map-icons map-icon-scien-2"></div> <?php echo $this->NumFormat($this->ranks['scien']['min']); ?> &lt; &Chi; &le; <?php echo $this->NumFormat($this->ranks['scien']['mid']); ?></li>
-                <li><div class="map-icons map-icon-scien-3"></div> &Chi; &gt; <?php echo $this->NumFormat($this->ranks['scien']['mid']); ?></li>
-            </ul>
-        </div>
-        <div class="inline-block mrg-left-3">
-            <strong class="bold">Строительство:</strong>
-            <ul class="mrg-left-5">
-                <li><div class="map-icons map-icon-build-1"></div> &Chi; &le; <?php echo $this->NumFormat($this->ranks['build']['min']); ?></li>
-                <li><div class="map-icons map-icon-build-2"></div> <?php echo $this->NumFormat($this->ranks['build']['min']); ?> &lt; &Chi; &le; <?php echo $this->NumFormat($this->ranks['build']['mid']); ?></li>
-                <li><div class="map-icons map-icon-build-3"></div> &Chi; &gt; <?php echo $this->NumFormat($this->ranks['build']['mid']); ?></li>
-            </ul>
-        </div>
-    </div>
+	<h4 class="subtitle mrg-top-13"><span>Легенда</span></h4>
+	<div class="mrg-left-21">
+		<div class="inline-block">
+			<strong class="bold">Рейтинг (новый):</strong>
+			<ul class="mrg-left-5">
+				<li><div class="map-icons map-icon-rank-1"></div> &Chi; &le; <?php echo $this->NumFormat($this->ranks['rank_old']['min']); ?></li>
+				<li><div class="map-icons map-icon-rank-2"></div> <?php echo $this->NumFormat($this->ranks['rank_old']['min']); ?> &lt; &Chi; &le; <?php echo $this->NumFormat($this->ranks['rank_old']['mid']); ?></li>
+				<li><div class="map-icons map-icon-rank-3"></div> &Chi; &gt; <?php echo $this->NumFormat($this->ranks['rank_old']['mid']); ?></li>
+			</ul>
+		</div>
+		<div class="inline-block mrg-left-3">
+			<strong class="bold">БО:</strong>
+			<ul class="mrg-left-5">
+				<li><div class="map-icons map-icon-bo-1"></div> &Chi; &le; <?php echo $this->ranks['bo']['min']; ?></li>
+				<li><div class="map-icons map-icon-bo-2"></div> <?php echo $this->ranks['bo']['min']; ?> &lt; &Chi; &le; <?php echo $this->ranks['bo']['mid']; ?></li>
+				<li><div class="map-icons map-icon-bo-3"></div> &Chi; &gt; <?php echo $this->ranks['bo']['mid']; ?></li>
+			</ul>
+		</div>
+		<div class="inline-block mrg-left-3">
+			<strong class="bold">Археология:</strong>
+			<ul class="mrg-left-5">
+				<li><div class="map-icons map-icon-arch-1"></div> &Chi; &le; <?php echo $this->NumFormat($this->ranks['arch']['min']); ?></li>
+				<li><div class="map-icons map-icon-arch-2"></div> <?php echo $this->NumFormat($this->ranks['arch']['min']); ?> &lt; &Chi; &le; <?php echo $this->NumFormat($this->ranks['arch']['mid']); ?></li>
+				<li><div class="map-icons map-icon-arch-3"></div> &Chi; &gt; <?php echo $this->NumFormat($this->ranks['arch']['mid']); ?></li>
+			</ul>
+		</div>
+		<div class="inline-block mrg-left-3">
+			<strong class="bold">Наука:</strong>
+			<ul class="mrg-left-5">
+				<li><div class="map-icons map-icon-scien-1"></div> &Chi; &le; <?php echo $this->NumFormat($this->ranks['scien']['min']); ?></li>
+				<li><div class="map-icons map-icon-scien-2"></div> <?php echo $this->NumFormat($this->ranks['scien']['min']); ?> &lt; &Chi; &le; <?php echo $this->NumFormat($this->ranks['scien']['mid']); ?></li>
+				<li><div class="map-icons map-icon-scien-3"></div> &Chi; &gt; <?php echo $this->NumFormat($this->ranks['scien']['mid']); ?></li>
+			</ul>
+		</div>
+		<div class="inline-block mrg-left-3">
+			<strong class="bold">Строительство:</strong>
+			<ul class="mrg-left-5">
+				<li><div class="map-icons map-icon-build-1"></div> &Chi; &le; <?php echo $this->NumFormat($this->ranks['build']['min']); ?></li>
+				<li><div class="map-icons map-icon-build-2"></div> <?php echo $this->NumFormat($this->ranks['build']['min']); ?> &lt; &Chi; &le; <?php echo $this->NumFormat($this->ranks['build']['mid']); ?></li>
+				<li><div class="map-icons map-icon-build-3"></div> &Chi; &gt; <?php echo $this->NumFormat($this->ranks['build']['mid']); ?></li>
+			</ul>
+		</div>
+	</div>
 </div>
