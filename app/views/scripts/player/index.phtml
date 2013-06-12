@@ -3,12 +3,15 @@ $this->addGraph('player');
 
 $data = $this->mainProperty;
 
+$premiumIcon = ( $this->extendedStatus && $data['premium'] == 1 )
+	? '<div class="premium-icon text-middle"> </div>' : '';
+
 $this->breadCrumb( array(
 			sprintf('<a href="%s">%s</a>',
 					$this->url(array( 'idW' => $this->idWorld ), 'worldIndex', true), $this->nameWorld),
 			$this->allianceLink($this->idWorld, $data['idA'], $data['all'], false, false),
-			sprintf('<span class="%s">%s</span>',
-					$this->RaseColor($data['id_rase']), $data['nik']) ));
+			sprintf('<span class="%s">%s</span>%s',
+					$this->RaseColor($data['id_rase']), $data['nik'], $premiumIcon) ));
 ?>
 <div class="clearfix">
 <div class="mrg-left-21 float-left mrg-bottom-13 w-278">
@@ -34,7 +37,7 @@ $this->breadCrumb( array(
 			if( $this->extendedStatus ){
 				$extendStatus = $this->decodeExtendedGateStatus($data);
 				if( !empty($extendStatus) )
-					echo "<li class = 'color-red'>{$extendStatus}</li>";
+					echo "<li class = 'color-red mrg-bottom-5'>{$extendStatus}</li>";
 			}
 			?>
 			<li>

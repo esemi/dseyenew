@@ -1263,6 +1263,16 @@
 		.aliance-grafic-menu div{
 			margin-top: 5px;
 		}
+
+		/* 5.12 PLAYER PAGE
+	--------------------------------------------------*/
+		.premium-icon{
+			display: inline-block;
+			width: 26px;
+			height: 26px;
+			margin-left: 8px;
+			background: url('/img/sprite_2.png')  -26px -198px no-repeat;
+		}
 /*End 5. PAGES*/
 
 /* COLORS & colors links
