@@ -6,9 +6,8 @@ $item = $this->player;
 	<?php echo $item['nik']; ?>
 </a>
 <?php echo $this->allianceLink($item['id_world'], $item['idA'], $item['all'], true); ?>
-<?php if( $this->extendedStatusAvaliable && $item['premium'] == 1 ) echo '<div class="inline-block mrg-left-5 premium-icon-small text-middle"> </div>'; ?>
+<?php if( $this->extendedStatusAvaliable && $item['premium'] == 1 ) echo '<div class="premium-viewport"> </div>'; ?>
 <br>
-<div class="premium-viewport"> </div>
 <ul class="inline-block">
 	<?php
 	if( $this->extendedStatusAvaliable ){
