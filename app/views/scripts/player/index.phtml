@@ -34,7 +34,7 @@ $this->breadCrumb( array(
 			if( $this->extendedStatus ){
 				$extendStatus = $this->decodeExtendedGateStatus($data);
 				if( !empty($extendStatus) )
-					echo "<li>{$extendStatus}</li>";
+					echo "<li class = 'color-red'>{$extendStatus}</li>";
 			}
 			?>
 			<li>
