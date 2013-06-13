@@ -134,8 +134,8 @@ if( isset($this->error) )
 
 					</li>
 					<?php if( $this->extendedGateStatus ): ?>
-						<li>
-							<strong class="bold text-top">Премиум:</strong>
+						<li class="mrg-top-13">
+							<div class="inline-block premium-icon-small text-bottom mrg-right-5"> </div><strong class="bold">Премиум:</strong>
 							<?php
 							echo $this->formSelect(
 									'premium',
@@ -143,16 +143,16 @@ if( isset($this->error) )
 									array('size'=>1, 'class' => 'text-top'),
 									array('all' =>'все','yes' => 'вкл.','none' => 'выкл.'));
 							?>
-						</li>
-						<li class="float-right mrg-right-470"><strong class="bold text-top">Скрыть недоступных (щит/бан/новичок):</strong>
-							<div class="inline-block">
-								<?php
-								echo $this->formCheckbox(
-										'onlyGateAvaliable',
-										null,
-										array('checked' => (isset($this->searchProp->onlyGateAvaliable) && $this->searchProp->onlyGateAvaliable == 1)),
-										array(1, 0));
-								?>
+							<div class="inline-block mrg-left-199 "><strong class="bold text-top">Скрыть недоступных (щит/бан/новичок):</strong>
+								<div class="inline-block">
+									<?php
+									echo $this->formCheckbox(
+											'onlyGateAvaliable',
+											null,
+											array('checked' => (isset($this->searchProp->onlyGateAvaliable) && $this->searchProp->onlyGateAvaliable == 1)),
+											array(1, 0));
+									?>
+								</div>
 							</div>
 						</li>
 					<?php endif; ?>

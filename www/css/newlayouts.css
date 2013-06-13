@@ -539,6 +539,9 @@
 		.mrg-left-157{
 			margin-left: 157px;
 		}
+		.mrg-left-199{
+			margin-left: 199px;
+		}
 		.mrg-left-226{
 		margin-left: 226px;
 		}
@@ -549,7 +552,7 @@
 		margin-left: 269px;
 		}
 		.mrg-left-271{
-		margin-left: 271px;
+			margin-left: 271px;
 		}
 
 		.pad-left-3{
@@ -928,7 +931,8 @@
 			height: 16px;
 			background: url('/img/sprite_2.png') -115px -182px no-repeat;
 		}
-	/* 5.5 Worlds
+
+		/* 5.5 Worlds
 	----------------------------------------*/
 		.indicators li{
 			margin-bottom: 5px;
@@ -1151,6 +1155,12 @@
 			width: 26px;
 			height: 26px;
 			background: url('/img/sprite_2.png')  -26px -198px no-repeat;
+		}
+		.premium-icon-small{
+			width: 16px;
+			height: 16px;
+			background: url('/img/sprite_2.png') -213px 112px;
+			margin-bottom: 2px;
 		}
 
 	/* 5.7 HELP
