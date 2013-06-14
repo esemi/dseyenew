@@ -331,7 +331,8 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 						'main_addr' => 'CONCAT( "4.", players_colony.compl, ".", players_colony.sota )') )
 					->join('players', 'players_colony.id_player = players.id', array(
 						'id', 'id_rase', 'id_alliance', 'nik', 'rank_old','rank_new', 'bo', 'ra', 'nra',
-						'liga','level', 'arch' => 'archeology', 'build' => 'building', 'scien' => 'science' ));
+						'liga','level', 'arch' => 'archeology', 'build' => 'building', 'scien' => 'science',
+						'gate_shield', 'gate_newbee', 'gate_ban', 'premium'));
 			$complCol = 'players_colony.compl';
 		}else{
 			$select->from($this, array(
@@ -341,7 +342,8 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 						'main_sota' => 'dom_name',
 						'main_addr' => 'CONCAT_WS(".", players.ring, players.compl, players.sota )',
 						'id', 'id_rase', 'id_alliance', 'nik', 'rank_old','rank_new', 'bo', 'ra', 'nra', 'gate',
-						'liga', 'level', 'arch' => 'archeology', 'build' => 'building', 'scien' => 'science' ));
+						'liga', 'level', 'arch' => 'archeology', 'build' => 'building', 'scien' => 'science',
+						'gate_shield', 'gate_newbee', 'gate_ban', 'premium'));
 			$complCol = 'players.compl';
 
 			if( mb_strlen($searchOpt->ring) == 1 )
@@ -475,7 +477,9 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 				->where('players.id_world = ?', $idW, Zend_Db::INT_TYPE)
 				->where("players.status = 'active'");
 		$this->_sortDecode($select, $sort);
-//var_dump($select->__toString());die;
+
+		//var_dump($select->__toString());die;
+
 		return $this->fetchAll($select)->toArray();
 	}
 

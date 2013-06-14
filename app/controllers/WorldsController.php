@@ -232,7 +232,7 @@ class WorldsController extends Zend_Controller_Action
 			$this->view->post = true;
 
 			//чистим настройки от ничего не значащих полей
-			//$searchProp = $this->_helper->modelLoad('Players')->_prepareSearchProp($searchProp, $maxParams, $rases);
+			$searchProp = $this->_helper->modelLoad('Players')->_prepareSearchProp($searchProp, $maxParams, $rases);
 
 			//валидируем объект настроек
 			if( $this->_helper->modelLoad('Players')->_validateFullSearchProp( $searchProp, $rases ) === false )
