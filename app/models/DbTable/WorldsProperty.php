@@ -7,7 +7,7 @@ class App_Model_DbTable_WorldsProperty extends Mylib_DbTable_Cached
 	protected $_primary = 'id_world';
 	protected $_cacheName = 'up';
 	protected $_tagsMap = array(
-		'getProp' => array('up','dshelpra','ranks'),
+		'getProp' => array('up','dshelpra','ranks', 'nra', 'gate'),
 		'getAllPlayersCount' => array('up'),
 	);
 

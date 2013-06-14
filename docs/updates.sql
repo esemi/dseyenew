@@ -107,3 +107,8 @@ ADD `premium` TINYINT( 1 ) UNSIGNED NOT NULL COMMENT 'Куплен премиу�
 ALTER TABLE `worlds_game_parse` ADD `uiid` VARCHAR( 15 ) NOT NULL AFTER `password`;
 UPDATE `dseye_new`.`worlds_game_parse` SET `uiid` = '36969_7_2' WHERE `worlds_game_parse`.`id_world` =8;
 
+ALTER TABLE `stat_worlds` ADD `count_notavaliable_gate` SMALLINT UNSIGNED NOT NULL AFTER `count_alliance` ,
+ADD `count_premium` SMALLINT UNSIGNED NOT NULL AFTER `count_notavaliable_gate`;
+
+ALTER TABLE `worlds_property` ADD `count_notavaliable_gate` SMALLINT UNSIGNED NOT NULL ,
+ADD `count_premium` SMALLINT UNSIGNED NOT NULL;

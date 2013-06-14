@@ -15,6 +15,8 @@ class App_Model_DbTable_StatWorlds extends App_Model_Abstract_StatGeneral
 		'getCountPlayers' => array('day'),
 		'getCountColonies' => array('day'),
 		'getCountAlliances' => array('day'),
+		'getCountPremium' => array('day'),
+		'getCountNotAvaliableGate' => array('day'),
 		'getSumRankOld' => array('day'),
 		'getAvgRankOld' => array('day'),
 		'getSumRankNew' => array('day'),

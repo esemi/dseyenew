@@ -27,6 +27,8 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 		'findByAddress' => array('up'),
 		'fastSearch' => array('up'),
 		'getUsedCompls' => array('up'),
+		'getCountNotavaliableGateByWorld' => array('up','gate'),
+		'getCountPremiumByWorld' => array('up','gate'),
 	);
 
 	/*
@@ -815,6 +817,35 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 		}
 
 	}
+
+	/**
+	 * Количество недоступных ворот в мире
+	 */
+	public function notcached_getCountNotavaliableGateByWorld($idW)
+	{
+		$select = $this->select()
+				->from($this, array( 'count' => 'COUNT(*)' ))
+				->where('id_world = ?', $idW, Zend_Db::INT_TYPE)
+				->where("status = 'active'")
+				->where('(gate_shield + gate_newbee + gate_ban) > 0');
+		$row = $this->fetchRow($select);
+		return (is_null($row)) ? 0 : intval($row['count']);
+	}
+
+	/**
+	 * Количество премиум игроков в мире
+	 */
+	public function notcached_getCountPremiumByWorld($idW)
+	{
+		$select = $this->select()
+				->from($this, array( 'count' => 'COUNT(*)' ))
+				->where('id_world = ?', $idW, Zend_Db::INT_TYPE)
+				->where("status = 'active'")
+				->where("premium = 1");
+		$row = $this->fetchRow($select);
+		return (is_null($row)) ? 0 : intval($row['count']);
+	}
+
 
 	/*
 	 * все активные игроки мира с колониями

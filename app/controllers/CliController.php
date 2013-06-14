@@ -1363,6 +1363,8 @@ class CliController extends Zend_Controller_Action
 	{
 		$data = array();
 		$data['count_alliance'] = $this->_helper->modelLoad('Alliances')->getCountByWorld($idW);
+		$data['count_notavaliable_gate'] = $this->_helper->modelLoad('Players')->getCountNotavaliableGateByWorld($idW);
+		$data['count_premium'] = $this->_helper->modelLoad('Players')->getCountPremiumByWorld($idW);
 
 		if( $stat === true )
 		{
