@@ -205,14 +205,14 @@ $this->breadCrumb( array(
 					break;
 
 					case 'gate':
-						printf("%s %s &rarr; %s",
+						printf("%s <br> %s &rarr; %s",
 								$value['date'],
 								$this->GateIcon($value['old_val'], 'mrg-left-5'),
 								$this->GateIcon($value['new_val']));
 					break;
 
 					case 'ligue':
-						printf("%s %s &rarr; %s",
+						printf("%s <br> %s &rarr; %s",
 								$value['date'],
 								$value['old_val'],
 								$value['new_val']);

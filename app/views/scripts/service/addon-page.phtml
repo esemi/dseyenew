@@ -11,25 +11,25 @@
 	</p>
 
 	<ul class="text-center mrg-top-34">
-
-		<!--li class="inline-block w-123 mrg-right-8">
-			<a href="" class="block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5"></a>
-			<a href="">Скачать</a>
-			<select>
+		<li class="inline-block w-123 mrg-right-8 text-top">
+			<a class="js-addon-link block rubber-block box-for-pic-addon-page pic-download mrg-bottom-5" href="<?php echo $this->addonUrls['downloadUrl']['firefox']; ?>" target="_blank" rel="nofollow"></a>
+			<a class="js-addon-link" href="<?php echo $this->addonUrls['downloadUrl']['firefox']; ?>" target="_blank" rel="nofollow">Скачать</a>
+			<p class="js-addon-select-opener inline-block font-13 finger pseudo">Выбрать вручную</p><br>
+			<select class="hide js-addon-selector">
 				<?php foreach($this->addonUrls['downloadUrl'] as $name => $url): ?>
 				<option value="<?php echo $url; ?>"><?php echo $name; ?></option>
 				<?php endforeach; ?>
 			</select>
-		</li-->
-		<li class="inline-block w-123 mrg-right-8">
+		</li>
+		<li class="inline-block w-123 mrg-right-8 text-top">
 			<a href="<?php echo $this->url( array('id'=>'addon'), 'helpView', true ) ?>" class="block rubber-block box-for-pic-addon-page pic-go-to-faq mrg-bottom-5"></a>
 			<a href="<?php echo $this->url( array('id'=>'addon'), 'helpView', true ) ?>">Как это работает</a>
 		</li>
-		<li class="inline-block w-123">
+		<li class="inline-block w-123 text-top">
 			<a href="<?php echo $this->addonUrls['repo_url']; ?>" class="block rubber-block box-for-pic-addon-page pic-code mrg-bottom-5"></a>
 			<a href="<?php echo $this->addonUrls['repo_url']; ?>">Исходный код</a>
 		</li>
 	</ul>
 
-	<p class="color-red text-center">На данный момент аддон проходит проверку перед добавлением в браузерные магазины расширений. Как только проверка будет пройдена &mdash; аддон станет доступен для скачивания и установки.</p>
+	<!--p class="color-red text-center">На данный момент аддон проходит проверку перед добавлением в браузерные магазины расширений. Как только проверка будет пройдена &mdash; аддон станет доступен для скачивания и установки.</p-->
 </div>
