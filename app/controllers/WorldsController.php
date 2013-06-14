@@ -213,11 +213,10 @@ class WorldsController extends Zend_Controller_Action
 		if( $this->_request->isPost() )
 		{
 			$searchProp = $this->_parseSearchForm();
-		}elseif( $this->_getParam('save') != 'new' ){
+		}elseif( $this->_getParam('save') !== 'new' ){
 			$savedProps = $this->_helper->modelLoad('SearchProps')->getByUid($this->_getParam('save'));
 			$save = ( !is_null($savedProps) ) ? @unserialize($savedProps->prop) : false;
-
-			if( $save === false || $this->_helper->modelLoad('Players')->_issetSearchFormValues($save) !== true )
+			if( $save === false )
 			{
 				//@TODO ошибку в логи
 				$this->view->error = 'Ваша ссылка испортилась =( Надо поиск повторить и новую ссылку сохранить.';
@@ -229,11 +228,14 @@ class WorldsController extends Zend_Controller_Action
 		//настройки откуда то взялись
 		if( isset($searchProp) )
 		{
-			//сворачиваем настройки
+			//сворачиваем настройки в вёрстке
 			$this->view->post = true;
 
+			//чистим настройки от ничего не значащих полей
+			//$searchProp = $this->_helper->modelLoad('Players')->_prepareSearchProp($searchProp, $maxParams, $rases);
+
 			//валидируем объект настроек
-			if( $this->_helper->modelLoad('Players')->_validateSearchForm( $searchProp, $rases ) === false )
+			if( $this->_helper->modelLoad('Players')->_validateFullSearchProp( $searchProp, $rases ) === false )
 			{
 				//@TODO ошибку в логи
 				$this->view->error = 'Некоторые поля заполненны ошибочно - повторите поиск или сообщите разработчикам';
@@ -307,10 +309,17 @@ class WorldsController extends Zend_Controller_Action
 		$saveProp->gate = $this->_request->getPost('gate');
 		$saveProp->ring = $this->_request->getPost('ring');
 		$saveProp->liga = $this->_request->getPost('liga');
+		if( is_array($saveProp->liga) )
+			$saveProp->liga = array_unique($saveProp->liga);
+
 		$saveProp->rase = $this->_request->getPost('rase');
+		if( is_array($saveProp->rase) )
+			$saveProp->rase = array_unique($saveProp->rase);
 
 		$saveProp->alliance = $this->_request->getPost('alliance');
 		$saveProp->filterAlliance = $this->_request->getPost('filter_alliance');
+		if( is_array($saveProp->filterAlliance) )
+			$saveProp->filterAlliance = array_unique($saveProp->filterAlliance);
 		$saveProp->filterAllianceMod = $this->_request->getPost('filter_alliance_mod');
 
 		$saveProp->complMin = $this->_request->getPost('compl_min');

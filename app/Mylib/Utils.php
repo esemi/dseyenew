@@ -213,19 +213,25 @@ class Mylib_Utils
         return true;
     }
 
-    /*
-     * валидация слайдерных полей
-     */
-    public static function validateSlide( $varMin, $varMax )
-    {
-        return (
-        ( is_null($varMin) && is_null($varMax) ) ||
-        ( filter_var($varMin, FILTER_VALIDATE_INT, array( 'min_range' => 0, 'max_range' => $varMax )) !== false &&
-        filter_var($varMax, FILTER_VALIDATE_INT, array( 'min_range' => $varMin )) !== false &&
-        $varMin >= 0 &&
-        $varMin < $varMax )
-        ) ? true : false;
-    }
+	/*
+	 * валидация слайдерных полей
+	 */
+	public static function validateSlide( $varMin, $varMax )
+	{
+		return (
+					(empty($varMin) && empty($varMax))
+					||
+					(
+						filter_var($varMin, FILTER_VALIDATE_INT, array( 'min_range' => 0, 'max_range' => $varMax )) !== false
+						&&
+						filter_var($varMax, FILTER_VALIDATE_INT, array( 'min_range' => $varMin )) !== false
+						&&
+						$varMin >= 0
+						&&
+						$varMin < $varMax
+					)
+		);
+	}
 
     /*
      * формы слова по числительным

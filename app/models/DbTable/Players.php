@@ -321,6 +321,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 		$select = $this->select();
 
 		//кольца и комлекс (зависим от таблицы)
+		$complCol = null;
 		if( $searchOpt->ring == 4 )
 		{
 			$select->from('players_colony', array(
@@ -331,7 +332,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 					->join('players', 'players_colony.id_player = players.id', array(
 						'id', 'id_rase', 'id_alliance', 'nik', 'rank_old','rank_new', 'bo', 'ra', 'nra',
 						'liga','level', 'arch' => 'archeology', 'build' => 'building', 'scien' => 'science' ));
-			$this->_setWhereSlider( $select, 'players_colony.compl', $searchOpt->complMin, $searchOpt->complMax );
+			$complCol = 'players_colony.compl';
 		}else{
 			$select->from($this, array(
 						'sort_compl' => 'compl',
@@ -341,9 +342,9 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 						'main_addr' => 'CONCAT_WS(".", players.ring, players.compl, players.sota )',
 						'id', 'id_rase', 'id_alliance', 'nik', 'rank_old','rank_new', 'bo', 'ra', 'nra', 'gate',
 						'liga', 'level', 'arch' => 'archeology', 'build' => 'building', 'scien' => 'science' ));
-			$this->_setWhereSlider( $select, 'players.compl', $searchOpt->complMin, $searchOpt->complMax );
+			$complCol = 'players.compl';
 
-			if( strlen($searchOpt->ring) == 1 )
+			if( mb_strlen($searchOpt->ring) == 1 )
 			{
 				$select->where('players.ring = ?', $searchOpt->ring, Zend_Db::INT_TYPE);
 			}else{
@@ -355,17 +356,18 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 			}
 		}
 
-
 		//ворота домашней соты
-		//var_dump($searchOpt->gate);
-		switch ($searchOpt->gate)
+		if( !empty($searchOpt->gate) )
 		{
-			case 'close':
-				$select->where("players.gate = ?", 0, Zend_Db::INT_TYPE);
-			break;
-			case 'open':
-				$select->where("players.gate = ?", 1, Zend_Db::INT_TYPE);
-			break;
+			switch ($searchOpt->gate)
+			{
+				case 'close':
+					$select->where("players.gate = ?", 0, Zend_Db::INT_TYPE);
+				break;
+				case 'open':
+					$select->where("players.gate = ?", 1, Zend_Db::INT_TYPE);
+				break;
+			}
 		}
 
 		//скрывать недоступных по расширенным статусам ворот
@@ -390,22 +392,24 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 			}
 		}
 
-		//альянс
-		//var_dump($searchOpt->alliance);
-		$nameNeutral = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOption('nameNeutral');
-		switch ($searchOpt->alliance)
+		//поиск по нейтралам
+		if( !empty($searchOpt->alliance) && $searchOpt->alliance !== 'all' )
 		{
-			case 'yes':
-				$select->where('alliances.name != ?', $nameNeutral);
-			break;
+			$nameNeutral = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOption('nameNeutral');
+			switch($searchOpt->alliance)
+			{
+				case 'yes':
+					$select->where('alliances.name != ?', $nameNeutral);
+				break;
 
-			case 'none':
-				$select->where('alliances.name = ?', $nameNeutral);
-			break;
+				case 'none':
+					$select->where('alliances.name = ?', $nameNeutral);
+				break;
+			}
 		}
 
-		//фильтр альянсов (если не выбран поиск по нейтралам)
-		if( $searchOpt->alliance != 'none' && !is_null($searchOpt->filterAllianceMod) && !is_null($searchOpt->filterAlliance) )
+		//фильтр альянсов
+		if( !empty($searchOpt->filterAllianceMod) && !empty($searchOpt->filterAlliance) )
 		{
 			$alls = array();
 			foreach( $searchOpt->filterAlliance as $idAll )
@@ -426,10 +430,8 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 			}
 		}
 
-
 		//лига
-		//var_dump($searchOpt->liga);
-		if( !is_null($searchOpt->liga) )
+		if( !empty($searchOpt->liga) )
 		{
 			$ligs = array();
 			foreach( $searchOpt->liga as $val )
@@ -439,8 +441,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 
 
 		//расса
-		//var_dump($searchOpt->liga);
-		if( !is_null($searchOpt->rase) )
+		if( !empty($searchOpt->rase) )
 		{
 			$rases = array();
 			foreach( $searchOpt->rase as $val )
@@ -448,19 +449,24 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 			$select->where( implode(' OR ', $rases) );
 		}
 
-
 		//сладеры
-		$this->_setWhereSlider( $select, 'players.rank_old', $searchOpt->rankoldMin, $searchOpt->rankoldMax );
-		$this->_setWhereSlider( $select, 'players.bo', $searchOpt->boMin, $searchOpt->boMax );
-		$this->_setWhereSlider( $select, 'players.nra', $searchOpt->nraMin, $searchOpt->nraMax );
-		$this->_setWhereSlider( $select, 'players.ra', $searchOpt->raMin, $searchOpt->raMax );
-		$this->_setWhereSlider( $select, 'players.rank_new', $searchOpt->ranknewMin, $searchOpt->ranknewMax );
-		$this->_setWhereSlider( $select, 'players.level', $searchOpt->levelMin, $searchOpt->levelMax );
-		$this->_setWhereSlider( $select, 'players.archeology', $searchOpt->archMin, $searchOpt->archMax );
-		$this->_setWhereSlider( $select, 'players.building', $searchOpt->buildMin, $searchOpt->buildMax );
-		$this->_setWhereSlider( $select, 'players.science', $searchOpt->scienMin, $searchOpt->scienMax );
-
-
+		$sliders = array(
+			'compl' => $complCol,
+			'rankold' => 'players.rank_old',
+			'bo' => 'players.bo',
+			'nra' => 'players.nra',
+			'ra' => 'players.ra',
+			'ranknew' => 'players.rank_new',
+			'level' => 'players.level',
+			'arch' => 'players.archeology',
+			'build' => 'players.building',
+			'scien' => 'players.science',
+		);
+		foreach( $sliders as $prop => $col )
+		{
+			if( isset($searchOpt->{"{$prop}Min"}) && isset($searchOpt->{"{$prop}Max"}) )
+				$this->_setWhereSlider( $select, $col, $searchOpt->{"{$prop}Min"}, $searchOpt->{"{$prop}Max"} );
+		}
 
 		//общие параметры
 		$select->setIntegrityCheck(false)
@@ -468,12 +474,9 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 				->join('alliances', 'alliances.id = players.id_alliance', array( 'alliance' => 'name' ))
 				->where('players.id_world = ?', $idW, Zend_Db::INT_TYPE)
 				->where("players.status = 'active'");
-
 		$this->_sortDecode($select, $sort);
-
-		$result = $this->fetchAll($select);
-
-		return ( !is_null($result) ) ? $result->toArray() : array();
+//var_dump($select->__toString());die;
+		return $this->fetchAll($select)->toArray();
 	}
 
 	/*
@@ -481,17 +484,17 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 	 */
 	private function _setWhereSlider( $select, $name, $min, $max)
 	{
-		if( !is_null($min) && !is_null($max) )
+		if( isset($min) && isset($max) )
 		{
 			if( $max > $min )
 			{
 				$select->where("{$name} >= ?", $min, Zend_Db::INT_TYPE )
-					   ->where("{$name} <= ?", $max, Zend_Db::INT_TYPE );
+						->where("{$name} <= ?", $max, Zend_Db::INT_TYPE );
 			}else{
 				$select->where(
-						 $this->_db->quoteInto( "{$name} <= ?", $max, Zend_Db::INT_TYPE )
+						$this->_db->quoteInto( "{$name} <= ?", $max, Zend_Db::INT_TYPE )
 						. ' OR '
-						.$this->_db->quoteInto( "{$name} >= ?", $min, Zend_Db::INT_TYPE ) );
+						. $this->_db->quoteInto( "{$name} >= ?", $min, Zend_Db::INT_TYPE ) );
 			}
 		}
 	}
@@ -946,92 +949,171 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 		return $this->fetchAll($select)->toArray();
 	}
 
-	/*
+	/**
+	 * очистка настроек поиска от лишних полей (если поле подразумевает, что такое значение не требовательно к наличию в where)
+	 *
+	 * @var searchProp - stdClass of search property
+	 * @var max - array of max ranks for sliders
+	 * @var rases - array of avaliable rases
+	 * @return stdClass prepared search prop
+	 */
+	public function _prepareSearchProp(stdClass $searchProp, $max, $rases)
+	{
+		if( empty($searchProp->gate) || $searchProp->gate === 'all' ){
+			unset($searchProp->gate);
+		}
+
+		if( empty($searchProp->alliance) || $searchProp->alliance === 'all' ){
+			unset($searchProp->alliance);
+		}
+
+		if(
+				empty($searchProp->liga)
+				||
+				(
+					is_array($searchProp->liga)
+					&&
+					count(array_diff( $searchProp->liga, array('I','II','III') ) ) === 0
+					&&
+					count($searchProp->liga) === 3
+				)
+		){
+			unset($searchProp->liga);
+		}
+
+		if( empty($searchProp->premium) || $searchProp->premium === 'all' ){
+			unset($searchProp->premium);
+		}
+
+		if( empty($searchProp->onlyGateAvaliable) || $searchProp->onlyGateAvaliable === '0' ){
+			unset($searchProp->onlyGateAvaliable);
+		}
+
+		if(
+				empty($searchProp->rase)
+				||
+				(
+					is_array($searchProp->rase)
+					&&
+					count(array_diff( $searchProp->rase, array_keys($rases) ) ) === 0
+					&&
+					count($searchProp->rase) === count($rases)
+				)
+		){
+			unset($searchProp->rase);
+		}
+
+		if( empty($searchProp->filterAlliance) ){
+			unset($searchProp->filterAlliance);
+		}
+
+
+		if( empty($searchProp->filterAllianceMod) || empty($searchProp->filterAlliance) ){
+			unset($searchProp->filterAllianceMod);
+		}
+
+		$sliders = array('compl', 'rankold', 'ranknew', 'bo', 'nra', 'ra', 'level', 'arch' ,'build', 'scien');
+		foreach($sliders as $name)
+		{
+			if(
+				( empty($searchProp->{"{$name}Min"}) && empty($searchProp->{"{$name}Max"}) )
+				||
+				( $searchProp->{"{$name}Min"} == 0 && isset($max[$name]) && $searchProp->{"{$name}Max"} == $max[$name] )
+			){
+				unset($searchProp->{"{$name}Min"});
+				unset($searchProp->{"{$name}Max"});
+			}
+		}
+
+		return $searchProp;
+	}
+
+	/**
 	 * валидация объекта настроек поиска
 	 * @var searchProp - stdClass of search property
+	 * @var rases - array of avaliable rases
 	 * @return bool
 	 */
-	public function _validateSearchForm( stdClass $searchProp, $rases )
+	public function _validateFullSearchProp( stdClass $searchProp, $rases )
 	{
 		return (
-				  in_array($searchProp->gate, array('all','open','close')) &&    //ворота
-				  in_array($searchProp->ring, array(1,2,3,4,12,13,23,123) ) &&       //кольцо
-				  in_array($searchProp->alliance, array('all','yes','none') ) && //альянс
+				(empty($searchProp->gate)
+					||
+				in_array($searchProp->gate, array('all','open','close')) ) &&    //ворота
 
-				  ( is_null($searchProp->filterAlliance)
-						  ||
-				   ( is_array($searchProp->filterAlliance) && count( $searchProp->filterAlliance ) <= 20 ) ) && //фильтр альянсов (номера)
+				(isset($searchProp->ring)
+					&&
+				in_array($searchProp->ring, array(1,2,3,4,12,13,23,123) ) ) &&       //кольцо
 
-				  ( is_null($searchProp->filterAllianceMod)
-						  ||
-					in_array($searchProp->filterAllianceMod, array('only','not') ) ) && //фильтр альянсов (модификатор)
+				(empty($searchProp->alliance)
+					||
+				in_array($searchProp->alliance, array('all','yes','none') ) ) && //альянс
 
-				  ( is_null($searchProp->liga)
-						  ||
-					( is_array($searchProp->liga) && count(array_diff( $searchProp->liga, array('I','II','III') ) ) == 0 ) ) && //лига
+				(empty($searchProp->liga)
+					||
+				(is_array($searchProp->liga) && count(array_diff( $searchProp->liga, array('I','II','III') ) ) == 0 ) ) && //лига
 
-				  ( is_null($searchProp->rase)
-						  ||
-					( is_array($searchProp->rase) && count(array_diff( $searchProp->rase, array_keys($rases) ) ) == 0 ) ) && //расса
+				(empty($searchProp->premium)
+					||
+				in_array($searchProp->premium, array('all','yes','none') ) ) && //премиум
 
-				  ( empty($searchProp->premium)
-						  ||
-					in_array($searchProp->premium, array('all','yes','none') ) ) && //премиум
+				(empty($searchProp->onlyGateAvaliable)
+					||
+				in_array($searchProp->onlyGateAvaliable, array('1','0') ) ) && //скрывание недоступных по расширенным статусам ворот
 
-				  ( empty($searchProp->onlyGateAvaliable)
-						  ||
-					in_array($searchProp->onlyGateAvaliable, array('1','0') ) ) && //скрывание недоступных по расширенным статусам ворот
+				(empty($searchProp->rase)
+					||
+				(is_array($searchProp->rase) && count(array_diff( $searchProp->rase, array_keys($rases) ) ) == 0 ) ) && //расса
 
-				  ( Mylib_Utils::validateSlide($searchProp->complMin, $searchProp->complMax) ) &&
-				  ( Mylib_Utils::validateSlide($searchProp->rankoldMin, $searchProp->rankoldMax) ) &&
-				  ( Mylib_Utils::validateSlide($searchProp->ranknewMin, $searchProp->ranknewMax) ) &&
-				  ( Mylib_Utils::validateSlide($searchProp->boMin, $searchProp->boMax) ) &&
-				  ( Mylib_Utils::validateSlide($searchProp->nraMin, $searchProp->nraMax) ) &&
-				  ( Mylib_Utils::validateSlide($searchProp->raMin, $searchProp->raMax) ) &&
-				  ( Mylib_Utils::validateSlide($searchProp->levelMin, $searchProp->levelMax) ) &&
-				  ( Mylib_Utils::validateSlide($searchProp->archMin, $searchProp->archMax) ) &&
-				  ( Mylib_Utils::validateSlide($searchProp->buildMin, $searchProp->buildMax) ) &&
-				  ( Mylib_Utils::validateSlide($searchProp->scienMin, $searchProp->scienMax) )
-				  ) ? true : false;
+				(empty($searchProp->filterAlliance)
+					||
+				(is_array($searchProp->filterAlliance) && count( $searchProp->filterAlliance ) <= 20 ) ) && //фильтр альянсов (ids)
+
+				(empty($searchProp->filterAllianceMod)
+					||
+				in_array($searchProp->filterAllianceMod, array('only','not') ) ) && //фильтр альянсов (модификатор)
+
+
+				((empty($searchProp->complMin) && empty($searchProp->complMax))
+					||
+				Mylib_Utils::validateSlide($searchProp->complMin, $searchProp->complMax) ) &&
+
+				((empty($searchProp->rankoldMin) && empty($searchProp->rankoldMax))
+					||
+				Mylib_Utils::validateSlide($searchProp->rankoldMin, $searchProp->rankoldMax) ) &&
+
+				((empty($searchProp->ranknewMin) && empty($searchProp->ranknewMax))
+					||
+				Mylib_Utils::validateSlide($searchProp->ranknewMin, $searchProp->ranknewMax) ) &&
+
+				((empty($searchProp->boMin) && empty($searchProp->boMax))
+					||
+				Mylib_Utils::validateSlide($searchProp->boMin, $searchProp->boMax) ) &&
+
+				((empty($searchProp->nraMin) && empty($searchProp->nraMax))
+					||
+				Mylib_Utils::validateSlide($searchProp->nraMin, $searchProp->nraMax) ) &&
+
+				((empty($searchProp->raMin) && empty($searchProp->raMax))
+					||
+				Mylib_Utils::validateSlide($searchProp->raMin, $searchProp->raMax) ) &&
+
+				((empty($searchProp->levelMin) && empty($searchProp->levelMax))
+					||
+				Mylib_Utils::validateSlide($searchProp->levelMin, $searchProp->levelMax) ) &&
+
+				((empty($searchProp->archMin) && empty($searchProp->archMax))
+					||
+				Mylib_Utils::validateSlide($searchProp->archMin, $searchProp->archMax) ) &&
+
+				((empty($searchProp->buildMin) && empty($searchProp->buildMax))
+					||
+				Mylib_Utils::validateSlide($searchProp->buildMin, $searchProp->buildMax) ) &&
+
+				((empty($searchProp->scienMin) && empty($searchProp->scienMax))
+					||
+				Mylib_Utils::validateSlide($searchProp->scienMin, $searchProp->scienMax) )
+
+			) ? true : false;
 	}
-
-	/*
-	 * проверяем наличие необходимых полей в сохранённой ссылке расширенного поиска
-	 * @var saveProp - stdClass
-	 * @return bool
-	 */
-	public function _issetSearchFormValues($saveProp)
-	{
-		return (
-				property_exists( $saveProp, 'gate')    &&
-				property_exists( $saveProp, 'ring')    &&
-				property_exists( $saveProp, 'alliance')&&
-				property_exists( $saveProp, 'filterAlliance')&&
-				property_exists( $saveProp, 'filterAllianceMod')&&
-				property_exists( $saveProp, 'liga' )   &&
-				property_exists( $saveProp, 'rase'  )  &&
-				property_exists( $saveProp, 'complMin'  )&&
-				property_exists( $saveProp, 'complMax'  ) &&
-				property_exists( $saveProp, 'rankoldMin'   ) &&
-				property_exists( $saveProp, 'rankoldMax'  )  &&
-				property_exists( $saveProp, 'ranknewMin'   ) &&
-				property_exists( $saveProp, 'ranknewMax'  )  &&
-				property_exists( $saveProp, 'boMin'    )  &&
-				property_exists( $saveProp, 'boMax'     ) &&
-				property_exists( $saveProp, 'raMin'    )  &&
-				property_exists( $saveProp, 'raMax'   )   &&
-				property_exists( $saveProp, 'nraMin'    )  &&
-				property_exists( $saveProp, 'nraMax'   )   &&
-				property_exists( $saveProp, 'levelMin'  ) &&
-				property_exists( $saveProp, 'levelMax' )  &&
-				property_exists( $saveProp, 'archMin'  )  &&
-				property_exists( $saveProp, 'archMax'  )  &&
-				property_exists( $saveProp, 'buildMin'  ) &&
-				property_exists( $saveProp, 'buildMax'  ) &&
-				property_exists( $saveProp, 'scienMin'  ) &&
-				property_exists( $saveProp, 'scienMax'  )
-				) ? true : false;
-
-	}
-
 }

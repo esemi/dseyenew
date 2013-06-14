@@ -267,7 +267,7 @@ class CliController extends Zend_Controller_Action
 		$this->_helper->modelLoad('CronLock')->incCounter('gate');
 
 		//обновляем время проверки
-		//$this->_helper->modelLoad('WorldsGameParse')->updCheck($worldProp['id_world']); @TODO uncomment
+		$this->_helper->modelLoad('WorldsGameParse')->updCheck($worldProp['id_world']);
 
 		//различные данные по миру
 		$worldData = $this->_helper->modelLoad('Worlds')->getData($worldProp['id_world']);
@@ -384,7 +384,7 @@ class CliController extends Zend_Controller_Action
 		}
 
 		$this->_helper->modelLoad('CronLock')->decCounter('gate');
-		//$this->_helper->modelLoad('WorldsGameParse')->updCheck($worldProp['id_world']); @TODO uncomment
+		$this->_helper->modelLoad('WorldsGameParse')->updCheck($worldProp['id_world']);
 
 		$this->_log->add(sprintf('Комплексов выбрано %d;Комплов загружено %d; Игроков обновлено %d; Ошибок парсинга сот %d.',
 				count($compls),

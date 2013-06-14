@@ -11,7 +11,7 @@ class Zend_View_Helper_FormSlider extends Zend_View_Helper_Abstract
 	public function FormSlider($name, $tagname, $maxParams, $searchParams)
 	{
 		if($maxParams[$tagname] == 0)
-			return false;
+			return;
 
 		$min_name = "{$tagname}Min";
 		$max_name = "{$tagname}Max";
