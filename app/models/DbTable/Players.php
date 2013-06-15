@@ -57,7 +57,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 	}
 
 	/**
-	 * обновить старые рейтинги игроку мира
+	 * обновить расширенные статусы ворот/према игроку 
 	 * gate cli
 	 */
 	public function updateGateStatuses($idW, $nik, $shield, $newbee, $ban, $prem)

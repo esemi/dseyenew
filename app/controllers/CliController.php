@@ -376,6 +376,7 @@ class CliController extends Zend_Controller_Action
 
 		if($countUpd > 0)
 		{
+			$this->_updateWorldParams($worldProp['id_world']);
 			$this->getFrontController()
 					->getParam('bootstrap')
 					->getResource('cachemanager')
