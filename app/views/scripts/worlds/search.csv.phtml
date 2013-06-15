@@ -2,10 +2,6 @@
 $handle = fopen('php://output', 'w');
 $params = array('№','ник','адрес соты','ворота','альянс','раса','рейтинг старый','БО','НРА','РА','уровень','лига','рейтинг новый','археология','стройка','наука', 'ссылка на пользователя', 'ссылка на альянс');
 
-if($this->extendedGateStatus){
-	$params = array_merge($params, array('щит', 'защита новичка', 'бан', 'премиум'));
-}
-
 Mylib_Utils::fputcsv($handle, $params);
 foreach($this->players as $k => $player)
 {
@@ -28,14 +24,6 @@ foreach($this->players as $k => $player)
 		$player['scien'],
 		$this->url(array( 'idW' => $this->idWorld, 'idP' => $player['id'] ), 'playerStat', true),
 		$this->url(array( 'idW' => $this->idWorld, 'idA' => $player['id_alliance'] ), 'allianceIndex', true));
-
-	if($this->extendedGateStatus){
-		$data = array_merge($data, array(
-			$player['gate_shield'],
-			$player['gate_newbee'],
-			$player['gate_ban'],
-			$player['premium']));
-	}
 
 	Mylib_Utils::fputcsv($handle, $data);
 }

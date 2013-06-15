@@ -57,7 +57,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 	}
 
 	/**
-	 * обновить расширенные статусы ворот/према игроку 
+	 * обновить расширенные статусы ворот/према игроку
 	 * gate cli
 	 */
 	public function updateGateStatuses($idW, $nik, $shield, $newbee, $ban, $prem)
@@ -857,7 +857,8 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 				->setIntegrityCheck(false)
 				->from($this, array(
 					'id', 'nik', 'dom_adr' => "CONCAT_WS('.', ring, {$this->_name}.compl, {$this->_name}.sota )",
-					'dom_name', 'mesto', 'rank_old', 'rank_new', 'bo', 'nra', 'ra', 'gate', 'level', 'liga', 'archeology', 'building', 'science','delta_rank_old','delta_bo' ))
+					'dom_name', 'mesto', 'rank_old', 'rank_new', 'bo', 'nra', 'ra', 'gate', 'level', 'liga', 'archeology', 'building', 'science',
+					'delta_rank_old','delta_bo', 'gate_shield', 'gate_newbee', 'gate_ban', 'premium'))
 				->joinLeft('players_colony', "{$this->_name}.id = players_colony.id_player",
 						array(
 							'colony_adr' => new Zend_Db_Expr('CAST( GROUP_CONCAT( CONCAT( "4.", players_colony.compl, ".", players_colony.sota) SEPARATOR ",")  AS char)'),
