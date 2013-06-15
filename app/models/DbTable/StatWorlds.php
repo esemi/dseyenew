@@ -108,5 +108,30 @@ class App_Model_DbTable_StatWorlds extends App_Model_Abstract_StatGeneral
 		return $this->fetchAll($select)->toArray();
 	}
 
+	/*
+	 * количество премиум игроков
+	 */
+	protected function notcached_getCountPremium($idW)
+	{
+		$select = $this->select()
+						->from($this, array('value' => 'count_premium', 'date' => "DATE_FORMAT( `date_create` , '%d.%m.%Y' )" ))
+						->where('date_create > "2013-06-14"')
+						->order('date_create ASC');
+		$this->_addItemWhere($idW, $select);
+		return $this->fetchAll($select)->toArray();
+	}
+
+	/*
+	 * количество недоступных игроков
+	 */
+	protected function notcached_getCountNotAvaliableGate($idW)
+	{
+		$select = $this->select()
+						->from($this, array('value' => 'count_notavaliable_gate', 'date' => "DATE_FORMAT( `date_create` , '%d.%m.%Y' )" ))
+						->where('date_create > "2013-06-14"')
+						->order('date_create ASC');
+		$this->_addItemWhere($idW, $select);
+		return $this->fetchAll($select)->toArray();
+	}
 
 }

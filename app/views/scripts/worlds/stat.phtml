@@ -41,6 +41,14 @@ $this->breadCrumb( array( sprintf('<a href="%s">%s</a>', $this->url(array( 'idW'
 		<li>
 			<strong class="bold">Наука:</strong><a href="#scien_sum">общий</a>/<a href="#scien_avg">средний</a>
 		</li>
+		<?php if($this->extendedGateStatus): ?>
+			<li>
+				<a href="#premium">Премиум аккаунтов</a>
+			</li>
+			<li>
+				<a href="#gate_not_avaliable" title="щит, бан, новичок и аналоги">Недоступных игроков</a>
+			</li>
+		<?php endif; ?>
 	</ul>
 </div>
 

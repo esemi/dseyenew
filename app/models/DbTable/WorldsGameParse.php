@@ -8,8 +8,10 @@ class App_Model_DbTable_WorldsGameParse extends Mylib_DbTable_Cached
 	protected
 			$_name = 'worlds_game_parse',
 			$_primary = 'id_world',
-			$_cacheName = 'default';
-
+			$_cacheName = 'up',
+			$_tagsMap = array(
+				'getUpdDate' => array('gate'),
+			);
 	/*
 	 * мир для обновления
 	 * @return array | null
@@ -38,5 +40,15 @@ class App_Model_DbTable_WorldsGameParse extends Mylib_DbTable_Cached
 						->where('id_world = ?', $idW, Zend_Db::INT_TYPE)
 						->limit(1);
 		return !is_null($this->fetchRow($select));
+	}
+
+	protected function notcached_getUpdDate($idW)
+	{
+		$select = $this->select()
+						->from($this, array('date' => 'DATE_FORMAT(`date_check`,"%H:%i %d.%m.%Y")'))
+						->where("id_world = ?", $idW, Zend_Db::INT_TYPE)
+						->limit(1);
+		$res = $this->fetchRow($select);
+		return $res['date'];
 	}
 }

@@ -551,7 +551,9 @@ class AjaxController extends Zend_Controller_Action
 			'science' => 'Наука',
 			'mesto' => 'Место',
 			'level' => 'Уровень',
-			'count_alliance' => 'Всего');
+			'count_alliance' => 'Всего',
+			'count_premium' => 'Всего',
+			'count_notavaliable_gate' => 'Всего');
 
 		$out = new stdClass();
 		$out->name = $items[$type];
@@ -718,6 +720,14 @@ class AjaxController extends Zend_Controller_Action
 			case 'scien_avg':
 				$data = $this->_helper->modelLoad('StatWorlds')->getAvgScien($idW);
 				$series = $this->_prepareStandartRaseGraph($data, false);
+				break;
+			case 'premium':
+				$data = $this->_helper->modelLoad('StatWorlds')->getCountPremium($idW);
+				$series = $this->_prepareStandartSingleGraph('count_premium', $data);
+				break;
+			case 'gate_not_avaliable':
+				$data = $this->_helper->modelLoad('StatWorlds')->getCountNotAvaliableGate($idW);
+				$series = $this->_prepareStandartSingleGraph('count_notavaliable_gate', $data);
 				break;
 			default:
 				$this->view->error = 'Не выбран тип графика';

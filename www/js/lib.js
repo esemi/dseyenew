@@ -1154,7 +1154,7 @@ function loadAndDrawWorldGraph(target)
 	var selectClass = jQuery('.js-graph-menu-world').attr('selectclass');
 
 	var type = 'in_out_day';
-	if( typeof target != 'undefined' )
+	if( typeof target !== 'undefined' )
 	{
 		type = target.attr('href').substring(1);
 	}else{
@@ -1182,6 +1182,8 @@ function loadAndDrawWorldGraph(target)
 			case 'build_avg':
 			case 'scien_sum':
 			case 'scien_avg':
+			case 'premium':
+			case 'gate_not_avaliable':
 				type = hash;
 				break;
 			default:
@@ -1207,7 +1209,7 @@ function loadAndDrawWorldGraph(target)
 		},
 		function(res)
 		{
-			if( typeof res.error != 'undefined' )
+			if( typeof res.error !== 'undefined' )
 			{
 				printGraphError(container, res.error );
 				return;
@@ -1280,6 +1282,14 @@ function loadAndDrawWorldGraph(target)
 					break;
 				case 'scien_avg':
 					drawStatWorldGraph(res.series, 'Средняя наука');
+					break;
+					break;
+				case 'premium':
+					drawStatWorldGraph(res.series, 'Количество премиум аккаунтов');
+					break;
+					break;
+				case 'gate_not_avaliable':
+					drawStatWorldGraph(res.series, 'Количество недоступных игроков (щит, бан, новичок, ...)');
 					break;
 				default:
 					return;

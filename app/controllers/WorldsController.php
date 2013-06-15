@@ -51,6 +51,7 @@ class WorldsController extends Zend_Controller_Action
 		$this->view->mainData['date_old_ranks'] = $this->_helper->modelLoad('WorldsOldranks')->getUpdDate($this->idW);
 		$this->view->mainData['date_new_ranks'] = $this->_helper->modelLoad('WorldsNewranks')->getUpdDate($this->idW);
 		$this->view->mainData['date_dshelp'] = $this->_helper->modelLoad('WorldsDshelp')->getUpdDate($this->idW);
+		$this->view->mainData['date_game_parse'] = $this->_helper->modelLoad('WorldsGameParse')->getUpdDate($this->idW);
 
 		//параметры
 		$this->view->propData = $this->_helper->modelLoad('WorldsProperty')->getProp($this->idW);
@@ -127,6 +128,8 @@ class WorldsController extends Zend_Controller_Action
 		$this->view->actTitle = "Статистика по основным показателям и графики";
 		$this->view->keywords = "{$this->view->nameWorld}, Мир, Статистика";
 		$this->view->description = "Мир {$this->view->nameWorld}. Статистика по основным показателям и графики.";
+
+		$this->view->extendedGateStatus = $this->_helper->modelLoad('WorldsGameParse')->statusAvaliable( $this->idW );
 	}
 
 	/*
