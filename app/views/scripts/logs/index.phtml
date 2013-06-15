@@ -79,5 +79,9 @@ echo $this->partial(
 
 echo $this->partial(
         'Partials/logTable.phtml',
+        array( 'data' => $this->gate, 'name' => 'gate log' ) );
+
+echo $this->partial(
+        'Partials/logTable.phtml',
         array( 'data' => $this->csv, 'name' => 'csv log' ) );
 ?>

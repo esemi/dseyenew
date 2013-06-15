@@ -35,6 +35,7 @@ class LogsController extends Zend_Controller_Action
 		$this->view->dshelp = $this->_helper->modelLoad('CronLogs')->getLogsByType('dshelpRA');
 		$this->view->oldranks = $this->_helper->modelLoad('CronLogs')->getLogsByType('oldRanks');
 		$this->view->newranks = $this->_helper->modelLoad('CronLogs')->getLogsByType('newRanks');
+		$this->view->gate = $this->_helper->modelLoad('CronLogs')->getLogsByType('gate');
 		$this->view->csv = $this->_helper->modelLoad('CronLogs')->getLogsByType('csv');
 	}
 
