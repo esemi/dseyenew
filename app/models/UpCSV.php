@@ -98,7 +98,7 @@ class App_Model_UpCSV
 	{
 		$newFileName = sprintf('%s_%s.%s',
 				mb_strtolower( str_replace(' ', '_', $worldName ), 'utf8'),
-				date('d-m-Y_H:i:s'),
+				date('Y-m-d_H:i:s'),
 				($this->_gziped) ? 'csv.gz' : 'csv');
 		return copy($this->_currentFilePath, "{$archivePath}{$newFileName}");
 	}

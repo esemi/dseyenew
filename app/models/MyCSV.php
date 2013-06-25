@@ -47,7 +47,7 @@ class App_Model_MyCSV
 		file_put_contents("{$this->_path}{$filename}.csv.gz", gzencode($content, $this->_gzLevel));
 
 		//добавляем архивный файл
-		return copy( "{$this->_path}{$filename}.csv.gz", sprintf("{$this->_archivePath}{$filename}_%s.csv.gz", date('d-m-Y_H:i:s')) );
+		return copy( "{$this->_path}{$filename}.csv.gz", sprintf("{$this->_archivePath}{$filename}_%s.csv.gz", date('Y-m-d_H:i:s')) );
 	}
 }
 
