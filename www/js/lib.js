@@ -6,7 +6,7 @@ jQuery(document).ready(function()
 		jQuery('.js-world-select').change(function()
 		{
 			var href = jQuery(this).val();
-			if( typeof href != 'undefined' )
+			if( typeof href !== 'undefined' )
 				location = href;
 		});
 
@@ -16,11 +16,6 @@ jQuery(document).ready(function()
 		{
 			window.scroll(0,0);
 		});
-
-
-		//фокус на поле формы
-		jQuery('.js-form-focus:first').focus();
-
 
 		//тултипс с вопросительной инфой
 		jQuery(".js-quest-tooltip").tooltip(

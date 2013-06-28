@@ -22,7 +22,7 @@ if( isset($this->error) )
 			Если вам необходимо произвести поиск игроков без учёта мира &mdash; воспользуйтесь сервисом <a href="<?php echo $this->url(array(), 'globalSearch', true)?>">глобального поиска игроков</a>.
 		</p>
 		<p class="color-logo"><span class="bold">Введите часть ника или названия домашней соты</span> (минимум 3 символа)</p>
-		<input placeholder="Введите ник или его часть" class="w-192 js-search-term <?php echo ( !isset($this->post) ) ? 'js-form-focus' : ''; ?>" type="text" value="" idW="<?php echo $this->idWorld; ?>"/>
+		<input placeholder="Введите ник или его часть" autofocus class="w-192 js-search-term" type="text" value="" idW="<?php echo $this->idWorld; ?>"/>
 		<table class="hide table mrg-top-13 js-table-select">
 			<thead class="text-center">
 				<tr>
