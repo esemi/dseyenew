@@ -112,3 +112,16 @@ ADD `count_premium` SMALLINT UNSIGNED NOT NULL AFTER `count_notavaliable_gate`;
 
 ALTER TABLE `worlds_property` ADD `count_notavaliable_gate` SMALLINT UNSIGNED NOT NULL ,
 ADD `count_premium` SMALLINT UNSIGNED NOT NULL;
+
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(18, 'dseye_fenix', '8185basdasd378a4', '19423_4_1', '2013-02-04 20:42:57');
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(3, 'dseye_erik', '8185basdasd378a4', '18025_2_1', '2013-02-04 20:42:57');
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(6, 'dseye_orion', '8185basdasd378a4', '21387_5_2', '2013-02-04 20:42:57');
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(7, 'dseye_zmey', '8185basdasd378a4', '11047_6_2', '2013-02-04 20:42:57');
