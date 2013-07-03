@@ -125,3 +125,37 @@ INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_
 
 INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
 (7, 'dseye_zmey', '8185basdasd378a4', '11047_6_2', '2013-02-04 20:42:57');
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(10, 'dseye_volk', '8185basdasd378a4', '39240_11_2', '2013-02-04 20:42:57');
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(11, 'dseye_terra', '8185basdasd378a4', '129312_10_6', '2013-02-04 20:42:57');
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(12, 'dseye_edinorog', '8185basdasd378a4', '48555_12_15', '2013-02-04 20:42:57');
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(16, 'dseye_strela', '8185basdasd378a4', '70785_8_1', '2013-02-04 20:42:57');
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(28, 'dseye_parus', '8185basdasd378a4', '3616_1_1', '2013-02-04 20:42:57');
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(20, 'dseye_vesy', '8185basdasd378a4', '129398_0_9', '2013-02-04 20:42:57');
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(21, 'dseye_dragon', '8185basdasd378a4', '21604_2_1', '2013-02-04 20:42:57');
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(22, 'dseye_telec', '8185basdasd378a4', '12033_3_2', '2013-02-04 20:42:57');
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(23, 'dseye_eagle', '8185basdasd378a4', '29265_1_3', '2013-02-04 20:42:57');
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(30, 'dseye_pulsar', '8185basdasd378a4', '13096_0_6', '2013-02-04 20:42:57');
+
+INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
+(27, 'dseye_proxima', '8185basdasd378a4', '4365_0_1', '2013-02-04 20:42:57');
+
