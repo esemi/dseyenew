@@ -159,3 +159,7 @@ INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_
 INSERT INTO `worlds_game_parse` (`id_world`, `login`, `password`, `uiid`, `date_check`) VALUES
 (27, 'dseye_proxima', '8185basdasd378a4', '4365_0_1', '2013-02-04 20:42:57');
 
+UPDATE `dseye_new`.`game_versions` SET `game_url` = 'http://ds-game.ru/' WHERE `game_versions`.`id` =2;
+UPDATE `dseye_new`.`game_versions` SET `game_url` = 'http://test.destinysphere.ru/' WHERE `game_versions`.`id` =3;
+UPDATE `dseye_new`.`game_versions` SET `game_url` = 'http://destinysphere.de/' WHERE `game_versions`.`id` =4;
+UPDATE `dseye_new`.`game_versions` SET `game_url` = 'http://ds-game.su/' WHERE `game_versions`.`id` =5;
