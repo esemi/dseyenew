@@ -13,6 +13,6 @@ MAILTO=""
 * 0-3,5-23 * * * php /home/esemi/dseyenew/app/zfcli.php -a up >> /home/esemi/logs/dseye/cron.log
 * 0-3,5-23 * * * php /home/esemi/dseyenew/app/zfcli.php -a oldranks >> /home/esemi/logs/dseye/cron.log
 * 0-3,5-23 * * * php /home/esemi/dseyenew/app/zfcli.php -a newranks >> /home/esemi/logs/dseye/cron.log
-*/5 0-3,5-23 * * * php /home/esemi/dseyenew/app/zfcli.php -a dshelpra>> /home/esemi/logs/dseye/cron.log
-*/5 0-3,5-23 * * * php /home/esemi/dseyenew/app/zfcli.php -a nra>> /home/esemi/logs/dseye/cron.log
+*/3 0-3,5-23 * * * php /home/esemi/dseyenew/app/zfcli.php -a dshelpra>> /home/esemi/logs/dseye/cron.log
+*/2 0-3,5-23 * * * php /home/esemi/dseyenew/app/zfcli.php -a nra>> /home/esemi/logs/dseye/cron.log
 */2 0-3,5-23 * * * php /home/esemi/dseyenew/app/zfcli.php -a gate >> /home/esemi/logs/dseye/cron.log

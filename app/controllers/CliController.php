@@ -681,7 +681,6 @@ class CliController extends Zend_Controller_Action
 		//обновляем параметры альянсов и мира (новые рейтинги то обновились, да?)
 		if($countUpd > 0)
 		{
-			$this->_helper->modelLoad('WorldsNRA')->forceUpdate($worldProp['id_world']);
 			$this->_compareAlliance($worldProp['id_world']);
 			$this->_updateWorldParams($worldProp['id_world']);
 
@@ -845,8 +844,6 @@ class CliController extends Zend_Controller_Action
 		//обновляем параметры альянсов и мира и макс дельты игроков
 		if($countUpd > 0)
 		{
-			//$this->_helper->modelLoad('WorldsNRA')->forceUpdate($worldProp['id_world']);
-
 			//обновляем последние дельты игроков в табличке players (денормализация ради скорости работы списков игроков):
 			//дельты кешируются на конфигурируемое количество часов и обнуляются по времени (ради удаления слишком старых дельт из списков)
 			$this->_updatePlayersDelts($worldProp['id_world']);
@@ -1135,7 +1132,6 @@ class CliController extends Zend_Controller_Action
 		}
 
 		$this->_helper->modelLoad('WorldsCsv')->updHash($worldProp['id_world'], $hash); //обновление хеша в конце ради защиты от прерванной транзакции (ввиду большой конкуренции за игроков каждую минуту)
-		$this->_helper->modelLoad('WorldsNRA')->forceUpdate($worldProp['id_world']);
 
 		$this->_log->add('Начали чистить кеш', true);
 		$this->getFrontController()
