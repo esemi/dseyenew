@@ -84,8 +84,8 @@ class App_Model_GameClient
 			'enter' => 'Login',
 			'login' => $login,
 			'pass' => $pass,
-			'x' => 6,
-			'y' => 28
+			'x' => rand(1, 18),
+			'y' => rand(1, 53)
 		));
 		$result = curl_exec($this->_curl);
 		if( $result === false ){
