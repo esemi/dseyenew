@@ -290,7 +290,7 @@ class CliController extends Zend_Controller_Action
 
 		//логинимся
 		$this->_log->add('первичный вход в мир');
-		$res = $gameClient->doEnter($worldProp['login'], $worldProp['password'], $worldProp['uiid']);
+		$res = $gameClient->doEnter($worldProp['login'], $worldProp['password']);
 		if( $res !== true )
 		{
 			$this->_log->add('не смогли войти в мир');
@@ -316,7 +316,7 @@ class CliController extends Zend_Controller_Action
 					while($loginTryLimit > 0 && $connectedFlag === false)
 					{
 						$loginTryLimit--;
-						$connectedFlag = $gameClient->doEnter($worldProp['login'], $worldProp['password'], $worldProp['uiid'], true);
+						$connectedFlag = $gameClient->doEnter($worldProp['login'], $worldProp['password'], true);
 						$this->_log->add(sprintf('осталось попыток релогина %d', $loginTryLimit));
 					}
 

@@ -16,8 +16,9 @@ class App_Model_GameClient
 			$_curl = null,
 			$_url = '',
 			$_cookieFilename,
-			$_sidix = '',
+			$_sessid = '',
 			$_ck = '',
+			$_uiid = '',
 			$_lastComplData = '';
 
 
@@ -49,7 +50,7 @@ class App_Model_GameClient
 		$this->_log = $log;
 	}
 
-	public function doEnter($login, $pass, $uiid, $reset=false)
+	public function doEnter($login, $pass, $reset=false)
 	{
 		if( $reset === true )
 			$this->_curlReset();
@@ -63,9 +64,18 @@ class App_Model_GameClient
 			return false;
 		}
 
+		//получаем uiid
+		$this->_log->add('получаем uiid');
+		$res = $this->getUIID();
+		if( $res !== true )
+		{
+			$this->_log->add('не смогли получить UIID мира');
+			return false;
+		}
+
 		//чекинимся в мире
 		$this->_log->add('чекинимся');
-		$res = $this->checkin($uiid);
+		$res = $this->checkin();
 		if( $res !== true )
 		{
 			$this->_log->add('не смогли зачекиниться в мире');
@@ -103,7 +113,30 @@ class App_Model_GameClient
 		return true;
 	}
 
-	public function checkin($uiid)
+	public function getUIID()
+	{
+		curl_setopt($this->_curl, CURLOPT_URL, $this->_getUiidUrl());
+		curl_setopt($this->_curl, CURLOPT_CONNECTTIMEOUT, $this->_timeoutLogin);
+		curl_setopt($this->_curl, CURLOPT_TIMEOUT, $this->_timeoutLogin);
+		curl_setopt($this->_curl, CURLOPT_REFERER, $this->_url);
+		$result = curl_exec($this->_curl);
+		if( $result === false ){
+			$this->_log->add(curl_error($this->_curl));
+			return false;
+		}
+
+		$result = iconv("Windows-1251", "UTF-8", $result);
+		$res = $this->_parseUiidResponse($result);
+		if( $res !== true ){
+			$this->_log->add('Not parsed UIID response');
+			$this->_log->add($result);
+			return false;
+		}
+
+		return true;
+	}
+
+	public function checkin()
 	{
 		curl_setopt($this->_curl, CURLOPT_URL, $this->_getCheckinUrl());
 		curl_setopt($this->_curl, CURLOPT_CONNECTTIMEOUT, $this->_timeoutLogin);
@@ -112,7 +145,7 @@ class App_Model_GameClient
 		curl_setopt($this->_curl, CURLOPT_POSTFIELDS, array(
 			'ck' => $this->_ck,
 			'start' => 1,
-			'uiid' => $uiid
+			'uiid' => $this->_uiid
 		));
 		$result = curl_exec($this->_curl);
 		if( $result === false ){
@@ -148,6 +181,7 @@ class App_Model_GameClient
 			return false;
 		}
 
+		$result = iconv("Windows-1251", "UTF-8", $result);
 		$res = $this->_parseViewCompl($result);
 		if( $res !== true ){
 			$this->_log->add('Not parsed view compl response');
@@ -162,15 +196,31 @@ class App_Model_GameClient
 	protected function _parseLoginResponse($headers)
 	{
 		$matches = array();
-		if( preg_match('/Location:\sindex_start.php\?ck=([\d\w]{10})&SIDIX=([\w\d]{26})/iu', $headers, $matches) )
+		if( preg_match('/Location:\sindex_start.php\?ck=([\d\w]{10})&PHPSESSID=([\w\d]{26})/iu', $headers, $matches) )
 		{
 			$this->_ck = $matches[1];
-			$this->_sidix = $matches[2];
+			$this->_sessid = $matches[2];
 			$this->_log->add('login matches');
 			$this->_log->add($matches);
 			return true;
 		}
 
+		return false;
+	}
+
+	protected function _parseUiidResponse($content)
+	{
+		$matches = array();
+		if(
+				mb_strpos($content, 'name="uiid"') !== false &&
+				preg_match('/value="(\d{1,7}\_\d{1}\_\d{1})"/iu', $content, $matches)
+		){
+			$this->_log->add('uiid matches');
+			$this->_log->add($matches);
+			$this->_uiid = $matches[1];
+
+			return true;
+		}
 		return false;
 	}
 
@@ -258,13 +308,19 @@ class App_Model_GameClient
 	{
 		return "{$this->_url}ds/index_login.php";
 	}
+	protected function _getUiidUrl()
+	{
+		return "{$this->_url}ds/index_start.php?" . http_build_query(array(
+			'ck' => $this->_ck,
+			'SIDIX' => $this->_sessid));
+	}
 	protected function _getCheckinUrl()
 	{
 		return "{$this->_url}ds/index_start.php";
 	}
 	protected function _getViewComplUrl()
 	{
-		return "{$this->_url}ds/useraction.php?SIDIX={$this->_sidix}";
+		return "{$this->_url}ds/useraction.php?SIDIX={$this->_sessid}";
 	}
 
 	protected function _curlInit()
