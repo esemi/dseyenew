@@ -125,7 +125,7 @@ class App_Model_GameClient
 			return false;
 		}
 
-		$result = iconv("Windows-1251", "UTF-8", $result);
+		$result = iconv("Windows-1251", "UTF-8//IGNORE", $result);
 		$res = $this->_parseUiidResponse($result);
 		if( $res !== true ){
 			$this->_log->add('Not parsed UIID response');
@@ -175,13 +175,14 @@ class App_Model_GameClient
 					$this->_RINGS[$ringNum],
 					$complNum)
 		));
+
 		$result = curl_exec($this->_curl);
 		if( $result === false ){
 			$this->_log->add(curl_error($this->_curl));
 			return false;
 		}
 
-		$result = iconv("Windows-1251", "UTF-8", $result);
+		$result = iconv("Windows-1251", "UTF-8//IGNORE", $result);
 		$res = $this->_parseViewCompl($result);
 		if( $res !== true ){
 			$this->_log->add('Not parsed view compl response');
@@ -210,14 +211,18 @@ class App_Model_GameClient
 
 	protected function _parseUiidResponse($content)
 	{
-		$matches = array();
+		$matchesUiid = array();
+		$matchesCk = array();
 		if(
 				mb_strpos($content, 'name="uiid"') !== false &&
-				preg_match('/value="(\d{1,7}\_\d{1}\_\d{1})"/iu', $content, $matches)
+				preg_match('/value="(\d{1,7}\_\d{1,4}\_\d{1,4})"/iu', $content, $matchesUiid) &&
+				preg_match('/name="ck"\svalue="([\d\w]{10})"/iu', $content, $matchesCk)
 		){
-			$this->_log->add('uiid matches');
-			$this->_log->add($matches);
-			$this->_uiid = $matches[1];
+			$this->_log->add('uiid and ck matches');
+			$this->_log->add($matchesUiid);
+			$this->_log->add($matchesCk);
+			$this->_uiid = $matchesUiid[1];
+			$this->_ck = $matchesCk[1];
 
 			return true;
 		}
