@@ -197,7 +197,7 @@ class App_Model_GameClient
 	protected function _parseLoginResponse($headers)
 	{
 		$matches = array();
-		if( preg_match('/Location:\sindex_start.php\?ck=([\d\w]{10})&PHPSESSID=([\w\d]{26})/iu', $headers, $matches) )
+		if( preg_match('/Location:\sindex_start.php\?ck=([\d\w]{10})&SIDIX=([\w\d]{26})/iu', $headers, $matches) )
 		{
 			$this->_ck = $matches[1];
 			$this->_sessid = $matches[2];
