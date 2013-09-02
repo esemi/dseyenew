@@ -3,16 +3,14 @@ PATH=/sbin:/bin:/usr/sbin:/usr/bin
 HOME=/home/esemi/
 MAILTO=""
 
-30 04 */7 * * /home/esemi/cron/backup_dseye.sh >> /dev/null
+00 * * * *   php ~/dseye/app/zfcli.php -a onlinestat >> ~/logs/dseye/cron.log
+25 04 * * *  php ~/dseye/app/zfcli.php -a scavenger  >> ~/logs/dseye/cron.log
+05 * * * *   php ~/dseye/app/zfcli.php -a csv >> ~/logs/dseye/cron.log
+55 23 * * *  php ~/dseye/app/zfcli.php -a day >> ~/logs/dseye/cron.log
 
-00 * * * *   php /home/esemi/dseyenew/app/zfcli.php -a onlinestat >> /home/esemi/logs/dseye/cron.log
-25 04 * * *  php /home/esemi/dseyenew/app/zfcli.php -a scavenger  >> /home/esemi/logs/dseye/cron.log
-05 * * * *   php /home/esemi/dseyenew/app/zfcli.php -a csv >> /home/esemi/logs/dseye/cron.log
-55 23 * * *  php /home/esemi/dseyenew/app/zfcli.php -a day >> /home/esemi/logs/dseye/cron.log
-
-* 0-3,5-23 * * * php /home/esemi/dseyenew/app/zfcli.php -a up >> /home/esemi/logs/dseye/cron.log
-* 0-3,5-23 * * * php /home/esemi/dseyenew/app/zfcli.php -a oldranks >> /home/esemi/logs/dseye/cron.log
-* 0-3,5-23 * * * php /home/esemi/dseyenew/app/zfcli.php -a newranks >> /home/esemi/logs/dseye/cron.log
-*/3 0-3,5-23 * * * php /home/esemi/dseyenew/app/zfcli.php -a dshelpra>> /home/esemi/logs/dseye/cron.log
-*/2 0-3,5-23 * * * php /home/esemi/dseyenew/app/zfcli.php -a nra>> /home/esemi/logs/dseye/cron.log
-*/3 0-3,5-23 * * * php /home/esemi/dseyenew/app/zfcli.php -a gate >> /home/esemi/logs/dseye/cron.log
+* 0-3,5-23 * * * php ~/dseye/app/zfcli.php -a up >> ~/logs/dseye/cron.log
+* 0-3,5-23 * * * php ~/dseye/app/zfcli.php -a oldranks >> ~/logs/dseye/cron.log
+* 0-3,5-23 * * * php ~/dseye/app/zfcli.php -a newranks >> ~/logs/dseye/cron.log
+*/3 0-3,5-23 * * * php ~/dseye/app/zfcli.php -a dshelpra>> ~/logs/dseye/cron.log
+*/2 0-3,5-23 * * * php ~/dseye/app/zfcli.php -a nra>> ~/logs/dseye/cron.log
+*/3 0-3,5-23 * * * php ~/dseye/app/zfcli.php -a gate >> ~/logs/dseye/cron.log

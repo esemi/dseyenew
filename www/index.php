@@ -1,7 +1,6 @@
 <?php
 
-define('APPLICATION_ENV',( trim(`hostname`) == 'vm10420.majordomo.ru')
-		? 'production' : 'development');
+define('APPLICATION_ENV', (getenv('APPLICATION_ENV')) ? getenv('APPLICATION_ENV') : 'production');
 
 define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../app'));
 
