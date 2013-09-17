@@ -1,6 +1,6 @@
 <?php
 
-/* 
+/*
  * моделька dshelp.info
  * для доступа к адресу картинки с графиком РА игрока
  * для доступа и парсинга страниц с РА игроков по мирам
@@ -55,7 +55,7 @@ class App_Model_Dshelp
         $response = iconv("Windows-1251", "UTF-8", curl_exec($ch));
         $err = curl_error($ch);
         curl_close($ch);
-        
+
         if( $err != '' )
         {
             $this->_errorData[] = "{$url} - {$err}<br>";
@@ -66,7 +66,7 @@ class App_Model_Dshelp
 
     }
 
-    
+
     /*
      * парсинг страницы игроков строки с параметрами игроков
      */
@@ -87,23 +87,23 @@ class App_Model_Dshelp
         $result->success = false;
         $result->error = array();
         $result->data = array();
-        
+
         $values = explode('</td>',  str_replace(' ', '', $str));
-        
+
         //не битая ли строка
         if( count($values) != 9 )
         {
             $result->error[] = "строка битая";
-        }else{            
+        }else{
             //выдираем ник
             preg_match('/index.html>[\wА-Яа-яёЁ\s.-]{3,50}<\/a>/ui', $values[1], $matches);
             if( !isset($matches[0]) )
-            {            
+            {
                 $result->error[] = "ник не найден {$values[1]}";
             }else{
                 $result->data['nik'] = substr($matches[0], 11, -4);
-                if( !preg_match('/^[\wА-Яа-яёЁ\s.-]{3,50}$/ui',$result->data['nik']) )                
-                    $result->error[] =  "стрёмный ник {$result->data['nik']}";                
+                if( !preg_match('/^[\wА-Яа-яёЁ\s.-]{3,50}$/ui',$result->data['nik']) )
+                    $result->error[] =  "стрёмный ник {$result->data['nik']}";
             }
 
             //выдираем РА
@@ -111,10 +111,10 @@ class App_Model_Dshelp
             if( !preg_match( '/^[\d]{1,3}(|[.][\d]{1,2})$/', $result->data['ra']) )
                 $result->error[] = "стрёный РА {$ra}";
         }
-        
+
         if( count($result->error) === 0 )
             $result->success = true;
-        
+
         return $result;
     }
 
@@ -126,10 +126,10 @@ class App_Model_Dshelp
     {
         if ( !$url = $this->_getImgFromCache( $idP ) )
             $url = $this->_getImgFromHttp( $nik, $idP );
-        
+
         return $url;
     }
-        
+
 
 
     /*
@@ -150,18 +150,18 @@ class App_Model_Dshelp
         $response = curl_exec($ch);
         $err = curl_error($ch);
         curl_close($ch);
-        
+
         if( $err != '' )
         {
             $this->_errorData .= "{$url} - {$err}<br>";
             return false;
         }
-        
+
         $this->_dataImg = $this->_parseImg( $response );
 
         if( $this->_dataImg != false )
             $this->_saveImgToCache( $idP );
-        
+
         return $this->_dataImg;
     }
 
@@ -172,7 +172,7 @@ class App_Model_Dshelp
     protected function _getImgFromCache( $idP )
     {
         return ( is_null($this->_cache) ) ?
-                false 
+                false
                 :
                 $this->_cache->load("{$this->_prefixImg}_{$idP}");
     }

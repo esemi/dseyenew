@@ -8,3 +8,13 @@ GRANT INSERT, UPDATE (approved, pass) ON `dseye_new`.`users` TO 'dseye_front'@'l
 GRANT INSERT, UPDATE (date_activate) ON `dseye_new`.`users_approved` TO 'dseye_front'@'localhost';
 GRANT INSERT, UPDATE (date_activate) ON `dseye_new`.`users_remember` TO 'dseye_front'@'localhost';
 GRANT INSERT ON `dseye_new`.`users_history` TO 'dseye_front'@'localhost';
+REVOKE ALL PRIVILEGES ON `dseye_new`.`users_search` FROM 'dseye_front'@'localhost';
+
+GRANT INSERT ,
+
+UPDATE (
+`prop` ,
+`date_touch`
+),
+DELETE ON `dseye_new`.`users_search` TO 'dseye_front'@'localhost';
+GRANT INSERT ON `dseye_new`.`addon_stat` TO 'dseye_front'@'localhost';
