@@ -21,7 +21,8 @@ class Action_Helper_WorldsListing extends Zend_Controller_Action_Helper_Abstract
 
 	private function _setWorldListIntoView()
 	{
-		$this->getActionController()->view->listWorlds = $this->getActionController()->getHelper('ModelLoad')->load('Worlds')->listing();
+		$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
+		$viewRenderer->view->listWorlds = $this->getActionController()->getHelper('ModelLoad')->load('Worlds')->listing();
 	}
 
 	public function direct()
