@@ -125,7 +125,8 @@ class WorldsController extends Zend_Controller_Action
 	{
 		$this->view->helpLink = $this->view->url( array('id'=>'graph'), 'helpView', true );
 
-		$this->view->headTitle("Статистика по основным показателям и графики");
+		$this->view->headTitle("Статистика");
+		$this->view->linkCanonical($this->view->url(array('idW' => $this->idW), 'worldStat', true));
 		$this->view->keywords = "{$this->view->nameWorld}, Мир, Статистика";
 		$this->view->description = "Мир {$this->view->nameWorld}. Статистика";
 
@@ -192,6 +193,7 @@ class WorldsController extends Zend_Controller_Action
 		$this->view->keywords = "{$this->view->nameWorld}, Мир, Игроки, Поиск, Кормушки";
 		$this->view->description = "Мир {$this->view->nameWorld}, поиск игроков и кормушек по миру";
 		$this->view->headTitle("Поиск игроков");
+		$this->view->linkCanonical($this->view->url(array('idW' => $this->idW), 'worldSearch', true));
 
 		$this->view->searchProp = new stdClass();
 
@@ -289,6 +291,7 @@ class WorldsController extends Zend_Controller_Action
 		$this->view->keywords = "{$this->view->nameWorld}, Мир, Карта, Кольца, Карта колец";
 		$this->view->description = "Мир {$this->view->nameWorld}, интерактивная карта колец";
 		$this->view->headTitle("Карта колец");
+		$this->view->linkCanonical($this->view->url(array('idW' => $this->idW), 'worldMap', true));
 
 		//получаем макс компл на этом кольце
 		$this->view->numMax = $maxNum = $this->_helper->modelLoad('WorldsProperty')->getMaxComple($this->idW, 4);

@@ -37,6 +37,7 @@ class AllianceController extends Zend_Controller_Action
 		$this->view->keywords = "{$this->view->nameAlliance}, Альянс, Информация";
 		$this->view->description = "Альянс {$this->view->nameAlliance}, общая информация";
 		$this->view->headTitle("Об альянсе");
+		$this->view->linkCanonical($this->view->url(array('idW' => $this->idW, 'idA' => $this->idA), 'allianceIndex', true));
 
 		$this->view->mainProperty = $this->_helper->modelLoad('Alliances')->getData($this->idA);
 

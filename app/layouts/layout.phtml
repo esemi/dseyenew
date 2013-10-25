@@ -17,6 +17,11 @@ $this->headScript()->prependFile( "/js/lib/combine.js?{$version}");
 $this->headLink()->prependStylesheet("/css/newlayouts.css?{$version}");
 $this->headLink()->prependStylesheet("/css/pepper-grinder/jQui.css?{$version}");
 
+$this->headLink(array('rel'=>"icon",'href'=>"/img/favicon.ico?{$version}", 'type'=>"image/x-icon"));
+$this->headLink(array('rel'=>"shortcut icon",'href'=>"/img/favicon.ico?{$version}", 'type'=>"image/x-icon"));
+$this->headLink(array('rel'=>"author",'href'=>"/humans.txt?{$version}"));
+$this->headLink(array('rel'=>"alternate",'href'=>$this->url(array(), 'newsRss', true), 'type'=>"application/rss+xml", 'title'=>"Atom feed news of DSeye.ru"));
+
 $this->headTitle('DSeye — анализатор онлайн игры Destiny Sphere (Сфера Судьбы)');
 $this->headTitle()->setSeparator(' / ');
 $this->headTitle()->setAutoEscape(true);
@@ -32,10 +37,6 @@ echo $this->doctype();
 		<?php echo $this->headMeta(); ?>
 		<?php echo $this->headTitle(); ?>
 		<?php echo $this->render('counters.phtml'); ?>
-		<link rel="icon" href="/img/favicon.ico" type="image/x-icon"/>
-		<link rel="shortcut icon" href="/img/favicon.ico" type="image/x-icon"/>
-		<link rel="author" href="/humans.txt" />
-		<link rel="alternate" type="application/rss+xml" href="<?php echo $this->url(array(), 'newsRss', true); ?>" title="Atom feed news of DSeye.ru"/>
 		<?php echo $this->headLink(); ?>
 	</head>
 	<body>

@@ -45,9 +45,11 @@ class ServiceController extends Zend_Controller_Action
 	{
 		$this->view->helpLink = $this->view->url( array('id'=>'fast_search'), 'helpView', true );
 
+
 		$this->view->keywords = 'Поиск, Поиск игроков';
 		$this->view->description = 'Поиск игроков по всем мирам';
 		$this->view->headTitle('Глобальный поиск игроков');
+		$this->view->linkCanonical($this->view->url(array(), 'globalSearch', true));
 
 		$conf = $this->getFrontController()->getParam('bootstrap')->getOption('limits');
 		$limit = ($this->_helper->checkAccess('others','fast_search_limit_x2')) ? 2 * $conf['fastSearch'] : $conf['fastSearch'];

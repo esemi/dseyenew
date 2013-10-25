@@ -19,6 +19,7 @@ class IndexController extends Zend_Controller_Action
 		$this->view->keywords = 'Справка, faq, вопросы, проблемы';
 		$this->view->description = 'Краткий экскурс по основным возможностям и инстукция по использованию системы';
 		$this->view->headTitle("Справка");
+		$this->view->linkCanonical($this->view->url(array(), 'staticHelp', true));
 
 		//настройки системы
 		$boot = $this->getFrontController()->getParam('bootstrap');
