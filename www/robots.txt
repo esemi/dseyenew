@@ -1,2 +1,5 @@
 User-agent: *
 Disallow: /csv/
+
+User-agent: *
+Disallow: /profile/

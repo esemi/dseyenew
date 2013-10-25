@@ -4,7 +4,7 @@ class IndexController extends Zend_Controller_Action
 {
 	public function indexAction()
 	{
-		$this->view->title = "Главная";
+		$this->view->headTitle("Главная");
 
 		$this->view->lastNews = $this->_helper->modelLoad('News')->listAll();
 	}
@@ -18,7 +18,7 @@ class IndexController extends Zend_Controller_Action
 	{
 		$this->view->keywords = 'Справка, faq, вопросы, проблемы';
 		$this->view->description = 'Краткий экскурс по основным возможностям и инстукция по использованию системы';
-		$this->view->title = "Описание основных возможностей системы";
+		$this->view->headTitle("Справка");
 
 		//настройки системы
 		$boot = $this->getFrontController()->getParam('bootstrap');
@@ -34,7 +34,7 @@ class IndexController extends Zend_Controller_Action
 
 		$this->view->keywords = 'О проекте';
 		$this->view->description = 'Описание проекта и настройки системы';
-		$this->view->title = "О проекте";
+		$this->view->headTitle("О проекте");
 
 		//настройки системы
 		$boot = $this->getFrontController()->getParam('bootstrap');
@@ -48,7 +48,7 @@ class IndexController extends Zend_Controller_Action
 	{
 		$this->view->keywords = 'Контакты, Связаться с нами';
 		$this->view->description = 'Контакты для связи с нами';
-		$this->view->title = "Контакты";
+		$this->view->headTitle("Контакты");
 	}
 
 
@@ -61,7 +61,7 @@ class IndexController extends Zend_Controller_Action
 	{
 		$this->view->keywords = 'Новости';
 		$this->view->description = 'Последние новости проекта';
-		$this->view->title = "Новости проекта";
+		$this->view->headTitle("Новости");
 
 		$this->view->news = $this->_helper->modelLoad('News')->listAll();
 	}

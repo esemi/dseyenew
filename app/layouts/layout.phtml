@@ -1,6 +1,5 @@
 <?php
 
-$act = (isset($this->actTitle)) ? " — {$this->actTitle}" : "";
 $key = (isset($this->keywords)) ? "{$this->keywords}, " : '';
 $desc = (isset($this->description)) ? "{$this->description}. " : '';
 
@@ -18,7 +17,9 @@ $this->headScript()->prependFile( "/js/lib/combine.js?{$version}");
 $this->headLink()->prependStylesheet("/css/newlayouts.css?{$version}");
 $this->headLink()->prependStylesheet("/css/pepper-grinder/jQui.css?{$version}");
 
-$this->headTitle("{$this->title}{$act}. DSeye — анализатор онлайн игры Destiny Sphere (Сфера Судьбы)");
+$this->headTitle('DSeye — анализатор онлайн игры Destiny Sphere (Сфера Судьбы)');
+$this->headTitle()->setSeparator(' / ');
+$this->headTitle()->setAutoEscape(true);
 
 //для залогиненых юзеров главная становится профилем
 $auth = Zend_Auth::getInstance();

@@ -17,7 +17,7 @@ class WorldsController extends Zend_Controller_Action
 
 		//имя мира
 		$this->view->nameWorld = $this->_helper->modelLoad('Worlds')->getName($this->idW);
-		$this->view->title = "Мир {$this->view->nameWorld}";
+		$this->view->headTitle("Мир {$this->view->nameWorld}");
 
 		$this->view->rubberPage = true;//резиновый шаблон
 
@@ -41,7 +41,7 @@ class WorldsController extends Zend_Controller_Action
 	{
 		$this->view->keywords = "{$this->view->nameWorld}, Мир, Описание, Показатели";
 		$this->view->description = "Мир {$this->view->nameWorld}, описание и основные показатели";
-		$this->view->actTitle = 'О мире';
+		$this->view->headTitle('О мире');
 
 		//основные данные
 		$this->view->mainData = $this->_helper->modelLoad('Worlds')->getData($this->idW);
@@ -78,7 +78,7 @@ class WorldsController extends Zend_Controller_Action
 
 		$this->view->keywords = "{$this->view->nameWorld}, Мир, История, Изменения";
 		$this->view->description = "Мир {$this->view->nameWorld}, изменения за {$selectDate}";
-		$this->view->actTitle = "История изменений за {$selectDate}";
+		$this->view->headTitle("История изменений за {$selectDate}");
 
 		$this->view->minDate = $minDate = $this->_helper->modelLoad('StatWorlds')->getMinStatDate($this->idW);
 		$this->view->maxDate = $maxDate = date('d-m-Y');
@@ -125,9 +125,9 @@ class WorldsController extends Zend_Controller_Action
 	{
 		$this->view->helpLink = $this->view->url( array('id'=>'graph'), 'helpView', true );
 
-		$this->view->actTitle = "Статистика по основным показателям и графики";
+		$this->view->headTitle("Статистика по основным показателям и графики");
 		$this->view->keywords = "{$this->view->nameWorld}, Мир, Статистика";
-		$this->view->description = "Мир {$this->view->nameWorld}. Статистика по основным показателям и графики.";
+		$this->view->description = "Мир {$this->view->nameWorld}. Статистика";
 
 		$this->view->extendedGateStatus = $this->_helper->modelLoad('WorldsGameParse')->statusAvaliable( $this->idW );
 	}
@@ -154,7 +154,7 @@ class WorldsController extends Zend_Controller_Action
 
 		$this->view->keywords = "{$this->view->nameWorld}, Мир, Игроки";
 		$this->view->description = "Мир {$this->view->nameWorld}, список игроков (страница {$page})";
-		$this->view->actTitle = "Список игроков, страница {$page}";
+		$this->view->headTitle("Список игроков, страница {$page}");
 	}
 
 	/*
@@ -178,7 +178,7 @@ class WorldsController extends Zend_Controller_Action
 
 		$this->view->keywords = "{$this->view->nameWorld}, Мир, Альянсы";
 		$this->view->description = "Мир {$this->view->nameWorld}, список альянсов (страница {$page})";
-		$this->view->actTitle = "Список альянсов, страница {$page}";
+		$this->view->headTitle("Список альянсов, страница {$page}");
 	}
 
 	/*
@@ -191,7 +191,7 @@ class WorldsController extends Zend_Controller_Action
 
 		$this->view->keywords = "{$this->view->nameWorld}, Мир, Игроки, Поиск, Кормушки";
 		$this->view->description = "Мир {$this->view->nameWorld}, поиск игроков и кормушек по миру";
-		$this->view->actTitle = "Поиск игроков";
+		$this->view->headTitle("Поиск игроков");
 
 		$this->view->searchProp = new stdClass();
 
@@ -288,7 +288,7 @@ class WorldsController extends Zend_Controller_Action
 
 		$this->view->keywords = "{$this->view->nameWorld}, Мир, Карта, Кольца, Карта колец";
 		$this->view->description = "Мир {$this->view->nameWorld}, интерактивная карта колец";
-		$this->view->actTitle = "Карта колец";
+		$this->view->headTitle("Карта колец");
 
 		//получаем макс компл на этом кольце
 		$this->view->numMax = $maxNum = $this->_helper->modelLoad('WorldsProperty')->getMaxComple($this->idW, 4);

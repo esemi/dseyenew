@@ -58,7 +58,7 @@ class PlayerController extends Zend_Controller_Action
 		$this->view->transSots = $this->_helper->modelLoad('PlayersTransSots')->getTransByPlayer($this->idP, 20);
 		$this->view->transOthers = $this->_helper->modelLoad('PlayersTransOthers')->getTransByPlayer($this->idP, 20);
 
-		$this->view->title = "Игрок {$info['nik']}";
+		$this->view->headTitle("Игрок {$info['nik']}");
 		$this->view->keywords = "{$info['nik']}, Игрок, {$this->view->nameWorld}";
 		$this->view->description = "Страница игрока {$info['nik']}. Статистика по основным показателям и графики.";
 	}

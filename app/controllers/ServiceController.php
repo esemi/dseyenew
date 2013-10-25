@@ -4,7 +4,7 @@ class ServiceController extends Zend_Controller_Action
 {
 	public function init()
 	{
-		$this->view->title = 'Сервисы';
+		$this->view->headTitle('Сервисы');
 	}
 
 	/*
@@ -16,7 +16,7 @@ class ServiceController extends Zend_Controller_Action
 
 		$this->view->keywords = 'Сервисы, Статистика';
 		$this->view->description = "Статистика игроков онлайн";
-		$this->view->actTitle = 'Статистика игроков онлайн';
+		$this->view->headTitle('Статистика игроков онлайн');
 
 		$this->view->menu = $this->_helper->modelLoad('GameVersions')->getAllForStat();
 	}
@@ -30,7 +30,7 @@ class ServiceController extends Zend_Controller_Action
 
 		$this->view->keywords = 'Рейтинг, Археология, Артефакты';
 		$this->view->description = 'Таблица соответствия роста археологического рейтинга размерам и типам артефактов';
-		$this->view->actTitle = 'Таблица археологического рейтинга артефактов';
+		$this->view->headTitle('Таблица археологического рейтинга артефактов');
 	}
 
 
@@ -47,7 +47,7 @@ class ServiceController extends Zend_Controller_Action
 
 		$this->view->keywords = 'Поиск, Поиск игроков';
 		$this->view->description = 'Поиск игроков по всем мирам';
-		$this->view->actTitle = 'Глобальный поиск игроков';
+		$this->view->headTitle('Глобальный поиск игроков');
 
 		$conf = $this->getFrontController()->getParam('bootstrap')->getOption('limits');
 		$limit = ($this->_helper->checkAccess('others','fast_search_limit_x2')) ? 2 * $conf['fastSearch'] : $conf['fastSearch'];
@@ -131,7 +131,7 @@ class ServiceController extends Zend_Controller_Action
 
 		$this->view->keywords = 'Инструменты, Разработка, API';
 		$this->view->description = 'Описание инструментов для сторонних разработчиков';
-		$this->view->actTitle = 'Инструменты разработчиков';
+		$this->view->headTitle('Инструменты разработчиков');
 	}
 
 	/*
@@ -145,7 +145,7 @@ class ServiceController extends Zend_Controller_Action
 
 		$this->view->keywords = 'Рассчёт, Вес армии, Время раунда, Время боя, Калькулятор';
 		$this->view->description = 'Сервис рассчёта веса армии и времени раунда';
-		$this->view->actTitle = 'Военный калькулятор (вес армии, время раунда)';
+		$this->view->headTitle('Военный калькулятор (вес армии, время раунда)');
 	}
 
 	/**
@@ -159,6 +159,6 @@ class ServiceController extends Zend_Controller_Action
 
 		$this->view->keywords = 'Аддон firefox, Аддон Opera, Аддон Chrome Аддон для браузера, Быстрый поиск игроков';
 		$this->view->description = 'Аддон для популярных браузеров, позволяющий быстро искать игроков не уходя со страницы стороннего сайта';
-		$this->view->actTitle = 'Аддон для браузера от нашего проекта';
+		$this->view->headTitle('Аддон для браузера от нашего проекта');
 	}
 }

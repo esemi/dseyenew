@@ -21,7 +21,7 @@ class AllianceController extends Zend_Controller_Action
 		$this->view->idAlliance = $this->idA = (int) $this->_getParam('idA');
 		$this->view->nameAlliance = $this->_helper->modelLoad('Alliances')->getName($this->idA);
 
-		$this->view->title = "Альянс {$this->view->nameAlliance}";
+		$this->view->headTitle("Альянс {$this->view->nameAlliance}");
 
 		//резиновый шаблон
 		$this->view->rubberPage = true;
@@ -36,7 +36,7 @@ class AllianceController extends Zend_Controller_Action
 
 		$this->view->keywords = "{$this->view->nameAlliance}, Альянс, Информация";
 		$this->view->description = "Альянс {$this->view->nameAlliance}, общая информация";
-		$this->view->actTitle = "Об альянсе";
+		$this->view->headTitle("Об альянсе");
 
 		$this->view->mainProperty = $this->_helper->modelLoad('Alliances')->getData($this->idA);
 
@@ -73,7 +73,7 @@ class AllianceController extends Zend_Controller_Action
 
 		$this->view->keywords = "{$this->view->nameAlliance}, Альянс, Игроки";
 		$this->view->description = "Альянс {$this->view->nameAlliance}, список игроков (страница {$page})";
-		$this->view->actTitle = "Список игроков, страница {$page}";
+		$this->view->headTitle("Список игроков, страница {$page}");
 
 	}
 
@@ -101,7 +101,7 @@ class AllianceController extends Zend_Controller_Action
 
 		$this->view->keywords = "{$this->view->nameAlliance}, Альянс, Колонии";
 		$this->view->description = "Альянс {$this->view->nameAlliance}, список колоний (страница {$page})";
-		$this->view->actTitle = "Список колоний, страница {$page}";
+		$this->view->headTitle("Список колоний, страница {$page}");
 
 	}
 

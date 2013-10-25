@@ -23,7 +23,7 @@ class UserController extends Zend_Controller_Action
 
 		$user = Zend_Auth::getInstance()->getStorage()->read();
 
-		$this->view->title = "Личный кабинет пользователя {$user->login}";
+		$this->view->headTitle("Личный кабинет пользователя {$user->login}");
 		$this->view->keywords = "Профиль, Личный кабинет, {$user->login}";
 		$this->view->description = "Личный кабинет пользователя {$user->login}";
 
@@ -63,7 +63,7 @@ class UserController extends Zend_Controller_Action
 
 		$this->view->user = $user = Zend_Auth::getInstance()->getStorage()->read();
 
-		$this->view->title = "История действий пользователя {$user->login}";
+		$this->view->headTitle("История действий пользователя {$user->login}");
 		$this->view->keywords = "Профиль, Личный кабинет, История действий, {$user->login}";
 		$this->view->description = "История действий пользователя {$user->login}";
 
@@ -80,7 +80,7 @@ class UserController extends Zend_Controller_Action
 
 		$this->view->user = $user = Zend_Auth::getInstance()->getStorage()->read();
 
-		$this->view->title = "Автопоиск пользователя {$user->login}";
+		$this->view->headTitle("Автопоиск пользователя {$user->login}");
 		$this->view->keywords = "Автопоиск, Личный кабинет, История действий, {$user->login}";
 		$this->view->description = "Автопоиск (сохранённые настройки поиска) пользователя {$user->login}";
 
@@ -134,7 +134,7 @@ class UserController extends Zend_Controller_Action
 
 		$user = Zend_Auth::getInstance()->getStorage()->read();
 
-		$this->view->title = "Изменение пароля пользователя {$user->login}";
+		$this->view->headTitle("Изменение пароля пользователя {$user->login}");
 		$this->view->keywords = "Изменение пароля, Профиль, Личный кабинет, {$user->login}";
 		$this->view->description = "Изменение пароля пользователя {$user->login}";
 

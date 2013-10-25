@@ -36,7 +36,7 @@ class ErrorController extends Zend_Controller_Action
 		$this->getResponse()->setHttpResponseCode(404);
 		$this->view->keywords = '404, Страница не найдена';
 		$this->view->description = 'Страница не найдена';
-		$this->view->title = 'Страница не найдена';
+		$this->view->headTitle('Страница не найдена');
 		$this->view->message = 'Страница не найдена';
 	}
 
@@ -45,7 +45,6 @@ class ErrorController extends Zend_Controller_Action
 		$this->getResponse()->setHttpResponseCode(500);
 		$this->view->keywords = 'Ошибка, Error';
 		$this->view->description = 'Ошибка приложения';
-		$this->view->title = 'Ошибка приложения';
 		$this->view->message = 'Ошибка приложения';
 	}
 }

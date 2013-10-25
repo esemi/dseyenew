@@ -22,7 +22,7 @@ class AuthController extends Zend_Controller_Action
 	{
 		$this->view->keywords = "Вход, Войти, Залогиниться, Форма входа, Личный кабинет";
 		$this->view->description = "Вход в личный кабинет";
-		$this->view->title = "Вход в личный кабинет";
+		$this->view->headTitle("Вход в личный кабинет");
 
 		$this->view->helpLink = $this->view->url( array('id'=>'register'), 'helpView', true );
 
@@ -114,7 +114,7 @@ class AuthController extends Zend_Controller_Action
 	{
 		$this->view->keywords = "Новый пользователь, Регистрация аккаунта, Регистрация";
 		$this->view->description = "Регистрация нового пользователя для досупа к расширенныму функционалу";
-		$this->view->title = "Регистрация нового пользователя";
+		$this->view->headTitle("Регистрация нового пользователя");
 
 		$this->view->helpLink = $this->view->url( array('id'=>'register'), 'helpView', true );
 
@@ -212,7 +212,7 @@ class AuthController extends Zend_Controller_Action
 	{
 		$this->view->keywords = "Подтверждение почты, Активация, Новый пользователь";
 		$this->view->description = "Подтверждение адреса электронной почты аккаунта";
-		$this->view->title = "Подтверждение email адреса";
+		$this->view->headTitle("Подтверждение email адреса");
 
 		$this->view->helpLink = $this->view->url( array('id'=>'email_approve'), 'helpView', true );
 
@@ -249,7 +249,7 @@ class AuthController extends Zend_Controller_Action
 	{
 		$this->view->keywords = "Подтверждение почты, Активация, Новый пользователь, Повторная активация, Не пришло письмо";
 		$this->view->description = "Повторный запрос подтверждения адреса электронной почты";
-		$this->view->title = "Повторный запрос подтверждения email адреса";
+		$this->view->headTitle("Повторный запрос подтверждения email адреса");
 
 		$this->view->helpLink = $this->view->url( array('id'=>'email_approve'), 'helpView', true );
 
@@ -317,7 +317,7 @@ class AuthController extends Zend_Controller_Action
 	{
 		$this->view->keywords = "Забыл пароль, Восстановление пароля, Remember password, Recovery password";
 		$this->view->description = "Восстановление пароля для входа в личный кабинет";
-		$this->view->title = "Восстановление пароля";
+		$this->view->headTitle("Восстановление пароля");
 
 		$this->view->helpLink = $this->view->url( array('id'=>'password_remember'), 'helpView', true );
 
@@ -384,7 +384,7 @@ class AuthController extends Zend_Controller_Action
 	{
 		$this->view->keywords = "Забыл пароль, Восстановление пароля, Подтверждение, Remember password, Recovery password";
 		$this->view->description = "Подтверждение восстановления пароля в личный кабинет";
-		$this->view->title = "Подтверждение восстановления пароля";
+		$this->view->headTitle("Подтверждение восстановления пароля");
 
 		$this->view->helpLink = $this->view->url( array('id'=>'password_remember'), 'helpView', true );
 
