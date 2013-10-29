@@ -1,7 +1,0 @@
-Options -Indexes
-AddDefaultCharset UTF-8
-
-
-Order Deny,Allow
-Deny from all
-Allow from localhost
