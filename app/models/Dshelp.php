@@ -96,6 +96,7 @@ class App_Model_Dshelp
             $result->error[] = "строка битая";
         }else{
             //выдираем ник
+			$matches = array();
             preg_match('/index.html>[\wА-Яа-яёЁ\s.-]{3,50}<\/a>/ui', $values[1], $matches);
             if( !isset($matches[0]) )
             {
@@ -109,7 +110,7 @@ class App_Model_Dshelp
             //выдираем РА
             $result->data['ra'] = substr($values[5],13);
             if( !preg_match( '/^[\d]{1,3}(|[.][\d]{1,2})$/', $result->data['ra']) )
-                $result->error[] = "стрёный РА {$ra}";
+                $result->error[] = "стрёный РА {$result->data['ra']}";
         }
 
         if( count($result->error) === 0 )

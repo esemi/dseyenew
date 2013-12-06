@@ -201,6 +201,7 @@ class CliController extends Zend_Controller_Action
 	public function csvAction()
 	{
 		$this->_type = 'csv';
+		$flagWarn = false;
 
 		//получаем все живые миры
 		$worlds = $this->_helper->modelLoad('Worlds')->listing()->toArray();
@@ -224,15 +225,18 @@ class CliController extends Zend_Controller_Action
 		{
 			$this->_log->add(sprintf('Мир <b>%s</b>',$world['name']));
 			$res = $this->_myCSV->createMain( $this->_helper->modelLoad('Players'), $world['id'], $world['name'] );
-			if($res !== true)
-			{
+			if($res !== true){
 				$this->_log->add('архив не создан');
+				$flagWarn = true;
 			}else{
 				$this->_log->add('csv обновлены');
 			}
 		}
 
-		$this->_log->setResultSuccess();
+		if($flagWarn)
+			$this->_log->setResultWarn();
+		else
+			$this->_log->setResultSuccess();
 	}
 
 	/**
@@ -261,7 +265,7 @@ class CliController extends Zend_Controller_Action
 		if( $curThreadCount >= $lockProp['gate'] )
 		{
 			$this->_log->add('Превышен лимит локов');
-			$this->_log->setResultError();
+			$this->_log->setResultWarn();
 			exit();
 		}
 		$this->_helper->modelLoad('CronLock')->incCounter('gate');
@@ -431,7 +435,7 @@ class CliController extends Zend_Controller_Action
 		if( $curThreadCount >= $lockProp['ra'] )
 		{
 			$this->_log->add('Превышен лимит локов');
-			$this->_log->setResultError();
+			$this->_log->setResultWarn();
 			exit();
 		}
 		$this->_helper->modelLoad('CronLock')->incCounter('dshelp');
@@ -585,7 +589,7 @@ class CliController extends Zend_Controller_Action
 		if( $curThreadCount >= $lockProp['newranks'] )
 		{
 			$this->_log->add('Превышен лимит локов');
-			$this->_log->setResultError();
+			$this->_log->setResultWarn();
 			exit();
 		}
 		$this->_helper->modelLoad('CronLock')->incCounter('newranks');
@@ -749,7 +753,7 @@ class CliController extends Zend_Controller_Action
 		if( $curThreadCount >= $lockProp['oldranks'] )
 		{
 			$this->_log->add('Превышен лимит локов');
-			$this->_log->setResultError();
+			$this->_log->setResultWarn();
 			exit();
 		}
 		$this->_helper->modelLoad('CronLock')->incCounter('oldranks');
@@ -1007,9 +1011,9 @@ class CliController extends Zend_Controller_Action
 		$res = $this->_upCSV->load( $versionData['main_csv_rep'], $worldProp['url'], $this->getFrontController()->getParam('bootstrap')->getOption('tmp_folder') );
 		if($res !== true)
 		{
+			$this->_log->setResultError();
 			$this->_log->add("Ошибка curl {$res}");
 			$this->_log->add($this->_upCSV->getInfo());
-			$this->_log->setResultError();
 			exit();
 		}
 
@@ -1418,7 +1422,7 @@ class CliController extends Zend_Controller_Action
 		if( $curThreadCount >= $lockProp['nra'] )
 		{
 			$this->_log->add('Превышен лимит локов');
-			$this->_log->setResultError();
+			$this->_log->setResultWarn();
 			exit();
 		}
 		$this->_helper->modelLoad('CronLock')->incCounter('nra');
