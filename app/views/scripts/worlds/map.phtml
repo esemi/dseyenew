@@ -1,57 +1,46 @@
-<?php $this->headScript()->captureStart() ?>
-var worldID = <?php echo $this->idWorld; ?>;
-var maxCompl = <?php echo $this->numMax; ?>;
-<?php $this->headScript()->captureEnd(); ?>
 <div class="rubber-block main-width">
 	<?php
 	$this->breadCrumb( array(
-				sprintf('<a href="%s">%s</a>',
-						$this->url(array( 'idW' => $this->idWorld ), 'worldIndex', true), $this->nameWorld),
+				sprintf('<a href="%s">%s</a>', $this->url(array( 'idW' => $this->idWorld ), 'worldIndex', true), $this->nameWorld),
 				'Карта колец') );
 	?>
 </div>
-<div class="carousell-option text-center">
+
+<?php if( count($this->rings) === 0 ): ?>
+	@TODO Данные отсутствуют
+<?php else: ?>
+	<div class="carousell-option text-center">
 		<select class="js-map-ring font-17 mrg-left-157">
-		<option value="1" class="color-voran"> Ворания
-		</option>
-		<option value="2" class="color-liens"> Лиенсорд
-		</option>
-		<option value="3" class="color-psol"> Псолеон
-		</option>
-		<option value="4" selected="selected" class="color-main"> Мельсион
-		</option>
+			<?php
+			$classes = array(1 => 'color-voran', 2=>'color-liens', 3=>'color-psol', 4=>'color-main');
+			foreach( $this->rings as $item ): ?>
+				<option value="<?php echo $this->escape($item['id']); ?>" class="<?php echo $classes[$item['id']]; ?>" data-max-compl="<?php echo $this->escape($item['compl']); ?>"><?php echo $this->escape($item['name']); ?></option>
+			<?php endforeach; ?>
 		</select>
 		<select class="js-map-scroll font-17">
-		<option value="1"> Scroll 1
-		</option>
-		<option value="3" selected> Scroll 3
-		</option>
-		<option  value="5" > Scroll 5
-		</option>
-		<option value="10"> Scroll 10
-		</option>
+			<option value="1"> Scroll 1 </option>
+			<option value="3" selected="selected"> Scroll 3 </option>
+			<option  value="5" > Scroll 5 </option>
+			<option value="10"> Scroll 10 </option>
 		</select>
 		<input class="js-map-goto w-157 mrg-left-21 font-17" type="text" maxlength="4" value="" title="Быстрый переход" placeholder="Быстрый переход" />
 	</div>
 	<div class="js-map-info text-center h-25"></div>
+	<div class="text-center w-100pr" id="mycarousel" data-world-id="<?php echo $this->escape($this->idWorld); ?>">
+		<div class="js-map-left inline-block arrow finger arrow-left text-bottom mrg-bottom-160"></div>
+		<div class="js-map-container inline-block text-bottom" >
+			<!--карусель влетает сюда-->
+		</div>
+		<div class="js-map-right inline-block arrow finger arrow-right mrg-bottom-160 text-bottom"></div>
 
-
-<div class="text-center w-100pr" id="mycarousel">
-	<div class="js-map-left inline-block arrow finger arrow-left text-bottom mrg-bottom-160"></div>
-	<div class="js-map-container inline-block text-bottom" >
-		<!--карусель влетает сюда-->
-	</div>
-	<div class="js-map-right inline-block arrow finger arrow-right mrg-bottom-160 text-bottom"></div>
-
-	<div class="js-map-full-info hide mrg-top-5">
-		<div class="js-map-full-info-window inline-block active w-400 text-left map-viewport text-top" empty="empty"></div>
-		<div class="js-map-full-info-window inline-block deactive w-400 mrg-left-21 text-left map-viewport text-top" empty="empty">
-			<div class="color-gray-map font-20 text-center mrg-top-75">Нажмите чтобы активировать</div>
+		<div class="js-map-full-info hide mrg-top-5">
+			<div class="js-map-full-info-window inline-block active w-400 text-left map-viewport text-top" empty="empty"></div>
+			<div class="js-map-full-info-window inline-block deactive w-400 mrg-left-21 text-left map-viewport text-top" empty="empty">
+				<div class="color-gray-map font-20 text-center mrg-top-75">Нажмите чтобы активировать</div>
+			</div>
 		</div>
 	</div>
-</div>
-
-
+<?php endif; ?>
 
 <div class="rubber-block main-width">
 	<h4 class="subtitle mrg-top-13"><span>Легенда</span></h4>

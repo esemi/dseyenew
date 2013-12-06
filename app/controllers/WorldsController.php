@@ -293,10 +293,15 @@ class WorldsController extends Zend_Controller_Action
 		$this->view->headTitle("Карта колец");
 		$this->view->linkCanonical($this->view->url(array('idW' => $this->idW), 'worldMap', true));
 
-		//получаем макс компл на этом кольце
-		$this->view->numMax = $maxNum = $this->_helper->modelLoad('WorldsProperty')->getMaxComple($this->idW, 4);
-		if( $maxNum === 0  )
-			throw new Exception('Max compl undefined');
+		$avalRings = array();
+		$rings = $this->_helper->modelLoad('Rases')->getRings();
+		foreach( $rings as $num => $ring ){
+			$maxCompl = $this->_helper->modelLoad('WorldsProperty')->getMaxComple($this->idW, $num);
+			if( $maxCompl > 0 ){
+				$avalRings[] = array('compl' => $maxCompl, 'id' => $num, 'name' => $ring);
+			}
+		}
+		$this->view->rings = $avalRings;
 
 		//получаем значения раскрасски по умолчанию
 		$this->view->ranks = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOption('map');

@@ -356,7 +356,7 @@ jQuery(document).ready(function()
 
 	/**карта колец******************************************************************************/
 
-		if (document.getElementById('mycarousel') != null)
+		if (document.getElementById('mycarousel') !== null)
 		{
 			//ширина монитора - кол-во выводимых комплов
 			var width = parseInt(jQuery("#mycarousel").width());
@@ -367,7 +367,6 @@ jQuery(document).ready(function()
 			var len = Math.floor( ( width - (20*2 + 40*2) ) / 180 );
 			len = (len > 4) ? len : 4;
 
-
 			//создаём и рисуем карту с заданными настройками
 			var myCarousel = new Carousel(
 				jQuery("#mycarousel .js-map-container"),
@@ -375,9 +374,9 @@ jQuery(document).ready(function()
 				jQuery('#mycarousel .js-map-full-info-window.active'),
 				len,
 				parseInt(jQuery('.js-map-scroll').val()),
-				worldID,
+				jQuery('#mycarousel').attr('data-world-id'),
 				parseInt(jQuery('.js-map-ring').val()),
-				maxCompl );
+				parseInt(jQuery('.js-map-ring option:selected').attr('data-max-compl')) );
 
 			//первоначальный инит карты
 			myCarousel.draw();
@@ -674,14 +673,14 @@ function Carousel(container, infobox, playerinfo, len, scroll, worldId, ring, ma
 	//вкл/выкл картинки загрузки в инфобоксе
 	this.loadGif = function(bool)
 	{
-		this.infobox.html( (bool == true) ? loadImage : '');
-	}
+		this.infobox.html( (bool === true) ? loadImage : '');
+	};
 
 	//вывести информацию в инфобокс
 	this.addInfo = function(str)
 	{
 		this.infobox.html( str );
-	}
+	};
 
 	//загружаем и выводим данные
 	this.draw = function()
@@ -700,7 +699,7 @@ function Carousel(container, infobox, playerinfo, len, scroll, worldId, ring, ma
 		},
 		function(data)
 		{
-			if (typeof data.error != 'undefined')
+			if (typeof data.error !== 'undefined')
 			{
 				tmp.addInfo(data.error);
 				return;
@@ -712,7 +711,7 @@ function Carousel(container, infobox, playerinfo, len, scroll, worldId, ring, ma
 			tmp.loadGif( false );
 		},
 		'json');
-	}
+	};
 
 	//жмак "вправо"
 	this.right = function()
@@ -732,7 +731,7 @@ function Carousel(container, infobox, playerinfo, len, scroll, worldId, ring, ma
 		}
 
 		this.draw();
-	}
+	};
 
 	//жмак "влево"
 	this.left = function()
@@ -752,7 +751,7 @@ function Carousel(container, infobox, playerinfo, len, scroll, worldId, ring, ma
 		}
 
 		this.draw();
-	}
+	};
 
 	//смена кольца
 	this.changeRing = function( idR )
@@ -768,7 +767,7 @@ function Carousel(container, infobox, playerinfo, len, scroll, worldId, ring, ma
 		this.last  = this.len;
 
 		this.draw();
-	}
+	};
 
 	//смена скорости прокрутки
 	this.changeScroll = function( num )
@@ -779,7 +778,7 @@ function Carousel(container, infobox, playerinfo, len, scroll, worldId, ring, ma
 			return;
 		}
 		this.scroll = parseInt(num);
-	}
+	};
 
 	//быстрая прокрутка к заданному комплексу
 	this.goTo = function( num )
@@ -803,7 +802,7 @@ function Carousel(container, infobox, playerinfo, len, scroll, worldId, ring, ma
 		}
 
 		this.draw();
-	}
+	};
 
 	//инит эвентов
 	this.initEvents = function()
@@ -828,7 +827,7 @@ function Carousel(container, infobox, playerinfo, len, scroll, worldId, ring, ma
 
 			tmp.getInfo( jQuery(this).attr('idP') );
 		});
-	}
+	};
 
 	//получаем подробную инфу
 	this.getInfo = function( idP )
@@ -850,7 +849,7 @@ function Carousel(container, infobox, playerinfo, len, scroll, worldId, ring, ma
 		},
 		function(data)
 		{
-			if (typeof data.error != 'undefined')
+			if (typeof data.error !== 'undefined')
 			{
 				tmp.addInfo(data.error);
 				return;
@@ -862,13 +861,13 @@ function Carousel(container, infobox, playerinfo, len, scroll, worldId, ring, ma
 			tmp.loadGif( false );
 		},
 		'json');
-	}
+	};
 
 	//установить новое активное окно подробной инфы
 	this.setPlayerInfoBox = function( container )
 	{
 		this.playerbox = jQuery(container);
-	}
+	};
 
 }
 
