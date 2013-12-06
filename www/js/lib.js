@@ -36,7 +36,7 @@ jQuery(document).ready(function()
 		//открываем блок при переходе к новости с другой страницы
 		var idN  = parseInt( document.location.hash.substr(5), 10);
 		var node = document.getElementsByName('item' + idN);
-		if ( idN != '' && node.length === 1)
+		if ( idN !== '' && node.length === 1)
 		{
 			toggleNews(node[0].parentNode, 'toggle');
 		}
@@ -117,8 +117,7 @@ jQuery(document).ready(function()
 		//запрос рассчёта
 		jQuery(".js-army-weight-compute").bind("change click", function()
 		{
-			var parseValue = function(elem)
-			{
+			var parseValue = function(elem){
 				elem.val(elem.val().replace(/[kKкК]/g,'000'));
 				elem.val(elem.val().replace(/[^\d]/g,''));
 				var source = parseInt(elem.val(), 10);
@@ -128,7 +127,7 @@ jQuery(document).ready(function()
 					elem.val(source);
 					return source;
 				}
-			}
+			};
 
 			var result = jQuery(".js-army-weight-result");
 			var idW = jQuery(".js-army-world").val();
@@ -152,7 +151,7 @@ jQuery(document).ready(function()
 			},
 			function(data)
 			{
-				if( typeof data.error != 'undefined' )
+				if( typeof data.error !== 'undefined' )
 				{
 					printMessage('error', data.error, result);
 				}else{
@@ -178,7 +177,7 @@ jQuery(document).ready(function()
 			},
 			function(data)
 			{
-				if( typeof data.error != 'undefined' )
+				if( typeof data.error !== 'undefined' )
 				{
 					printMessage('error', data.error, result);
 				}else{
@@ -210,7 +209,7 @@ jQuery(document).ready(function()
 
 	/**изменения мира*******************************************************************/
 		//создаём датапикер для быстрого перехода
-		if (typeof minDate != 'undefined' && typeof worldID != 'undefined')
+		if (typeof minDate !== 'undefined' && typeof worldID !== 'undefined')
 		{
 			jQuery('#js-datepicker').datepicker(
 			{
@@ -257,7 +256,7 @@ jQuery(document).ready(function()
 				var idW = jQuery(target).attr('idW');
 				var term = jQuery.trim( jQuery(target).val() );
 				var result = jQuery(".js-search-result");
-				var colSpan = ( typeof idW == 'undefined') ? 5 : 6;
+				var colSpan = ( typeof idW === 'undefined') ? 5 : 6;
 				result.parent().removeClass('hide');
 
 				if( /^[\wА-ЯЁа-яё\s.-]{3,30}$/.test(term) !== true )
@@ -312,7 +311,7 @@ jQuery(document).ready(function()
 		//скрыть\открыть форму выбора фильтров по алам
 		jQuery("#alliance").change(function()
 		{
-			if( jQuery(this).val() == 'none' )
+			if( jQuery(this).val() === 'none' )
 			{
 				jQuery('.js-alliance-filter').slideUp('fast');;
 			}else{
@@ -333,8 +332,8 @@ jQuery(document).ready(function()
 
 				if( parseInt(min,10) < 0 || parseInt(max,10) < 0 ||
 					parseInt(min,10) >= parseInt(max,10) ||
-					/^[0-9]+$/.test(min) != true ||
-					/^[0-9]+$/.test(max) != true )
+					/^[0-9]+$/.test(min) !== true ||
+					/^[0-9]+$/.test(max) !== true )
 				{
 					jQuery(this).find('input').addClass('invalid-form');
 					result = false;
@@ -351,7 +350,7 @@ jQuery(document).ready(function()
 		{
 			jQuery(this).hide();
 			jQuery('.js-search-additional-props').slideDown('fast');
-		})
+		});
 
 
 	/**карта колец******************************************************************************/
@@ -488,24 +487,24 @@ jQuery(document).ready(function()
 				'format': 'json'
 			};
 
-			if( type == 'new' )
+			if( type === 'new' )
 			{
 				href = '/ajax/autosearch-save-new/';
 				post['newname'] = form.find('input[name="new_name"]').val();
 				post['idW'] = worldID;
 
-			}else if( type == 'edit' ){
+			}else if( type === 'edit' ){
 				href = '/ajax/autosearch-save-as/';
 				post['idA'] = form.find('select[name="edit_name"]').val();
 			}
 
-			if( href != null )
+			if( href !== null )
 			{
 				result.html(loadImage);
 
 				jQuery.post(href, post, function(data)
 				{
-					if( typeof data.error != 'undefined' )
+					if( typeof data.error !== 'undefined' )
 					{
 						printMessage('error', data.error, result);
 					}else{
@@ -539,7 +538,7 @@ jQuery(document).ready(function()
 				},
 				function(data)
 				{
-					if( typeof data.error != 'undefined' )
+					if( typeof data.error !== 'undefined' )
 					{
 						printMessage('error', data.error, result);
 					}else{
@@ -573,7 +572,7 @@ jQuery(document).ready(function()
 		jQuery('.js-graph-menu-player a').click( function()
 		{
 			loadAndDrawPlayerGraph(jQuery(this));
-			return true
+			return true;
 		});
 
 		//добавление игрока в мониторинг
@@ -593,7 +592,7 @@ jQuery(document).ready(function()
 			},
 			function(data)
 			{
-				if( typeof data.error != 'undefined' )
+				if( typeof data.error !== 'undefined' )
 				{
 					printMessage('error', data.error, result);
 				}else{
@@ -624,7 +623,7 @@ jQuery(document).ready(function()
 			},
 			function(data)
 			{
-				if( typeof data.error != 'undefined' )
+				if( typeof data.error !== 'undefined' )
 				{
 					printMessage('error', data.error, result);
 				}else{
@@ -884,12 +883,12 @@ function Graph()
  */
 function printMessage(type, message, container)
 {
-	if(type == 'error')
+	if(type === 'error')
 	{
 		container.addClass('color-red');
 		container.removeClass('color-green');
 		container.html(message);
-	}else if( type == 'success' ){
+	}else if( type === 'success' ){
 		container.removeClass('color-red');
 		container.addClass('color-green');
 		container.html(message);
@@ -957,17 +956,17 @@ function drawSlider(node)
  */
 function toggleNews(node, action)
 {
-	if(action == 'toggle')
+	if(action === 'toggle')
 	{
 		jQuery(node).toggleClass('color-logo');
 		jQuery(node).toggleClass('bold');
 		jQuery(node).toggleClass('pseudo');
 		jQuery(node).parent().children('p').slideToggle("normal");
-	}else if(action == 'open'){
+	}else if(action === 'open'){
 		jQuery(node).removeClass('pseudo');
 		jQuery(node).addClass('color-logo bold');
 		jQuery(node).parent().children('p').slideDown("normal");
-	}else if(action == 'close'){
+	}else if(action === 'close'){
 		jQuery(node).addClass('pseudo');
 		jQuery(node).removeClass('color-logo bold');
 		jQuery(node).parent().children('p').slideUp("normal");
@@ -989,7 +988,7 @@ function loadAndDrawIndexPieGraph()
 		},
 		function(res)
 		{
-			if( typeof res.error != 'undefined' )
+			if( typeof res.error !== 'undefined' )
 			{
 				printGraphError(container, res.error );
 			}else{
@@ -1012,7 +1011,7 @@ function loadAndDrawOnlineGraph(target)
 	var type_graph = 'hour';
 	var version = 'classic';
 
-	if( typeof target != 'undefined' )
+	if( typeof target !== 'undefined' )
 	{
 		version = target.parent().attr('version');
 		type_graph = target.parent().attr('type');
@@ -1054,13 +1053,13 @@ function loadAndDrawOnlineGraph(target)
 		},
 		function(res)
 		{
-			if( typeof res.error != 'undefined' )
+			if( typeof res.error !== 'undefined' )
 			{
 				printGraphError(container, res.error );
 			}else{
 				container.html();
 
-				if( res.series.length == 1)
+				if( res.series.length === 1)
 					drawHourGraphOnline(res.series, version);
 				else
 					drawDayGraphOnline(res.series, version);
@@ -1078,7 +1077,7 @@ function loadAndDrawPlayerGraph(target)
 	var selectClass = jQuery('.js-graph-menu-player').attr('selectclass');
 
 	var type = 'rank_old';
-	if( typeof target != 'undefined' )
+	if( typeof target !== 'undefined' )
 	{
 		type = target.parent().attr('graph');
 	}else{
@@ -1121,7 +1120,7 @@ function loadAndDrawPlayerGraph(target)
 		},
 		function(res)
 		{
-			if( typeof res.error != 'undefined' )
+			if( typeof res.error !== 'undefined' )
 			{
 				printGraphError(container, res.error );
 			}else{
@@ -1129,7 +1128,7 @@ function loadAndDrawPlayerGraph(target)
 
 				if(!!res.url)
 					container.html('<img src='+res.url+' alt="График РА игрока с dshelp.info" />');
-				else if(res.series.length == 1)
+				else if(res.series.length === 1)
 					drawSingleGraphPlayer( res.series );
 				else
 					drawSumGraphPlayer( res.series, res.borders );
@@ -1303,7 +1302,7 @@ function loadAndDrawAllianceGraph(target)
 	var selectClass = jQuery('.js-graph-menu-alliance').attr('selectclass');
 
 	var type = 'count_player';
-	if( typeof target != 'undefined' )
+	if( typeof target !== 'undefined' )
 	{
 		type = target.attr('href').substring(1);
 	}else{
@@ -1353,7 +1352,7 @@ function loadAndDrawAllianceGraph(target)
 		},
 		function(res)
 		{
-			if( typeof res.error != 'undefined' )
+			if( typeof res.error !== 'undefined' )
 			{
 				printGraphError(container, res.error );
 				return;
@@ -1442,23 +1441,22 @@ function printGraphLoad(container)
 //подготовка данных для графика дата-число
 function prepareGraphDataDate( data )
 {
-	var parseDate = function ( str )
-	{
+	var parseDate = function( str ){
 		var tmp = str.split('.');
-		if( tmp.length == 2){ //месяцы
+		if( tmp.length === 2){ //месяцы
 			tmp[0] = tmp[0]-1;
 			return Date.UTC( tmp[1], tmp[0], 01, 00, 00);
-		}else if( tmp.length == 3){ //дни
+		}else if( tmp.length === 3){ //дни
 			tmp[1] = tmp[1]-1;
 			return Date.UTC( tmp[2], tmp[1], tmp[0], 00, 00);
-		}else if( tmp.length == 4){ // +часы
+		}else if( tmp.length === 4){ // +часы
 			tmp[2] = tmp[2]-1;
 			return Date.UTC( tmp[3], tmp[2], tmp[1], tmp[0], 00);
 		}else{ // +минуты
 			tmp[3] = tmp[3]-1;
 			return Date.UTC( tmp[4], tmp[3], tmp[2],  tmp[1], tmp[0] );
 		}
-	}
+	};
 
 	for( var i in data )
 	{
@@ -1653,7 +1651,7 @@ function drawSumGraphPlayer(series, borders)
 				return '<b>' + Highcharts.dateFormat('%H:%M %d.%m.%Y', this.x) + '</b><br>' +
 					'<span style="color:' + this.series.color + ';">' + this.series.name + '</span> : ' +
 					'<b>' + numFormat(source[this.series.index +'_'+ this.x]) + '</b> ' +
-					getDelta(delta, this.series.index +'_'+ this.x, (this.series.realname == 'mesto') ? true : false);
+					getDelta(delta, this.series.index +'_'+ this.x, (this.series.realname === 'mesto') ? true : false);
 			}
 		},
 		plotOptions: {
@@ -1685,7 +1683,7 @@ function drawSingleGraphPlayer(series)
 
 	var delta = _getGraphDelta( series );
 
-	var reversed = (series[0].realname == 'mesto');
+	var reversed = (series[0].realname === 'mesto');
 
 	var options = {
 		chart: {
@@ -2073,7 +2071,7 @@ function drawInOutGraph(series, title, allowDay)
 //форматирует большие числа в нормальный вид
 function numFormat(number)
 {
-	return number.toString().reverse().replace(/(\d{3})(?=\d)/g,'$1`').reverse()
+	return number.toString().reverse().replace(/(\d{3})(?=\d)/g,'$1`').reverse();
 
 }
 
@@ -2099,11 +2097,9 @@ function getDelta( hash, index, reversed )
 	return delta;
 }
 
-
 String.prototype.reverse=function(){
 	return this.split("").reverse().join("");
-}
-
+};
 
 function DetectBrowserForAddon(userAgent)
 {
