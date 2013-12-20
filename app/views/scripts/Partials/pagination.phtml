@@ -1,41 +1,36 @@
 <div class="paginationControl mrg_top_5 mrg_bottom_5">
-  <?php if ($this->pageCount): ?>    
+<?php if ($this->pageCount): ?>
+	<!-- Ссылка на первую и предыдущую страницы -->
+	<?php if (isset($this->previous)): ?>
+		<a href="<?php echo $this->url(array('page' => $this->first)); ?>">первая</a> |
+		<a href="<?php echo $this->url(array('page' => $this->previous)); ?>"> предыдущая</a> |
+	<?php else: ?>
+		<span class="color-gray">первая |</span>
+		<span class="color-gray">предыдущая</span> |
+	<?php endif; ?>
 
-    <!-- Ссылка на первую и предыдущую страницы -->
-    <?php if (isset($this->previous)): ?>
-      <a href="<?php echo $this->url(array('page' => $this->first)); ?>">первая</a> |
-      <a href="<?php echo $this->url(array('page' => $this->previous)); ?>"> предыдущая</a> |
-    <?php else: ?>
-      <span class="color-gray">
-        первая |
-      </span>    
-      <span class="color-gray">
-        предыдущая
-      </span> |
-    <?php endif; ?>
-    
-    <!-- Нумерованные ссылки на страницы -->
-    <?php foreach ($this->pagesInRange as $page): ?>
-       <?php if ($page != $this->current): ?>
-         <a href="<?php echo $this->url(array('page' => $page)); ?>">
-         <?php echo $page; ?></a> |
-       <?php else: ?>
-         <?php echo $page; ?> |
-       <?php endif; ?>
-    <?php endforeach; ?>
-    
-    <!-- Ссылка на следующую и последнюю страницы -->
-    <?php if (isset($this->next)): ?>
-    <a href="<?php echo $this->url(array('page' => $this->next)); ?>"> следующая</a> |
-    <a href="<?php echo $this->url(array('page' => $this->last)); ?>"> последняя</a>
-    <?php else: ?>
-    <span class="color-gray">
-      следующая |
-    </span> 
-    <span class="color-gray">
-      последняя
-    </span>
-    <?php endif; ?>
-    
-  <?php endif; ?>
+	<!-- Нумерованные ссылки на страницы -->
+	<?php foreach ($this->pagesInRange as $page): ?>
+		<?php if ($page != $this->current): ?>
+			<a href="<?php echo $this->url(array('page' => $page)); ?>">
+			<?php echo $page; ?></a> |
+		<?php else: ?>
+			<?php echo $page; ?> |
+		<?php endif; ?>
+	<?php endforeach; ?>
+
+	<!-- Ссылка на следующую и последнюю страницы -->
+	<?php if (isset($this->next)): ?>
+		<a href="<?php echo $this->url(array('page' => $this->next)); ?>"> следующая</a> |
+		<a href="<?php echo $this->url(array('page' => $this->last)); ?>"> последняя</a>
+	<?php else: ?>
+		<span class="color-gray">
+			следующая |
+		</span>
+		<span class="color-gray">
+			последняя
+		</span>
+	<?php endif; ?>
+
+<?php endif; ?>
 </div>

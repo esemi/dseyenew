@@ -33,7 +33,7 @@ $cellColors = array(
 			<td class="no-border"></td>
 			<?php
 			foreach ($compls as $compl)
-				echo "<th  class='bold'>$compl</th>";
+				echo "<th  class='bold'>{$compl}</th>";
 			?>
 			<td class="no-border"></td>
 		</tr>
@@ -43,7 +43,7 @@ $cellColors = array(
 			<td class="no-border no-background "></td>
 			<?php
 			foreach ($compls as $compl)
-				echo "<td class='bold'>$compl</td>";
+				echo "<td class='bold'>{$compl}</td>";
 			?>
 			<td class="no-border no-background "></td>
 		</tr>
@@ -78,7 +78,7 @@ $cellColors = array(
 							</div>
 						</div>
 						<a target="_blank" class="<?php echo $this->RaseColor($item['id_rase'], true); ?> no-underline hover-underline font-14" href="<?php echo $this->url(array( 'idW' => $this->idW, 'idP' => $item['id'] ), 'playerStat', true) ?>">
-							<?php echo $item['nik']; ?>
+							<?php echo $this->escape($item['nik']); ?>
 						</a>
 						<br>
 						<?php echo $this->allianceLink($this->idW, $item['id_alliance'], $item['alliance'], true); ?>

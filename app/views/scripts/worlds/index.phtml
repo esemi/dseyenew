@@ -214,7 +214,7 @@ $this->breadCrumb( array(
 				<ul class="mrg-bottom-13">
 				 <?php foreach ($this->input['players'] as $value): ?>
 					  <li>
-						  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?> " href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+						  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?> " href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $this->escape($value['nik']); ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
 					  </li>
 				 <?php endforeach; ?>
 				</ul>
@@ -230,7 +230,7 @@ $this->breadCrumb( array(
 			 <ul class="mrg-bottom-13">
 				 <?php foreach ($this->output['players'] as $value): ?>
 					  <li>
-						  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+						  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>"><?php echo $this->escape($value['nik']); ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
 					  </li>
 				 <?php endforeach; ?>
 			 </ul>
@@ -260,7 +260,7 @@ $this->breadCrumb( array(
 								case 'alliance':
 								?>
 									<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true) ?>">
-										<?php echo $value['nik'] ?>
+										<?php echo $this->escape($value['nik']); ?>
 									</a>
 									<br>
 									<?php echo $this->allianceLink($this->idWorld, $value['old_val'], $value['old_name']) .' &rarr; '. $this->allianceLink($this->idWorld, $value['new_val'], $value['new_name']); ?>
@@ -269,7 +269,7 @@ $this->breadCrumb( array(
 
 								case 'gate':
 								?>
-									<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+									<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $this->escape($value['nik']) ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
 									<div class="rubber-block mrg-top-2">
 										<?php echo $this->GateIcon($value['old_val']) .' &rarr; '. $this->GateIcon($value['new_val']); ?>
 									</div>
@@ -278,7 +278,7 @@ $this->breadCrumb( array(
 
 								case 'ligue':
 								?>
-									<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+									<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $this->escape($value['nik']) ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
 									<div class="rubber-block mrg-top-2">
 										<?php echo "{$value['old_val']} &rarr; {$value['new_val']}"; ?>
 									</div>
@@ -308,7 +308,7 @@ $this->breadCrumb( array(
 							}
 							?>
 							  <li>
-								  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+								  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $this->escape($value['nik']); ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
 								  <br>
 								  <?php
 								  if( is_null($value['old_adr']) )
@@ -342,7 +342,7 @@ $this->breadCrumb( array(
 							}
 							?>
 							  <li>
-								  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+								  <a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $this->escape($value['nik']); ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
 								  <br>
 								  <?php $this->printDelta($value['delta']); ?>
 							  </li>
@@ -369,7 +369,7 @@ $this->breadCrumb( array(
 							}
 							?>
 							<li>
-								<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $value['nik'] ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
+								<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true) ?>"><?php echo $this->escape($value['nik']); ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['alliance'], false, false); ?>
 								<br>
 								<?php $this->printDelta($value['delta']); ?>
 							</li>

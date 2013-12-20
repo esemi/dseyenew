@@ -1,3 +1,4 @@
+	- escaping of all user data
 	- warning about using the query cache in cli mode
 	- remade appearance of error indicators (lack of data)
 	- ring map support new worlds (with empty rings)

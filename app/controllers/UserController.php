@@ -23,9 +23,10 @@ class UserController extends Zend_Controller_Action
 
 		$user = Zend_Auth::getInstance()->getStorage()->read();
 
-		$this->view->headTitle("Личный кабинет пользователя {$user->login}");
-		$this->view->keywords = "Профиль, Личный кабинет, {$user->login}";
-		$this->view->description = "Личный кабинет пользователя {$user->login}";
+		$login = $this->view->escape($user->login);
+		$this->view->headTitle("Личный кабинет пользователя {$login}");
+		$this->view->keywords = "Профиль, Личный кабинет, {$login}";
+		$this->view->description = "Личный кабинет пользователя {$login}";
 
 		//доступ к изменению пароля
 		$this->view->accessEdit = $this->_helper->checkAccess('profile','edit');
@@ -37,8 +38,7 @@ class UserController extends Zend_Controller_Action
 		$this->view->history = $this->_helper->modelLoad('UsersHistory')->lastOf( $user->id, 5 );
 
 		//Автопоиск юзера
-		if( $this->_helper->checkAccess('autosearch','view') )
-		{
+		if( $this->_helper->checkAccess('autosearch','view') ){
 			$this->view->autoSearchData = $this->_helper->modelLoad('UsersSearch')->lastUsed( $user->id, 5 );
 		}
 
@@ -63,11 +63,12 @@ class UserController extends Zend_Controller_Action
 
 		$this->view->user = $user = Zend_Auth::getInstance()->getStorage()->read();
 
-		$this->view->headTitle("История действий пользователя {$user->login}");
-		$this->view->keywords = "Профиль, Личный кабинет, История действий, {$user->login}";
-		$this->view->description = "История действий пользователя {$user->login}";
+		$login = $this->view->escape($user->login);
+		$this->view->headTitle("История действий пользователя {$login}");
+		$this->view->keywords = "Профиль, Личный кабинет, История действий, {$login}";
+		$this->view->description = "История действий пользователя {$login}";
 
-		$this->view->history = $this->_helper->modelLoad('UsersHistory')->lastOf($user->id,200);
+		$this->view->history = $this->_helper->modelLoad('UsersHistory')->lastOf($user->id, 200);
 	}
 
 	/*
@@ -80,9 +81,10 @@ class UserController extends Zend_Controller_Action
 
 		$this->view->user = $user = Zend_Auth::getInstance()->getStorage()->read();
 
-		$this->view->headTitle("Автопоиск пользователя {$user->login}");
-		$this->view->keywords = "Автопоиск, Личный кабинет, История действий, {$user->login}";
-		$this->view->description = "Автопоиск (сохранённые настройки поиска) пользователя {$user->login}";
+		$login = $this->view->escape($user->login);
+		$this->view->headTitle("Автопоиск пользователя {$login}");
+		$this->view->keywords = "Автопоиск, Личный кабинет, История действий, {$login}";
+		$this->view->description = "Автопоиск (сохранённые настройки поиска) пользователя {$login}";
 
 		$this->view->accessDelete = $this->_helper->checkAccess('autosearch','del');
 
@@ -134,9 +136,10 @@ class UserController extends Zend_Controller_Action
 
 		$user = Zend_Auth::getInstance()->getStorage()->read();
 
-		$this->view->headTitle("Изменение пароля пользователя {$user->login}");
-		$this->view->keywords = "Изменение пароля, Профиль, Личный кабинет, {$user->login}";
-		$this->view->description = "Изменение пароля пользователя {$user->login}";
+		$login = $this->view->escape($user->login);
+		$this->view->headTitle("Изменение пароля пользователя {$login}");
+		$this->view->keywords = "Изменение пароля, Профиль, Личный кабинет, {$login}";
+		$this->view->description = "Изменение пароля пользователя {$login}";
 
 		if( $this->_request->isPost() )
 		{
@@ -159,7 +162,6 @@ class UserController extends Zend_Controller_Action
 	public function monitoringAction()
 	{
 		$this->_helper->checkAccess('autosearch','view','redirect');
-
 	}
 }
 

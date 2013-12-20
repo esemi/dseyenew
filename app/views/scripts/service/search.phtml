@@ -54,7 +54,7 @@ $num = 0;
 								<?php echo ++$num; ?>
 							</td>
 							<td class="pad-right-8 text-middle">
-								<a class="<?php echo $this->RaseColor($player['id_rase'], true); ?> no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $player['id_world'], 'idP' => $player['id'] ), 'playerStat', true) ?>"><?php echo $player['nik']; ?></a>
+								<a class="<?php echo $this->RaseColor($player['id_rase'], true); ?> no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $player['id_world'], 'idP' => $player['id'] ), 'playerStat', true) ?>"><?php echo $this->escape($player['nik']); ?></a>
 							</td>
 							<td class="text-center pad-right-8 text-middle">
 								<?php echo $this->allianceLink($player['id_world'], $player['id_alliance'], $player['all']); ?>

@@ -11,7 +11,7 @@ $this->breadCrumb( array(
 					$this->url(array( 'idW' => $this->idWorld ), 'worldIndex', true), $this->nameWorld),
 			$this->allianceLink($this->idWorld, $data['idA'], $data['all'], false, false),
 			sprintf('<span class="%s">%s</span>%s',
-					$this->RaseColor($data['id_rase']), $data['nik'], $premiumIcon) ));
+					$this->RaseColor($data['id_rase']), $this->escape($data['nik']), $premiumIcon) ));
 ?>
 <div class="clearfix">
 <div class="mrg-left-21 float-left mrg-bottom-13 w-278">

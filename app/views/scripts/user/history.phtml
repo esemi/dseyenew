@@ -18,7 +18,7 @@
 			<?php foreach($this->history as $item): ?>
 				<tr>
 					<td class="pad-lr-8 pad-top-6 text-center"><?php echo $item['date']; ?></td>
-					<td class="pad-lr-8 pad-top-6 text-center"><?php echo $item['ip']; ?></td>
+					<td class="pad-lr-8 pad-top-6 text-center"><?php echo $this->escape($item['ip']); ?></td>
 					<td class="pad-lr-8 pad-top-6"><?php echo $item['action']; ?></td>
 				</tr>
 			<?php endforeach; ?>

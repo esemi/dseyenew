@@ -45,14 +45,14 @@ $this->breadCrumb( array(
         </td>
         <td>
             <a class="<?php echo $this->RaseColor($item['id_rase'], true); ?> no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $item['id'] ), 'playerStat', true) ?>">
-                <?php echo $item['nik']; ?>
+                <?php echo $this->escape($item['nik']); ?>
             </a>
         </td>
         <td class="text-right pad-right-8">
             <?php echo "{$item['dom']}&nbsp;". $this->GateIcon($item['gate']); ?>
         </td>
         <td class="pad-right-8">
-            <?php echo $item['dom_name']; ?>
+            <?php echo $this->escape($item['dom_name']); ?>
         </td>
         <td class="text-right pad-right-8">
             <?php echo $this->NumFormat($item['rank_old']); ?>

@@ -18,7 +18,7 @@
 			<?php foreach( $this->autoSearchList as $item ): ?>
 			<div class="inline-block text-top mrg-right-42">
 				<a href="<?php echo $this->url(array( 'idW' => $item->id), 'worldIndex', true); ?>" target="_blank" class="no-underline subtitle">
-					<?php echo $item->name; ?>
+					<?php echo $this->escape($item->name); ?>
 				</a>
 				<ul class="indicators mrg-left-5 mrg-top-5">
 				<?php foreach( $item->data as $row ): ?>

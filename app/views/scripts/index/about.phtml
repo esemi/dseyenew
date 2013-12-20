@@ -12,7 +12,7 @@
 	<div>
 		<h3 class="sub-subtitle bold color-logo mrg-top-21">Настройки системы</h3>
 		<div class="text_just mrg-left-13">
-			<p>User agent нашего бота: <span class="bold"><?php echo $this->botName; ?></span></p>
+			<p>User agent нашего бота: <span class="bold"><?php echo $this->escape($this->botName); ?></span></p>
 			<p>Время хранения статистики и изменений по мирам/альянсам/игрокам: <span class="bold"><?php printf('%d %s', $this->scav['worldstat'], Mylib_Utils::plural('день', 'дня', 'дней',  $this->scav['worldstat']) ); ?></span></p>
 			<p>Время хранения статистики по игрокам: <span class="bold"><?php printf('%d %s', $this->scav['playerstat'], Mylib_Utils::plural('день', 'дня', 'дней',  $this->scav['playerstat']) ); ?></span></p>
 			<p>Время хранения статистики игроков онлайн: <span class="bold"><?php printf('%d %s', $this->scav['onlinestat'], Mylib_Utils::plural('день', 'дня', 'дней',  $this->scav['onlinestat']) ); ?></span></p>

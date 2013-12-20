@@ -172,7 +172,7 @@ $this->breadCrumb( array(
 				</td>
 				<td class="pad-right-8">
 					<a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>">
-					<b><?php echo $value['nik'] ?></b>
+					<b><?php echo $this->escape($value['nik']); ?></b>
 					</a>
 				</td>
 				<td class="pad-right-8">
@@ -199,7 +199,7 @@ $this->breadCrumb( array(
 				</td>
 				<td class="pad-right-8">
 					<a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>">
-						<b><?php echo $value['nik'] ?></b>
+						<b><?php echo $this->escape($value['nik']); ?></b>
 					</a>
 				</td>
 				<td class="pad-right-8">
@@ -258,7 +258,7 @@ $this->breadCrumb( array(
 				</td>
 				<td class="pad-right-8">
 					<a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array( 'idW' => $this->idWorld, 'idP' => $value['id'] ), 'playerStat', true) ?>">
-						<b><?php echo $value['nik'] ?></b>
+						<b><?php echo $this->escape($value['nik']); ?></b>
 					</a>
 				</td>
 				<td class="text-right">

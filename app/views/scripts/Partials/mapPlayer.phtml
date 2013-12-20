@@ -3,7 +3,7 @@ $item = $this->player;
 ?>
 
 <a target="_blank" class="<?php echo $this->RaseColor($item['id_rase'], true); ?> no-underline hover-underline font-14" href="<?php echo $this->url(array( 'idW' => $item['id_world'], 'idP' => $item['id'] ), 'playerStat', true) ?>">
-	<?php echo $item['nik']; ?>
+	<?php echo $this->escape($item['nik']); ?>
 </a>
 <?php echo $this->allianceLink($item['id_world'], $item['idA'], $item['all'], true); ?>
 <?php if( $this->extendedStatusAvaliable && $item['premium'] == 1 ) echo '<div class="premium-viewport"> </div>'; ?>
@@ -17,7 +17,7 @@ $item = $this->player;
 	}
 	?>
 	<li>
-		<?php echo "{$item['dom']} ". $this->GateIcon($item['gate']) ." {$item['dom_name']}" ?>
+		<?php echo "{$item['dom']} ". $this->GateIcon($item['gate']) ." ". $this->escape($item['dom_name']); ?>
 	</li>
 	<li class="mrg-top-3">
 		<strong class="bold">Уровень:</strong> <?php echo $item['level'] ?>; <strong class="bold">Лига:</strong> <?php echo $item['liga'] ?>
