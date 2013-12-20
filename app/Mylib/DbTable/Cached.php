@@ -27,7 +27,6 @@ abstract class Mylib_DbTable_Cached extends Zend_Db_Table_Abstract
 		$signature = "{$this->_name}_{$method}_" . md5(serialize($args)); //сигнатура метода по опциям
 		$methodDB = "notcached_{$method}"; //имя метода обращения к ДБ
 
-		//if( APPLICATION_ENV === 'cli' ) printf("Cached method by CLI %s->%s\n", $this->_name, $methodDB);
 
 		if( !method_exists($this, $methodDB) )
 			throw new Exception("Method {$methodDB} for {$this->_name} table not found. Cache layer fault.");
@@ -41,6 +40,8 @@ abstract class Mylib_DbTable_Cached extends Zend_Db_Table_Abstract
 		{
 			$data = call_user_func_array(array($this, $methodDB), $args);
 			$this->_cache->save($data, $signature, $tags);
+		}elseif( APPLICATION_ENV === 'cli' ){
+			printf("Cached method by CLI %s->%s" . PHP_EOL, $this->_name, $methodDB);
 		}
 
 		return $data;
