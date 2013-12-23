@@ -1,3 +1,5 @@
+	- merged all sot transfers to single table
+	- fixed empty cron log status field
 	- simplified work with flash messages
 	- fixed error levels Ajax action
 	- escaping of all user data
