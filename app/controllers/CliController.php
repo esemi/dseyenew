@@ -72,11 +72,10 @@ class CliController extends Zend_Controller_Action
 
 			//удаляем переезды-переходы
 			$countA = $this->_helper->modelLoad('PlayersTransAlliance')->clearOld( $conf['worldstat'] );
-			$countC = $this->_helper->modelLoad('PlayersTransColony')->clearOld( $conf['worldstat'] );
-			$countD = $this->_helper->modelLoad('PlayersTransDom')->clearOld( $conf['worldstat'] );
+			$countS = $this->_helper->modelLoad('PlayersTransSots')->clearOld( $conf['worldstat'] );
 			$countG = $this->_helper->modelLoad('PlayersTransGate')->clearOld( $conf['worldstat'] );
 			$countL = $this->_helper->modelLoad('PlayersTransLigue')->clearOld( $conf['worldstat'] );
-			$this->_log->add(sprintf('Удалено %d/%d/%d/%d/%d записей переездов игроков (дом/мельс/ал/ворота/лиги)',$countD, $countC, $countA, $countG, $countL), true);
+			$this->_log->add(sprintf('Удалено %d/%d/%d/%d записей переездов игроков (соты/ал/ворота/лиги)',$countS, $countA, $countG, $countL), true);
 
 			//удаляем макс дельты игроков
 			$countR = $this->_helper->modelLoad('MaxDeltaRankOld')->clearOld($conf['worldstat']);
@@ -1179,7 +1178,7 @@ class CliController extends Zend_Controller_Action
 					if( $res === 1 )
 					{
 						//запишем переезд
-						$this->_helper->modelLoad('PlayersTransColony')->addTransColony(
+						$this->_helper->modelLoad('PlayersTransSots')->addTransColony(
 							$data->getParam('id'),
 							$oldCol['compl'],
 							$oldCol['sota'],
@@ -1190,7 +1189,7 @@ class CliController extends Zend_Controller_Action
 				}else{
 					//колонию следует удалить
 					$res = $this->_helper->modelLoad('PlayersColony')->del($oldCol['id']);
-					$this->_helper->modelLoad('PlayersTransColony')->addTransColony(
+					$this->_helper->modelLoad('PlayersTransSots')->addTransColony(
 							$data->getParam('id'),
 							$oldCol['compl'],
 							$oldCol['sota']);
@@ -1214,7 +1213,7 @@ class CliController extends Zend_Controller_Action
 				//добавляем изменения в статистику для старых игроков
 				if( !$data->isNewPlayer() )
 				{
-					$this->_helper->modelLoad('PlayersTransColony')->addTransColony(
+					$this->_helper->modelLoad('PlayersTransSots')->addTransColony(
 							$data->getParam('id'),
 							null,
 							null,
@@ -1447,18 +1446,18 @@ class CliController extends Zend_Controller_Action
 			$idP = $player['id'];
 
 			//получаем время последнего изменения сот
-			$homeSotaChangeDate = $this->_helper->modelLoad('PlayersTransDom')->getLastChangeDate($idP);
+			$homeSotaChangeDate = $this->_helper->modelLoad('PlayersTransSots')->getLastDomChangeDate($idP);
 			if( !is_null($homeSotaChangeDate) )
 			{
 				$components[] = $tmp = $this->_prepareNRAComponent($homeSotaChangeDate, $conf['home_sota_change']);
 				$this->_log->add("дата изменения домашки {$homeSotaChangeDate} компонент {$tmp}");
 			}
 
-			$colSotaChangeDate = $this->_helper->modelLoad('PlayersTransColony')->getLastNewColonyDate($idP);
+			$colSotaChangeDate = $this->_helper->modelLoad('PlayersTransSots')->getLastNewColonyDate($idP);
 			if( !is_null($colSotaChangeDate) )
 			{
 				$components[] = $tmp = $this->_prepareNRAComponent($colSotaChangeDate, $conf['colony_add']);
-				$this->_log->add("дата приобритения колонии {$colSotaChangeDate} компонент {$tmp}");
+				$this->_log->add("дата приобретения колонии {$colSotaChangeDate} компонент {$tmp}");
 			}
 
 			//последнее изменение альянса

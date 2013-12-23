@@ -14,6 +14,13 @@ CREATE TABLE IF NOT EXISTS `players_trans_sots` (
   KEY `date` (`date`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
+ALTER TABLE `players_trans_sots` CHANGE `old_ring` `old_ring` TINYINT( 1 ) UNSIGNED NOT NULL ,
+CHANGE `old_compl` `old_compl` SMALLINT( 6 ) UNSIGNED NULL DEFAULT NULL ,
+CHANGE `old_sota` `old_sota` TINYINT( 1 ) UNSIGNED NULL DEFAULT NULL ,
+CHANGE `new_ring` `new_ring` TINYINT( 1 ) UNSIGNED NOT NULL ,
+CHANGE `new_compl` `new_compl` SMALLINT( 6 ) UNSIGNED NULL DEFAULT NULL ,
+CHANGE `new_sota` `new_sota` TINYINT( 1 ) UNSIGNED NULL DEFAULT NULL
+
 INSERT INTO players_trans_sots (`id_player`, old_ring, `old_compl`, `old_sota`, new_ring, `new_compl`, `new_sota`, `date`)
 SELECT `id_player`, 4 AS old_ring, `old_compl`, `old_sota`, 4 AS new_ring, `new_compl`, `new_sota`, `date` FROM `players_trans_colony`;
 
@@ -24,3 +31,6 @@ ALTER TABLE `players_trans_sots` DROP FOREIGN KEY `players_trans_sots_ibfk_1` ,
 ADD FOREIGN KEY ( `id_player` ) REFERENCES `dseye_new`.`players` (
 `id`
 ) ON DELETE CASCADE ON UPDATE CASCADE ;
+
+DROP TABLE players_trans_colony;
+DROP TABLE players_trans_dom;

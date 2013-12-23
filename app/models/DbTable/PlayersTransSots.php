@@ -5,15 +5,73 @@
  */
 class App_Model_DbTable_PlayersTransSots extends App_Model_Abstract_Trans
 {
+	const COLONY_RING = 4;
 
-	protected $_name = 'players_trans_dom';
-	protected $_name2 = 'players_trans_colony';
+	protected $_name = 'players_trans_sots';
 	protected $_cacheName = 'up';
 	protected $_tagsMap = array(
 		'getTransByWorld' => array('up'),
 		'getTransByAlliance' => array('up'),
 		'getTransByPlayer' => array('up'),
 	);
+
+
+	/**
+	 * время последнего изменения домашней соты
+	 * НРА
+	 */
+	public function getLastDomChangeDate( $idP )
+	{
+		$select = $this->select()
+				->from($this,array('date'))
+				->where("id_player = ?", $idP, Zend_Db::INT_TYPE)
+				->where("old_ring != ?", self::COLONY_RING, Zend_Db::INT_TYPE)
+				->order("date DESC")
+				->limit(1);
+
+		$data = $this->fetchRow($select);
+		return (is_null($data)) ? null : $data->date;
+	}
+
+	/**
+	 * время последнего приобритения колонии
+	 * НРА
+	 */
+	public function getLastNewColonyDate( $idP )
+	{
+		$select = $this->select()
+				->from($this,array('date'))
+				->where("id_player = ?", $idP, Zend_Db::INT_TYPE)
+				->where("old_ring = ?", self::COLONY_RING, Zend_Db::INT_TYPE)
+				->where("old_compl IS NULL")
+				->order("date DESC")
+				->limit(1);
+		$data = $this->fetchRow($select);
+		return (is_null($data)) ? null : $data->date;
+	}
+
+
+	public function addTransColony($idP, $oldC=null, $oldS=null, $newC=null, $newS=null)
+	{
+		$data = array(
+			'id_player' => $idP,
+			'old_ring' => self::COLONY_RING,
+			'new_ring' => self::COLONY_RING,
+			'date' => new Zend_Db_Expr('NOW()') );
+
+		if( !is_null($oldC) && !is_null($oldS) )
+		{
+			$data['old_compl'] = $oldC;
+			$data['old_sota'] = $oldS;
+		}
+
+		if( !is_null($newC) && !is_null($newS) ){
+			$data['new_compl'] =  $newC;
+			$data['new_sota'] = $newS;
+		}
+
+		return $this->insert( $data );
+	}
 
 	/*
 	 * переезды игрока

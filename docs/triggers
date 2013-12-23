@@ -23,7 +23,7 @@ CREATE TRIGGER `players_increment_stat` AFTER UPDATE ON `players`
 	END IF;
 
 	IF OLD.`compl` != NEW.`compl` OR OLD.`sota` != NEW.`sota`
-	THEN INSERT DELAYED INTO players_trans_dom (`id_player`, `old_compl`, `old_sota`, `new_compl`, `new_sota`, `date`) VALUES (OLD.id, OLD.`compl`, OLD.`sota`, NEW.`compl`, NEW.`sota`, now() );
+	THEN INSERT DELAYED INTO players_trans_sots (`id_player`, `old_ring`, `old_compl`, `old_sota`, `new_ring`, `new_compl`, `new_sota`, `date`) VALUES (OLD.id, OLD.ring, OLD.`compl`, OLD.`sota`, OLD.ring, NEW.`compl`, NEW.`sota`, now() );
 	END IF;
 
 	IF OLD.`mesto` != NEW.`mesto`

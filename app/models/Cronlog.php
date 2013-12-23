@@ -60,7 +60,7 @@ class App_Model_Cronlog
 	}
 	public function setResultWarn()
 	{
-		$this->_result = 'warn';
+		$this->_result = 'warning';
 	}
 
 	/*
