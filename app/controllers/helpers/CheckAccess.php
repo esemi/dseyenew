@@ -47,7 +47,7 @@ class Action_Helper_CheckAccess extends Zend_Controller_Action_Helper_Abstract
 						$url .= "?return={$returnUrl}";
 					}
 
-					$cntr->getHelper('flashMessenger')->addMessage(array('error' => "У вас недостаточно прав для доступа к данной странице. {$message}."));
+					$cntr->getHelper('Messenger')->addMessage('error', "У вас недостаточно прав для доступа к данной странице. {$message}.");
 					$cntr->getHelper('redirector')->gotoUrlAndExit($url);
 				}
 				break;

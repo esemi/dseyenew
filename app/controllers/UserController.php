@@ -43,14 +43,7 @@ class UserController extends Zend_Controller_Action
 		}
 
 		//с регистрации люди приходят с сообщением
-		$mes = $this->_helper->flashMessenger->getMessages();
-		if( count($mes) > 0 && is_array($mes) )
-		{
-			$mes = array_shift($mes);
-			$keys = array_keys($mes);
-			$this->view->messType = array_shift( $keys );
-			$this->view->messText = array_shift( $mes );
-		}
+		$this->_helper->Messenger();
 	}
 
 	/*
@@ -149,7 +142,7 @@ class UserController extends Zend_Controller_Action
 			if( $res === true ){
 				$this->_helper->modelLoad('UsersHistory')->add($user->id,'Смена пароля из личного кабинета',$this->_request);
 				$this->_helper->modelLoad('Users')->updPass( $user->id, $pass );
-				$this->_helper->flashMessenger->addMessage(array( 'success' => "Пароль успешно изменён") );
+				$this->_helper->Messenger->addMessage('success', "Пароль успешно изменён");
 				$this->_helper->redirector->gotoRouteAndExit(array(), 'userProfile', true);
 			}else{
 				$this->_helper->modelLoad('UsersHistory')->add($user->id,"Попытка смены пароля из личного кабинета ({$res})",$this->_request);

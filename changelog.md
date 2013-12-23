@@ -1,3 +1,4 @@
+	- simplified work with flash messages
 	- fixed error levels Ajax action
 	- escaping of all user data
 	- warning about using the query cache in cli mode

@@ -26,20 +26,12 @@ class AuthController extends Zend_Controller_Action
 
 		$this->view->helpLink = $this->view->url( array('id'=>'register'), 'helpView', true );
 
-		if( Zend_Auth::getInstance()->hasIdentity() )
-		{
-			$this->_helper->flashMessenger->addMessage(array( 'success' => "Вы уже вошли в систему. Если вам необходимо зайти под другим ником сперва выйдите.") );
+		if( Zend_Auth::getInstance()->hasIdentity() ){
+			$this->_helper->Messenger->addMessage('success', "Вы уже вошли в систему. Если вам необходимо зайти под другим ником сперва выйдите.");
 			$this->_helper->redirector->gotoRouteAndExit(array(), 'userProfile', true);
 		}
 
-		$mes = $this->_helper->flashMessenger->getMessages();
-		if( count($mes) > 0 && is_array($mes) )
-		{
-			$mes = array_shift($mes);
-			$keys = array_keys($mes);
-			$this->view->messType = array_shift( $keys );
-			$this->view->messText = array_shift( $mes );
-		}
+		$this->_helper->Messenger();
 
 		$ip = $this->_request->getClientIp(false);
 		if( true !== $this->_helper->modelLoad('Antibrut')->checkIP('login', $ip) )
@@ -161,7 +153,7 @@ class AuthController extends Zend_Controller_Action
 				$mail->addTo($post['email']);
 				$mail->send();
 
-				$this->_helper->flashMessenger->addMessage(  array( 'success' => sprintf("Вы успешно зарегистрировались под ником %s.<br>На указанный вами адрес отправлено письмо с ссылкой для подтверждения адреса электронной почты.", $this->view->escape($post['login'])) ) );
+				$this->_helper->Messenger->addMessage('success', sprintf("Вы успешно зарегистрировались под ником %s.<br>На указанный вами адрес отправлено письмо с ссылкой для подтверждения адреса электронной почты.", $this->view->escape($post['login'])));
 				$this->_helper->redirector->gotoRouteAndExit(array(), 'userProfile', true);
 			}else{
 				$this->view->messType = 'error';
@@ -228,7 +220,7 @@ class AuthController extends Zend_Controller_Action
 				$this->_helper->modelLoad('Users')->approve( $idUser );
 				$this->_helper->modelLoad('UsersHistory')->add( $idUser, 'Подтверждение email адреса', $this->_request );
 
-				$this->_helper->flashMessenger->addMessage( array( 'success' => "Адрес электронной почты успешно подтверждён" ) );
+				$this->_helper->Messenger->addMessage('success', "Адрес электронной почты успешно подтверждён");
 
 				if( Zend_Auth::getInstance()->hasIdentity() )
 					$this->_helper->redirector->gotoRouteAndExit(array(), 'userProfile', true);
@@ -258,7 +250,7 @@ class AuthController extends Zend_Controller_Action
 		$user = $this->_helper->modelLoad('Users')->getInfo( Zend_Auth::getInstance()->getStorage()->read()->id );
 		if( $user['approved'] == 'yes' )
 		{
-			$this->_helper->flashMessenger->addMessage( array( 'success' => "Адрес электронной почты уже был активирован ранее" ) );
+			$this->_helper->Messenger->addMessage('success', "Адрес электронной почты уже был активирован ранее");
 			$this->_helper->redirector->gotoRouteAndExit(array(), 'userProfile',true);
 		}
 
@@ -304,7 +296,7 @@ class AuthController extends Zend_Controller_Action
 			$mail->send();
 
 			//сообщение сохраняем и редиректим
-			$this->_helper->flashMessenger->addMessage(  array( 'success' => "Повторный запрос подтверждения email адреса аккаунта успешно получен.<br>В ближайшее время на указанный при регистрации email-адрес придёт письмо с инструкцией по его подтверждению." ) );
+			$this->_helper->Messenger->addMessage('success', "Повторный запрос подтверждения email адреса аккаунта успешно получен.<br>В ближайшее время на указанный при регистрации email-адрес придёт письмо с инструкцией по его подтверждению.");
 			$this->_helper->redirector->gotoRouteAndExit(array(), 'userProfile', true);
 		}
 	}
@@ -371,7 +363,7 @@ class AuthController extends Zend_Controller_Action
 			$mail->addTo($user->email);
 			$mail->send();
 
-			$this->_helper->flashMessenger->addMessage(  array( 'success' => "Заявка на восстановление пароля принята.<br>В ближайшее время на указанный вами при регистрации email-адрес придёт письмо с инструкцией по восстановлению." ) );
+			$this->_helper->Messenger->addMessage('success', "Заявка на восстановление пароля принята.<br>В ближайшее время на указанный вами при регистрации email-адрес придёт письмо с инструкцией по восстановлению.");
 			$this->_helper->redirector->gotoRouteAndExit(array(), 'staticLogin', true);
 		}
 	}
@@ -422,7 +414,7 @@ class AuthController extends Zend_Controller_Action
 
 			$this->_helper->modelLoad('UsersHistory')->add( $idUser, 'Смена пароля через восстановление', $this->_request);
 
-			$this->_helper->flashMessenger->addMessage( array( 'success' => "Новый пароль успешно установлен и отправлен вам на почту" ) );
+			$this->_helper->Messenger->addMessage('success', "Новый пароль успешно установлен и отправлен вам на почту");
 			$this->_helper->redirector->gotoRouteAndExit(array(), 'staticLogin', true);
 		}
 	}
