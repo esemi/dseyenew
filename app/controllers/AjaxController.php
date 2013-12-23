@@ -423,10 +423,8 @@ class AjaxController extends Zend_Controller_Action
 				}
 			}
 
-			if( count($series) === 0 )
-			{
+			if( count($series) === 0 ){
 				$this->view->error = 'Данные отсутствуют';
-				$this->_helper->Logger()->customError($this->view->error);
 				return;
 			}
 
@@ -460,7 +458,6 @@ class AjaxController extends Zend_Controller_Action
 			if( $url === false )
 			{
 				$this->view->error = 'График временно недоступен';
-				$this->_helper->Logger()->customError($this->view->error);
 				return;
 			}
 			$this->view->url = $url;
@@ -475,7 +472,6 @@ class AjaxController extends Zend_Controller_Action
 			$this->_helper->Logger()->customError($this->view->error);
 		}elseif( count($data) === 0 ){
 			$this->view->error = 'Данные отсутствуют';
-			$this->_helper->Logger()->customError($this->view->error);
 		}else{
 			$this->view->series = $this->_prepareStandartSingleGraph($type, $data);
 		}
@@ -736,10 +732,8 @@ class AjaxController extends Zend_Controller_Action
 				break;
 		}
 
-		if(count($data) === 0)
-		{
+		if(count($data) === 0){
 			$this->view->error = 'Данные отсутствуют';
-			$this->_helper->Logger()->customError($this->view->error);
 		}else{
 			$this->view->series = $series;
 		}
@@ -843,7 +837,6 @@ class AjaxController extends Zend_Controller_Action
 		if(count($data) === 0)
 		{
 			$this->view->error = 'Данные отсутствуют';
-			$this->_helper->Logger()->customError($this->view->error);
 		}else{
 			$this->view->series = $series;
 		}
@@ -909,7 +902,6 @@ class AjaxController extends Zend_Controller_Action
 		if(count($data) == 0)
 		{
 			$this->view->error = 'Данные отсутствуют';
-			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
