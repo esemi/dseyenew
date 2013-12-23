@@ -264,6 +264,7 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 
 		//кеш метаданных
 		Zend_Db_Table_Abstract::setDefaultMetadataCache( $this->getResource('cachemanager')->getCache('long') );
+		//Zend_Paginator::setCache(null);
 	}
 
 	//custom logs
