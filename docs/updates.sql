@@ -34,3 +34,21 @@ ADD FOREIGN KEY ( `id_player` ) REFERENCES `dseye_new`.`players` (
 
 DROP TABLE players_trans_colony;
 DROP TABLE players_trans_dom;
+
+
+
+
+
+CREATE TABLE IF NOT EXISTS `players_changes` (
+  `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `id_player` int(10) unsigned NOT NULL,
+  `type` enum('gate_open','gate_close') NOT NULL,
+  `date` datetime NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `id_player` (`id_player`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+
+ALTER TABLE `players_changes` ADD FOREIGN KEY ( `id_player` ) REFERENCES `dseye_new`.`players` (
+`id`
+) ON DELETE CASCADE ON UPDATE CASCADE ;
+
