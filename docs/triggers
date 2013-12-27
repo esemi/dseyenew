@@ -7,7 +7,43 @@ CREATE TRIGGER `players_increment_stat` AFTER UPDATE ON `players`
 	END IF;
 
 	IF OLD.`gate` != NEW.`gate`
-		THEN INSERT DELAYED INTO players_trans_gate (`id_player`, `old_gate`, `new_gate`, `date`) VALUES (OLD.id, OLD.`gate`, NEW.`gate`,  now() );
+	THEN
+		IF NEW.`gate` = 1
+			THEN	INSERT DELAYED INTO players_changes (`id_player`, `type`, `date`) VALUES (OLD.id, 'gate_open', now());
+			ELSE	INSERT DELAYED INTO players_changes (`id_player`, `type`, `date`) VALUES (OLD.id, 'gate_close', now());
+		END IF;
+	END IF;
+
+	IF OLD.`gate_shield` != NEW.`gate_shield`
+	THEN
+		IF NEW.`gate_shield` = 1
+			THEN	INSERT DELAYED INTO players_changes (`id_player`, `type`, `date`) VALUES (OLD.id, 'shield_enable', now());
+			ELSE	INSERT DELAYED INTO players_changes (`id_player`, `type`, `date`) VALUES (OLD.id, 'shield_disable', now());
+		END IF;
+	END IF;
+
+	IF OLD.`gate_newbee` != NEW.`gate_newbee`
+	THEN
+		IF NEW.`gate_newbee` = 1
+			THEN	INSERT DELAYED INTO players_changes (`id_player`, `type`, `date`) VALUES (OLD.id, 'newbee_enable', now());
+			ELSE	INSERT DELAYED INTO players_changes (`id_player`, `type`, `date`) VALUES (OLD.id, 'newbee_disable', now());
+		END IF;
+	END IF;
+
+	IF OLD.`gate_ban` != NEW.`gate_ban`
+	THEN
+		IF NEW.`gate_ban` = 1
+			THEN	INSERT DELAYED INTO players_changes (`id_player`, `type`, `date`) VALUES (OLD.id, 'ban', now());
+			ELSE	INSERT DELAYED INTO players_changes (`id_player`, `type`, `date`) VALUES (OLD.id, 'unban', now());
+		END IF;
+	END IF;
+
+	IF OLD.`premium` != NEW.`premium`
+	THEN
+		IF NEW.`premium` = 1
+			THEN	INSERT DELAYED INTO players_changes (`id_player`, `type`, `date`) VALUES (OLD.id, 'premium_enable', now());
+			ELSE	INSERT DELAYED INTO players_changes (`id_player`, `type`, `date`) VALUES (OLD.id, 'premium_disable', now());
+		END IF;
 	END IF;
 
 	IF OLD.`status` != NEW.`status`
