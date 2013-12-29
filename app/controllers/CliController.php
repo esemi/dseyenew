@@ -1469,7 +1469,8 @@ class CliController extends Zend_Controller_Action
 			}
 
 			//последнее изменение ворот
-			$gateChangeDate = $this->_helper->modelLoad('PlayersTransGate')->getLastChangeDate($idP);
+			//@TODO учитывать отдельно ворота, щит и премиум
+			$gateChangeDate = $this->_helper->modelLoad('PlayersChanges')->getLastChangeDate($idP);
 			if( !is_null($gateChangeDate) )
 			{
 				$components[] = $tmp = $this->_prepareNRAComponent($gateChangeDate, $conf['gate_change']);
