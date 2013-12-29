@@ -355,17 +355,16 @@ class CliController extends Zend_Controller_Action
 						$updateRes = $this->_helper->modelLoad('Players')->updateGateStatuses(
 								$worldProp['id_world'],
 								$player->nik,
+								$player->gate,
 								$player->shield,
 								$player->newbee,
 								$player->ban,
 								$player->premium);
-
 						$countUpd += $updateRes;
-
 						if($updateRes === 1)
-							$this->_log->add(sprintf('Игрок %s обновлён ("%s", "%s", "%s", "%s")',$player->nik,$player->shield,$player->newbee,$player->ban,$player->premium));
+							$this->_log->add(sprintf('Игрок %s обновлён ("%s", "%s", "%s", "%s", "%s")',$player->nik, $player->gate, $player->shield,$player->newbee,$player->ban,$player->premium));
 						else
-							$this->_log->add(sprintf('Игрок %s релевантен ("%s", "%s", "%s", "%s")',$player->nik,$player->shield,$player->newbee,$player->ban,$player->premium));
+							$this->_log->add(sprintf('Игрок %s релевантен ("%s", "%s", "%s", "%s", "%s")',$player->nik, $player->gate, $player->shield,$player->newbee,$player->ban,$player->premium));
 					}
 					$db->commit();
 				}catch(Exception $e){

@@ -41,7 +41,7 @@ class Mylib_Parser_CSV_Row
 			'dom_name' => $this->getParam('domName'),
 			//'rank_old' => $this->getParam('rankOld'),
 			//'bo' => $this->getParam('bo'),
-			'gate' => $this->getParam('gate'),
+			//'gate' => $this->getParam('gate'),
 		);
 	}
 

@@ -58,7 +58,7 @@ class Mylib_Parser_CSV_Old extends Mylib_Parser_CSV_Abstract
 
 		//$this->_data->setParam('rankOld', intval($arr[6]));
 		//$this->_data->setParam('bo', floatval($arr[7]));
-		$this->_data->setParam('gate', (substr(trim($arr[8]), -1) == '1') ? 1 : 0);
+		//$this->_data->setParam('gate', (substr(trim($arr[8]), -1) == '1') ? 1 : 0);
 
 		//адреса и имена сот
 		$names = explode(',', trim($arr[2]));

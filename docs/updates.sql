@@ -19,7 +19,7 @@ CHANGE `old_compl` `old_compl` SMALLINT( 6 ) UNSIGNED NULL DEFAULT NULL ,
 CHANGE `old_sota` `old_sota` TINYINT( 1 ) UNSIGNED NULL DEFAULT NULL ,
 CHANGE `new_ring` `new_ring` TINYINT( 1 ) UNSIGNED NOT NULL ,
 CHANGE `new_compl` `new_compl` SMALLINT( 6 ) UNSIGNED NULL DEFAULT NULL ,
-CHANGE `new_sota` `new_sota` TINYINT( 1 ) UNSIGNED NULL DEFAULT NULL
+CHANGE `new_sota` `new_sota` TINYINT( 1 ) UNSIGNED NULL DEFAULT NULL;
 
 INSERT INTO players_trans_sots (`id_player`, old_ring, `old_compl`, `old_sota`, new_ring, `new_compl`, `new_sota`, `date`)
 SELECT `id_player`, 4 AS old_ring, `old_compl`, `old_sota`, 4 AS new_ring, `new_compl`, `new_sota`, `date` FROM `players_trans_colony`;
@@ -27,10 +27,7 @@ SELECT `id_player`, 4 AS old_ring, `old_compl`, `old_sota`, 4 AS new_ring, `new_
 INSERT INTO players_trans_sots (`id_player`, old_ring, `old_compl`, `old_sota`, new_ring, `new_compl`, `new_sota`, `date`)
 (SELECT `id_player`, ring AS old_ring, `old_compl`, `old_sota`, ring AS new_ring, `new_compl`, `new_sota`, `date` FROM `players_trans_dom` JOIN players ON players.id = id_player);
 
-ALTER TABLE `players_trans_sots` DROP FOREIGN KEY `players_trans_sots_ibfk_1` ,
-ADD FOREIGN KEY ( `id_player` ) REFERENCES `dseye_new`.`players` (
-`id`
-) ON DELETE CASCADE ON UPDATE CASCADE ;
+ALTER TABLE `players_trans_sots` ADD FOREIGN KEY ( `id_player` ) REFERENCES `dseye_new`.`players` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ;
 
 DROP TABLE players_trans_colony;
 DROP TABLE players_trans_dom;

@@ -283,10 +283,15 @@ class App_Model_GameClient
 
 			$player = new stdClass();
 			$player->nik = $nik;
+			$player->gate = false;
 			$player->shield = false;
 			$player->newbee = false;
 			$player->ban = false;
 			$player->premium = false;
+
+			//ворота
+			if( $compl->hasAttribute('gate') &&  $compl->getAttribute('gate') == 1 )
+				$player->gate = true;
 
 			//щит/дом отпуска
 			if( $compl->hasAttribute('freez') &&  $compl->getAttribute('freez') == 1 )
