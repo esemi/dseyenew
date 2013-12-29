@@ -73,7 +73,7 @@ class CliController extends Zend_Controller_Action
 			//удаляем переезды-переходы
 			$countA = $this->_helper->modelLoad('PlayersTransAlliance')->clearOld( $conf['worldstat'] );
 			$countS = $this->_helper->modelLoad('PlayersTransSots')->clearOld( $conf['worldstat'] );
-			$countG = $this->_helper->modelLoad('PlayersTransGate')->clearOld( $conf['worldstat'] );
+			$countG = $this->_helper->modelLoad('PlayersChanges')->clearOld( $conf['worldstat'] );
 			$countL = $this->_helper->modelLoad('PlayersTransLigue')->clearOld( $conf['worldstat'] );
 			$this->_log->add(sprintf('Удалено %d/%d/%d/%d записей переездов игроков (соты/ал/ворота/лиги)',$countS, $countA, $countG, $countL), true);
 

@@ -15,7 +15,7 @@ abstract class App_Model_Abstract_Trans extends Mylib_DbTable_Cached
 
     protected abstract function notcached_getTransByPlayer( $idP, $limit );
     protected abstract function notcached_getTransByAlliance( $idA, $limit);
-    protected abstract function notcached_getTransByWorld($idW, $date = null, $returnCount = false, $limit = 10);
+    protected abstract function notcached_getTransByWorld($idW, $limit = null, $date = null, $returnCount = true);
 
 	/**
 	 * время последнего изменения
