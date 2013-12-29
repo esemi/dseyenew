@@ -118,7 +118,7 @@ class App_Model_DbTable_PlayersTransSots extends App_Model_Abstract_Trans
 	 /*
 	 * переезды игроков мира
 	 */
-	protected function notcached_getTransByWorld( $idW, $limit = null, $date = null, $returnCount = false)
+	protected function notcached_getTransByWorld( $idW, $limit = null, $date = null, $returnCount = true)
 	{
 		$data = array( "transes" => array( ), "count" => 0 );
 
@@ -142,23 +142,23 @@ class App_Model_DbTable_PlayersTransSots extends App_Model_Abstract_Trans
 			$select->where("DATE_FORMAT({$this->_name}.date, '%d-%m-%Y') = ?", $date);
 		}
 
-		if( !is_null($limit) )
-			$select->limit( $limit );
-
 		//берём количество общее
 		if( $returnCount === true ){
 			$adapter = new Zend_Paginator_Adapter_DbSelect($select);
 			$count = $adapter->count();
 		}
 
+		if( !is_null($limit) )
+			$select->limit( $limit );
+
 		//берём данные ограниченные
 		if( ($returnCount === true && $count > 0) || $returnCount === false ){
-			if(isset($count)){
+			if(!empty($count) && !empty($limit)){
 				$data["count"] = $count - $limit;
 			}
 			$data["transes"] = $this->fetchAll($select)->toArray();
 		}
-		
+
 		return $data;
 	}
 

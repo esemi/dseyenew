@@ -1,0 +1,126 @@
+<ul>
+	<?php
+	$dateHead = '';
+	foreach( $this->items as $value ):
+		if( $value['date'] != $dateHead ){
+			$dateHead = $value['date'];
+			echo "<div class='time-separation'>{$value['date']}</div>";
+		}
+	?>
+		<li>
+			<?php
+			switch ($value['type'])
+			{
+				case 'alliance':
+				?>
+					<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true) ?>">
+						<?php echo $this->escape($value['nik']); ?>
+					</a>
+					<br>
+					<?php echo $this->allianceLink($this->idWorld, $value['old_val'], $value['old_name']) .' &rarr; '. $this->allianceLink($this->idWorld, $value['new_val'], $value['new_name']); ?>
+				<?php
+				break;
+
+				case 'gate_open':
+				?>
+					<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $this->escape($value['nik']) ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+					<div class="rubber-block mrg-top-2">
+						<?php echo $this->GateIcon(0) .' &rarr; '. $this->GateIcon(1); ?>
+					</div>
+				<?php
+				break;
+
+				case 'gate_close':
+				?>
+					<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $this->escape($value['nik']) ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+					<div class="rubber-block mrg-top-2">
+						<?php echo $this->GateIcon(1) .' &rarr; '. $this->GateIcon(0); ?>
+					</div>
+				<?php
+				break;
+
+				case 'ligue':
+				?>
+					<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $this->escape($value['nik']) ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+					<div class="rubber-block mrg-top-2">
+						<?php echo "{$value['old_val']} &rarr; {$value['new_val']}"; ?>
+					</div>
+				<?php
+				break;
+
+				case 'premium_enable':
+				?>
+					<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $this->escape($value['nik']) ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+					<div class="rubber-block mrg-top-2">
+						<?php echo $this->PremIcon(0) .' &rarr; '. $this->PremIcon(1); ?>
+					</div>
+				<?php
+				break;
+
+				case 'premium_disable':
+				?>
+					<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $this->escape($value['nik']) ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+					<div class="rubber-block mrg-top-2">
+						<?php echo $this->PremIcon(1) .' &rarr; '. $this->PremIcon(0); ?>
+					</div>
+				<?php
+				break;
+
+				case 'ban':
+				?>
+					<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $this->escape($value['nik']) ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+					<div class="rubber-block mrg-top-2">
+						<?php echo $this->BanIcon(0) .' &rarr; '. $this->BanIcon(1); ?>
+					</div>
+				<?php
+				break;
+
+				case 'unban':
+				?>
+					<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $this->escape($value['nik']) ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+					<div class="rubber-block mrg-top-2">
+						<?php echo $this->BanIcon(1) .' &rarr; '. $this->BanIcon(0); ?>
+					</div>
+				<?php
+				break;
+
+				case 'newbee_enable':
+				?>
+					<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $this->escape($value['nik']) ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+					<div class="rubber-block mrg-top-2">
+						<?php echo $this->NewbeeIcon(0) .' &rarr; '. $this->NewbeeIcon(1); ?>
+					</div>
+				<?php
+				break;
+
+				case 'newbee_disable':
+				?>
+					<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $this->escape($value['nik']) ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+					<div class="rubber-block mrg-top-2">
+						<?php echo $this->NewbeeIcon(1) .' &rarr; '. $this->NewbeeIcon(0); ?>
+					</div>
+				<?php
+				break;
+
+				case 'shield_enable':
+				?>
+					<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $this->escape($value['nik']) ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+					<div class="rubber-block mrg-top-2">
+						<?php echo $this->ShieldIcon(0) .' &rarr; '. $this->ShieldIcon(1); ?>
+					</div>
+				<?php
+				break;
+
+				case 'shield_disable':
+				?>
+					<a class="<?php echo $this->RaseColor($value['id_rase'], true) ?>" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id_player']), 'playerStat', true); ?>"><?php echo $this->escape($value['nik']) ?></a>&nbsp<?php echo $this->allianceLink($this->idWorld, $value['id_alliance'], $value['new_name'], false, false); ?>
+					<div class="rubber-block mrg-top-2">
+						<?php echo $this->ShieldIcon(1) .' &rarr; '. $this->ShieldIcon(0); ?>
+					</div>
+				<?php
+				break;
+			}
+			?>
+		</li>
+	<?php endforeach; ?>
+</ul>

@@ -7,7 +7,7 @@ class App_Model_DbTable_PlayersTransOthers extends App_Model_Abstract_Trans
 {
 
 	protected $_name = 'players_trans_alliance';
-	protected $_name2 = 'players_trans_gate';
+	protected $_name2 = 'players_changes';
 	protected $_name3 = 'players_trans_ligue';
 	protected $_cacheName = 'up';
 	protected $_tagsMap = array(
@@ -71,7 +71,7 @@ class App_Model_DbTable_PlayersTransOthers extends App_Model_Abstract_Trans
 	 /*
 	 * переезды игроков мира
 	 */
-	protected function notcached_getTransByWorld( $idW, $limit = null, $date = null, $returnCount = false)
+	protected function notcached_getTransByWorld( $idW, $limit = null, $date = null, $returnCount = true)
 	{
 		$data = array( "transes" => array( ), "count" => 0 );
 
@@ -93,12 +93,12 @@ class App_Model_DbTable_PlayersTransOthers extends App_Model_Abstract_Trans
 		$selectGate = $this->select()
 				->setIntegrityCheck(false)
 				->from($this->_name2, array(
-					'type' => new Zend_Db_Expr('"gate"'),
+					'type',
 					'sort_date' => 'date',
 					'id_player',
 					'date' => "DATE_FORMAT(date , '%H:%i')",
-					'old_val' => 'old_gate',
-					'new_val' => 'new_gate'))
+					'old_val' => new Zend_Db_Expr('""'),
+					'new_val' => new Zend_Db_Expr('""')))
 				->join('players', "players.id = id_player", array( 'nik', 'id_rase', 'id_alliance' ))
 				->join('alliances', "alliances.id = players.id_alliance", array(
 					'old_name' => new Zend_Db_Expr('""'),
@@ -135,8 +135,6 @@ class App_Model_DbTable_PlayersTransOthers extends App_Model_Abstract_Trans
 				->union(array($selectAlliance, $selectGate, $selectLigue))
 				->order("sort_date DESC");
 
-		if( !is_null($limit) )
-			$select->limit( $limit );
 
 		//берём количество общее
 		if( $returnCount === true )
@@ -145,12 +143,16 @@ class App_Model_DbTable_PlayersTransOthers extends App_Model_Abstract_Trans
 			$count = $adapter->count();
 		}
 
+		if( !is_null($limit) )
+			$select->limit( $limit );
+
 		//берём данные ограниченные
 		if( ($returnCount === true && $count > 0) || $returnCount === false )
 		{
-			if(isset($count))
+			if(!empty($count) && !empty($limit)){
 				$data["count"] = $count - $limit;
-
+			}
+			
 			$data["transes"] = $this->fetchAll($select)->toArray();
 		}
 		return $data;
