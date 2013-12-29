@@ -60,10 +60,11 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 	 * обновить расширенные статусы ворот/према игроку
 	 * gate cli
 	 */
-	public function updateGateStatuses($idW, $nik, $shield, $newbee, $ban, $prem)
+	public function updateGateStatuses($idW, $nik, $gate, $shield, $newbee, $ban, $prem)
 	{
 		return $this->update(
 				array(
+					'gate' => ($shield) ? 1 : 0,
 					'gate_shield' => ($shield) ? 1 : 0,
 					'gate_newbee' => ($newbee) ? 1 : 0,
 					'gate_ban' => ($ban) ? 1 : 0,
