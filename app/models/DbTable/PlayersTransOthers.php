@@ -11,8 +11,8 @@ class App_Model_DbTable_PlayersTransOthers extends App_Model_Abstract_Trans
 	protected $_name3 = 'players_trans_ligue';
 	protected $_cacheName = 'up';
 	protected $_tagsMap = array(
-		'getTransByWorld' => array('up', 'ranks'),
-		'getTransByPlayer' => array('up', 'ranks'),
+		'getTransByWorld' => array('up', 'ranks', 'gate'),
+		'getTransByPlayer' => array('up', 'ranks', 'gate'),
 	);
 
 	/*
@@ -33,12 +33,12 @@ class App_Model_DbTable_PlayersTransOthers extends App_Model_Abstract_Trans
 		$selectGate = $this->select()
 				->setIntegrityCheck(false)
 				->from($this->_name2, array(
-					'type' => new Zend_Db_Expr('"gate"'),
+					'type',
 					'date' => "DATE_FORMAT(`date`, '%H:%i %d.%m.%y')",
 					'sort_date' => 'date',
-					'old_val' => 'old_gate',
+					'old_val' => new Zend_Db_Expr('""'),
 					'old_name' => new Zend_Db_Expr('""'),
-					'new_val' => 'new_gate',
+					'new_val' => new Zend_Db_Expr('""'),
 					'new_name' => new Zend_Db_Expr('""')))
 				->where("{$this->_name2}.id_player = ?", $idP, Zend_Db::INT_TYPE);
 
@@ -152,7 +152,7 @@ class App_Model_DbTable_PlayersTransOthers extends App_Model_Abstract_Trans
 			if(!empty($count) && !empty($limit)){
 				$data["count"] = $count - $limit;
 			}
-			
+
 			$data["transes"] = $this->fetchAll($select)->toArray();
 		}
 		return $data;
