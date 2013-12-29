@@ -8,7 +8,9 @@ class App_Model_DbTable_PlayersChanges extends App_Model_Abstract_Trans
 
 	protected $_name = 'players_changes';
 	protected $_cacheName = 'up';
-	protected $_tagsMap = array();
+	protected $_tagsMap = array(
+		'getTransByAlliance' => array('gate')
+	);
 
 	/**
 	 * время последнего изменения
@@ -36,7 +38,16 @@ class App_Model_DbTable_PlayersChanges extends App_Model_Abstract_Trans
 	/*
 	 * изменения игроков альянса
 	 */
-	protected function notcached_getTransByAlliance( $idA, $limit ){}
+	protected function notcached_getTransByAlliance($idA, $limit){
+		$select = $this->select()
+					->setIntegrityCheck(false)
+					->from($this, array( 'id' => 'id_player', 'type', 'date' => "DATE_FORMAT(date , '%H:%i %d.%m.%y')" ))
+					->join('players', "players.id = id_player", array( 'nik', 'id_rase' ))
+					->where("players.id_alliance = ?", $idA, Zend_Db::INT_TYPE)
+					->order("{$this->_name}.date DESC")
+					->limit($limit);
+		return $this->fetchAll($select)->toArray();
+	}
 
 	/*
 	 * изменения игроков мира

@@ -21,8 +21,8 @@ class App_Model_DbTable_PlayersTransLigue extends App_Model_Abstract_Trans
 	/*
 	 * изменения игроков альянса
 	 */
-	protected function notcached_getTransByAlliance( $idA, $limit ){
-
+	protected function notcached_getTransByAlliance( $idA, $limit )
+	{
 		$select = $this->select()
 					->setIntegrityCheck(false)
 					->from($this, array( 'id' => 'id_player', 'old_ligue', 'new_ligue', 'date' => "DATE_FORMAT(date , '%H:%i %d.%m.%y')" ))

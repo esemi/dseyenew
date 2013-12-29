@@ -162,13 +162,13 @@ $this->breadCrumb( array(
 <div class="mrg-left-21 mrg-top-13 text-center">
 	<table class=" inline-block mrg-right-42 tr-outline text-top mrg-bottom-13">
 		<caption class="text-left mrg-bottom-8">
-			<strong class="bold">Статус&nbsp;ворот</strong>
+			<strong class="bold">Прочие&nbsp;изменения</strong>
 		</caption>
 	<?php if( count($this->transGate) > 0 ): ?>
 		<?php foreach($this->transGate as $value): ?>
 			<tr>
 				<td class="pad-left-8 pad-right-8">
-					<?php echo $value['date'] ?>
+					<?php echo $value['date']; ?>
 				</td>
 				<td class="pad-right-8">
 					<a class="<?php echo $this->RaseColor($value['id_rase']) ?> block no-underline hover-underline" href="<?php echo $this->url(array('idW' => $this->idWorld,'idP' => $value['id']), 'playerStat', true); ?>">
@@ -176,7 +176,7 @@ $this->breadCrumb( array(
 					</a>
 				</td>
 				<td class="pad-right-8">
-					<?php echo $this->GateIcon($value['old_gate']) .' &rarr; '. $this->GateIcon($value['new_gate']); ?>
+					<?php echo $this->DecodeChangeIcons($value['type']); ?>
 				</td>
 			</tr>
 		<?php endforeach; ?>
@@ -189,7 +189,7 @@ $this->breadCrumb( array(
 
 	<table class="inline-block mrg-right-42 tr-outline text-top mrg-bottom-13">
 		<caption class="text-left mrg-bottom-8">
-			<strong class="bold">Изменения&nbsp;лиги</strong>
+			<strong class="bold">Изменения&nbsp;лиг</strong>
 		</caption>
 	<?php if( count($this->transLigue) > 0 ): ?>
 		<?php foreach($this->transLigue as $value): ?>
