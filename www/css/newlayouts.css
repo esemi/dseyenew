@@ -729,6 +729,19 @@
 		font-size: 13px;
 	}
 
+	/*MESSAGE BLOCKS*/
+		.msg-not-found-short {
+			padding-bottom: 13px;
+			margin-top: 34px;
+			text-align: center;
+			font-weight: bold;
+
+		}
+
+		.msg-not-found-short img {
+			margin: 0px 8px -13px 0px;
+		}
+
 	/* 4.1 Main Menu
 	----------------------------------------*/
 		.pad-bg{

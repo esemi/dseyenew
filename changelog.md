@@ -1,4 +1,5 @@
 	- page-proof, world search - position of "premium" and "Hide untouchable"
+	- page-proof of messages about not found data
 	- tracking of changes extended statuses gate
 	- merged all sot transfers to single table
 	- fixed empty cron log status field
