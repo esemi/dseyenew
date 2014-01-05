@@ -50,7 +50,18 @@ if( isset($this->error) )
 		<div class="<?php echo (isset($this->post)) ? 'hide' : ''; ?> js-full-search-form mrg-left-42 mrg-top-13">
 			<form class="js-advanced-search" action="<?php echo $this->url(array( 'idW' => $this->idWorld ), 'worldSearch', true)?>" method="post">
 				<ul class="rare-indicators slider">
-					<li class="float-right mrg-right-470"><strong class="bold text-top">Раса:</strong>
+					<li class="inline-block text-top">
+						<strong class="bold">Ворота:</strong>
+						<?php
+						echo $this->formSelect(
+								'gate',
+								isset($this->searchProp->gate) ? $this->searchProp->gate : null,
+								array('size'=>1),
+								array('all' =>'все','open' => 'открыты','close' => 'закрыты'));
+						?>
+						<div class="quest inline-block mrg-left-5  js-quest-tooltip" tooltip="Учитывается только домашняя сота." ></div>
+					</li>
+					<li class="inline-block"><strong class="bold text-top">Раса:</strong>
 						<div class="inline-block">
 							<?php
 								echo $this->formMultiCheckbox(
@@ -62,16 +73,33 @@ if( isset($this->error) )
 							?>
 						</div>
 					</li>
-					<li><strong class="bold">Ворота:</strong>
-						<?php
-						echo $this->formSelect(
-								'gate',
-								isset($this->searchProp->gate) ? $this->searchProp->gate : null,
-								array('size'=>1),
-								array('all' =>'все','open' => 'открыты','close' => 'закрыты'));
-						?>
-						<div class="quest inline-block mrg-left-5  js-quest-tooltip" tooltip="Учитывается только домашняя сота." ></div>
-					</li>
+
+					<?php if( $this->extendedGateStatus ): ?>
+						<li class="inline-block">
+							<strong class="bold">Премиум:</strong>
+							<?php
+							echo $this->formSelect(
+									'premium',
+									isset($this->searchProp->premium) ? $this->searchProp->premium : null,
+									array('size'=>1, 'class' => 'text-top'),
+									array('all' =>'все','yes' => 'вкл.','none' => 'выкл.'));
+							?>
+						</li>
+						<li class="inline-block">
+							<strong class="bold text-top">Скрыть недоступных (щит/бан/новичок):</strong>
+							<div class="inline-block">
+								<?php
+								echo $this->formCheckbox(
+										'onlyGateAvaliable',
+										null,
+										array('checked' => (isset($this->searchProp->onlyGateAvaliable) && $this->searchProp->onlyGateAvaliable == 1)),
+										array(1, 0));
+								?>
+							</div>
+
+						</li>
+					<?php endif; ?>
+
 					<li><strong class="bold">Кольцо:</strong>
 						<?php
 						echo $this->formSelect(
@@ -133,29 +161,6 @@ if( isset($this->error) )
 						<?php endif; ?>
 
 					</li>
-					<?php if( $this->extendedGateStatus ): ?>
-						<li class="mrg-top-13">
-							<strong class="bold">Премиум:</strong>
-							<?php
-							echo $this->formSelect(
-									'premium',
-									isset($this->searchProp->premium) ? $this->searchProp->premium : null,
-									array('size'=>1, 'class' => 'text-top'),
-									array('all' =>'все','yes' => 'вкл.','none' => 'выкл.'));
-							?>
-							<div class="inline-block mrg-left-199 "><strong class="bold text-top">Скрыть недоступных (щит/бан/новичок):</strong>
-								<div class="inline-block">
-									<?php
-									echo $this->formCheckbox(
-											'onlyGateAvaliable',
-											null,
-											array('checked' => (isset($this->searchProp->onlyGateAvaliable) && $this->searchProp->onlyGateAvaliable == 1)),
-											array(1, 0));
-									?>
-								</div>
-							</div>
-						</li>
-					<?php endif; ?>
 					<li class="mrg-top-34">
 						<?php echo $this->FormSlider('<strong class="bold">Комплекс</strong>', 'compl', $this->maxParams, $this->searchProp ); ?>
 					</li>

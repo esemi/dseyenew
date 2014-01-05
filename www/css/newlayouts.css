@@ -938,7 +938,9 @@
 			margin-bottom: 5px;
 		}
 		.rare-indicators li{
-			margin-bottom: 8px;
+			margin-bottom: 13px;
+			margin-right: 42px;
+			vertical-align: top;
 		}
 
 		.table table, .table th, .border td{
