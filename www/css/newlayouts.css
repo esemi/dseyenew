@@ -1019,6 +1019,29 @@
 				background: url('/img/sprite_2.png')  -71px -170px no-repeat;
 			}
 
+		/*Premium status*/
+			.premium_enable{
+				width: 12px;
+				height: 12px;
+				background: url('/img/sprite_2.png') -129px -170px no-repeat;
+			}
+			.premium_disable{
+				width: 12px;
+				height: 12px;
+				background: url('/img/sprite_2.png') -141px -170px no-repeat;
+			}
+		/*Shield status*/
+			.shield_enable{
+				width: 11px;
+				height: 12px;
+				background: url('/img/sprite_2.png') -153px -170px no-repeat;
+			}
+			.shield_disable{
+				width: 11px;
+				height: 12px;
+				background: url('/img/sprite_2.png') -164px -170px no-repeat;
+			}
+
 		/*Links in table header*/
 		   .table th a{
 				display: block;
