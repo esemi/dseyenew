@@ -1034,12 +1034,12 @@
 			}
 		/*Shield status*/
 			.shield_enable{
-				width: 11px;
+				width: 12px;
 				height: 12px;
 				background: url('/img/sprite_2.png') -153px -170px no-repeat;
 			}
 			.shield_disable{
-				width: 11px;
+				width: 12px;
 				height: 12px;
 				background: url('/img/sprite_2.png') -164px -170px no-repeat;
 			}
