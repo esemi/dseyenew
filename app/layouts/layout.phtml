@@ -11,8 +11,8 @@ $this->headMeta()
 
 $version = $this->cacheVersion();
 
-$this->headScript()->prependFile( "/js/lib.js?{$version}");
-$this->headScript()->prependFile( "/js/lib/combine.js?{$version}");
+$this->headScript()->prependFile( "/js/main.js?{$version}");
+$this->headScript()->prependFile( "/js/libs/combine.js?{$version}");
 
 $this->headLink()->prependStylesheet("/css/newlayouts.css?{$version}");
 $this->headLink()->prependStylesheet("/css/pepper-grinder/jQui.css?{$version}");
