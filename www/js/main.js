@@ -64,7 +64,9 @@ jQuery(document).ready(function()
 		//меню по графикам статистики онлайна
 		jQuery('.js-graph-menu-online a').click(function()
 		{
-			loadAndDrawOnlineGraph(jQuery(this));
+			var g = new Graph();
+			g.loadAndDrawOnlineGraph(jQuery(this));
+
 			return true;
 		});
 
@@ -875,7 +877,143 @@ function Carousel(container, infobox, playerinfo, len, scroll, worldId, ring, ma
  */
 function Graph()
 {
+	/*
+	 * грузит и рисует график онлайна
+	 * если пункт меню не указан - пытается взять тип из хеша урла. По дефолту classic
+	 */
+	this.loadAndDrawOnlineGraph = function( target )
+	{
+		var selectClass = jQuery('.js-graph-menu-online').attr('selectclass');
 
+		if( typeof target !== 'undefined' ){
+			version = target.parents('li:first').attr('version');
+		}else{
+			var hash = location.hash.substring(1);
+			switch(hash) {
+				case 'classic':
+				case 'unlim':
+				case 'alpha':
+				case 'de':
+				case 'pulsar':
+					version = hash;
+					break;
+				default:
+					version = 'classic';
+					break;
+			}
+			target = jQuery('.js-graph-menu-online li[version="' + version + '"] a');
+		}
+
+		jQuery('.js-graph-menu-online a').removeClass(selectClass);
+		target.addClass(selectClass);
+
+		var container = jQuery('#graph-container');
+		printGraphLoad(container);
+
+		var this_ = this;
+		jQuery.post(
+			'/ajax/graph-online/',
+			{
+				'format': 'json',
+				'version' : version
+			},
+			function(res){
+				if( typeof res.error !== 'undefined' ){
+					printGraphError(container, res.error );
+				}else{
+					container.html();
+					this_._drawStockGraphOnline(res.series, version);
+				}
+			}
+			,'json');
+	};
+
+	this._drawStockGraphOnline = function(series){
+		prepareGraphDataDate( series );
+
+		var options = {
+			chart: {
+				renderTo: 'graph-container',
+				margin: [42, 10, 45, 60],
+				zoomType: 'x'
+			},
+			colors: chartColors,
+			rangeSelector : {
+				selected : 3,
+				buttonTheme: {
+					width: 85
+				},
+				buttons: [{
+					type: 'week',
+					count: 1,
+					text: 'неделя'
+				}, {
+					type: 'month',
+					count: 1,
+					text: 'месяц'
+				}, {
+					type: 'year',
+					count: 1,
+					text: 'год'
+				}, {
+					type: 'all',
+					text: 'всё время'
+				}]
+			},
+			title: {
+				style: {
+					color: '#636363'
+				},
+				text: 'Количество игроков online'
+			},
+			legend:{
+				enabled: false
+			},
+			credits:{
+				enabled: false
+			},
+			xAxis: {
+				gridLineWidth: 1,
+				lineColor: '#000'
+			},
+			yAxis: {
+				allowDecimals: false,
+				labels: {
+					style: {
+						fontSize :'10px'
+					}
+				},
+				lineColor: '#000',
+				lineWidth: 0.5,
+				startOnTick: false,
+				showFirstLabel: false
+			},
+			tooltip: {
+				formatter: function(){
+					return '<b>' + Highcharts.dateFormat('%H:00 %d.%m.%Y', this.x) + '</b><br>' +
+							this.points[0].series.name + ': ' + '<b>' + Highcharts.numberFormat(this.y, 0) + '</b>';
+				}
+			},
+			plotOptions: {
+				series:{
+					lineWidth: 1,
+					shadow: false,
+					marker: {
+						radius: 1
+					},
+					states: {
+						hover: {
+							lineWidth: 1
+						}
+					}
+				}
+			},
+			series: series
+		};
+
+
+		var chart = new Highcharts.StockChart(options);
+	};
 }
 
 /*
@@ -994,75 +1132,6 @@ function loadAndDrawIndexPieGraph()
 			}else{
 				container.html();
 				drawIndexPieGraph(res.series);
-			}
-		}
-		,'json');
-}
-
-
-/*
- * грузит и рисует график онлайна
- * если пункт меню не указан - пытается взять тип из хеша урла. По дефолту classic_hour
- */
-function loadAndDrawOnlineGraph(target)
-{
-	var selectClass = jQuery('.js-graph-menu-online').attr('selectclass');
-
-	var type_graph = 'hour';
-	var version = 'classic';
-
-	if( typeof target !== 'undefined' )
-	{
-		version = target.parent().attr('version');
-		type_graph = target.parent().attr('type');
-	}else{
-		var hash = location.hash.substring(1);
-		switch(hash) {
-			case 'classic_hour':
-			case 'classic_day':
-			case 'unlim_hour':
-			case 'unlim_day':
-			case 'alpha_hour':
-			case 'alpha_day':
-			case 'de_hour':
-			case 'de_day':
-				var tmp = hash.split('_');
-				version = tmp[0];
-				type_graph = tmp[1];
-				break;
-			default:
-				hash = 'classic_hour';
-				break;
-		}
-		target = jQuery('.js-graph-menu-online a[href="#'+ hash +'"]');
-	}
-
-	jQuery('.js-graph-menu-online a').removeClass(selectClass);
-	target.addClass(selectClass);
-
-	var container = jQuery('#graph-container');
-
-	printGraphLoad(container);
-
-	jQuery.post(
-		'/ajax/graph-online/',
-		{
-			'format': 'json',
-			'type': type_graph,
-			'version' : version
-		},
-		function(res)
-		{
-			if( typeof res.error !== 'undefined' )
-			{
-				printGraphError(container, res.error );
-			}else{
-				container.html();
-
-				if( res.series.length === 1)
-					drawHourGraphOnline(res.series, version);
-				else
-					drawDayGraphOnline(res.series, version);
 			}
 		}
 		,'json');
@@ -1757,169 +1826,6 @@ function drawSingleGraphPlayer(series)
 	chart = new Highcharts.Chart(options);
 }
 
-//рисуем почасовой график онлайна
-function drawHourGraphOnline(series, version)
-{
-	prepareGraphDataDate( series );
-
-	var options = {
-		chart: {
-			renderTo: 'graph-container',
-			margin: [30, 10, 20, 60],
-			zoomType: 'x',
-			defaultSeriesType: 'area'
-		},
-		title: {
-			style: {
-				color: '#636363'
-			},
-			y: 5,
-			text: 'Количество игроков online по часам (' + version + ')'
-		},
-		legend:{
-			enabled: false
-		},
-		credits:{
-			enabled: false
-		},
-		xAxis: {
-			gridLineWidth: 1,
-			lineColor: '#000',
-			type: 'datetime',
-			maxZoom: 1 * 24 * 3600000, // максимальный зум
-			title: {
-				text: null
-			}
-		},
-		yAxis: {
-			labels: {
-				style: {
-					fontSize : '10px'
-				}
-			},
-			allowDecimals: false,
-			minorTickInterval: 'auto',
-			lineColor: '#000',
-			lineWidth: 1,
-			title: {
-				text: null
-			},
-			startOnTick: false,
-			showFirstLabel: false
-		},
-		tooltip: {
-			formatter: function()
-			{
-				  return '<b>' + Highcharts.dateFormat('%H:00 %d.%m.%Y', this.x) + '</b><br>' +
-						  this.series.name + ': ' + '<b>' + numFormat(this.y) + '</b>';
-			}
-		},
-		colors: chartColors,
-		plotOptions: {
-			area: {
-				fillOpacity: .50,
-				lineWidth: 1,
-				marker: {
-					enabled: false,
-					states: {
-						hover: {
-							enabled: true,
-							radius: 4
-						}
-					}
-				},
-				shadow: false,
-				states: {
-					hover: {
-						lineWidth: 1
-					}
-				}
-			}
-		},
-		series: series
-	};
-
-	chart = new Highcharts.Chart(options);
-}
-
-//рисуем график онлайна за всё время (с агрегацией)
-function drawDayGraphOnline(series, version)
-{
-	prepareGraphDataDate( series );
-
-	var options = {
-		chart: {
-			renderTo: 'graph-container',
-			zoomType: 'xy',
-			margin: [30, 10, 45, 60],
-			defaultSeriesType: 'line'
-		},
-		title: {
-			style: {
-				color: '#636363'
-			},
-			text: 'Количество игроков online по дням (' + version + ')'
-		},
-		legend:{
-			y: 15
-		},
-		credits:{
-			enabled: false
-		},
-		xAxis: {
-			gridLineWidth: 1,
-			lineColor: '#000',
-			type: 'datetime',
-			maxZoom: 7 * 24 * 3600000, // максимальный зум - неделя
-			title: {
-				text: null
-			}
-		},
-		yAxis: {
-			labels: {
-				style: {
-					fontSize :'10px'
-				}
-			},
-			allowDecimals: false,
-			minorTickInterval: 'auto',
-			lineColor: '#000',
-			lineWidth: 0.5,
-			title: {
-				text: null
-			},
-			startOnTick: false,
-			showFirstLabel: false
-		},
-		tooltip: {
-			formatter: function()
-			{
-				return '<b>' + Highcharts.dateFormat('%d.%m.%Y', this.x) + '</b><br>' +
-						this.series.name + ': ' + '<b>' + numFormat(this.y) + '</b>';
-			}
-		},
-		colors: chartColors,
-		plotOptions: {
-			lineWidth: 1,
-			shadow: false,
-			series:{
-				marker: {
-					symbol:'circle',
-					radius: 2
-				}
-			},
-			states: {
-				hover: {
-					lineWidth: 1
-				}
-			}
-		},
-		series: series
-	};
-
-	chart = new Highcharts.Chart(options);
-}
-
 //Рисует пай чарт на главной стртанице
 function drawIndexPieGraph(series)
 {
@@ -2100,6 +2006,7 @@ function getDelta( hash, index, reversed )
 String.prototype.reverse=function(){
 	return this.split("").reverse().join("");
 };
+
 
 function DetectBrowserForAddon(userAgent)
 {
