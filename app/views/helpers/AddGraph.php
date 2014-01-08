@@ -9,6 +9,7 @@ class Zend_View_Helper_AddGraph extends Zend_View_Helper_Abstract
 	{
 		$this->view->headScript()->captureStart();
 		echo "jQuery(document).ready(function(){";
+		echo "var g = new Graph();";
 
 		switch( $type )
 		{
@@ -22,7 +23,7 @@ class Zend_View_Helper_AddGraph extends Zend_View_Helper_Abstract
 				echo "loadAndDrawAllianceGraph();";
 				break;
 			case 'online':
-				echo "loadAndDrawOnlineGraph();";
+				echo "g.loadAndDrawOnlineGraph();";
 				break;
 			case 'indexPie':
 				echo "loadAndDrawIndexPieGraph();";

@@ -870,41 +870,20 @@ class AjaxController extends Zend_Controller_Action
 	 */
 	public function graphOnlineAction()
 	{
-		$type = $this->_request->getPost('type','');
 		$version = $this->_helper->modelLoad('GameVersions')->getByName($this->_request->getPost('version',''));
 
-		if(count($version) != 1)
-		{
+		if(count($version) != 1){
 			$this->view->error = 'Неверная версия игры';
 			$this->_helper->Logger()->customError($this->view->error);
 			return;
 		}
 
-		switch( $type )
-		{
-			case 'hour':
-				$data = $this->_helper->modelLoad('StatOnline')->getAllOnline($version[0]['id']);
-				$this->view->series = $this->_helper->modelLoad('StatOnline')->prepareForHourGraph($data);
-				break;
-
-			case 'day':
-				$data = $this->_helper->modelLoad('StatOnline')->getDayOnline($version[0]['id']);
-				$this->view->series = $this->_helper->modelLoad('StatOnline')->prepareForDayGraph($data);
-				break;
-
-			default:
-				$this->view->error = 'Некорректный тип графика';
-				$this->_helper->Logger()->customError($this->view->error);
-				return;
-				break;
-		}
-
-		if(count($data) == 0)
-		{
+		$data = $this->_helper->modelLoad('StatOnline')->getAllOnline($version[0]['id']);
+		if(count($data) == 0){
 			$this->view->error = 'Данные отсутствуют';
-			return;
+		}else{
+			$this->view->series = $this->_helper->modelLoad('StatOnline')->prepareForHourGraph($data);
 		}
-
 	}
 
 	/*

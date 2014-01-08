@@ -5,12 +5,10 @@
 <div class="js-graph-menu-online text-right" selectclass="color-psol bold no-underline">
 	<ul class="justify-blocks mrg-top-7 mrg-right-21 mrg-bottom-8">
 		<?php foreach($this->menu as $item): ?>
-			<li class="inline-block mrg-top-13">
-				<h4 class='bold text-center mrg-bottom-3'><?php echo $item['name']; ?></h4>
-				<ul>
-					<li type="hour" version="<?php echo $item['name']; ?>"  class="inline"><a href="#<?php echo $item['name']; ?>_hour" class="hover-no-underline">По часам</a></li>
-					<li type="day" version="<?php echo $item['name']; ?>" class="inline mrg-left-13"><a href="#<?php echo $item['name']; ?>_day" class="hover-no-underline">По дням</a></li>
-				</ul>
+			<li class="inline-block mrg-top-13" version="<?php echo $item['name']; ?>">
+				<h4 class='bold text-center mrg-bottom-3'>
+					<a href="#<?php echo $item['name']; ?>" class="hover-no-underline"><?php echo $item['name']; ?></a>
+				</h4>
 			</li>
 		<?php endforeach; ?>
 </ul>
