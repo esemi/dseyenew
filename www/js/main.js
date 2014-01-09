@@ -877,6 +877,28 @@ function Carousel(container, infobox, playerinfo, len, scroll, worldId, ring, ma
  */
 function Graph()
 {
+	this.chart;
+
+	this.loadImage = loadImage;
+
+	this.colors = chartColors;
+
+	this.showLoading = function(container){
+		container.html(this.loadImage);
+	};
+
+	this.hideLoading = function(container){
+		container.html('');
+	};
+
+	this.showGraphError = function(container, text){
+		container.html('<div class="mrg-top-34 mrg-bottom-44 mrg-left-70"><img src="/img/eye_big.gif" alt="глазик">'+text+'</div>');
+	};
+
+	this._prepareGraphDataDate = function(series){
+		prepareGraphDataDate(series);
+	};
+
 	/*
 	 * грузит и рисует график онлайна
 	 * если пункт меню не указан - пытается взять тип из хеша урла. По дефолту classic
@@ -884,6 +906,7 @@ function Graph()
 	this.loadAndDrawOnlineGraph = function( target )
 	{
 		var selectClass = jQuery('.js-graph-menu-online').attr('selectclass');
+		var version;
 
 		if( typeof target !== 'undefined' ){
 			version = target.parents('li:first').attr('version');
@@ -908,7 +931,7 @@ function Graph()
 		target.addClass(selectClass);
 
 		var container = jQuery('#graph-container');
-		printGraphLoad(container);
+		this.showLoading(container);
 
 		var this_ = this;
 		jQuery.post(
@@ -919,9 +942,9 @@ function Graph()
 			},
 			function(res){
 				if( typeof res.error !== 'undefined' ){
-					printGraphError(container, res.error );
+					this_.showGraphError(container, res.error);
 				}else{
-					container.html();
+					this_.hideLoading(container);
 					this_._drawStockGraphOnline(res.series, version);
 				}
 			}
@@ -929,15 +952,15 @@ function Graph()
 	};
 
 	this._drawStockGraphOnline = function(series){
-		prepareGraphDataDate( series );
+		this._prepareGraphDataDate(series);
 
 		var options = {
 			chart: {
 				renderTo: 'graph-container',
-				margin: [42, 10, 45, 60],
+				margin: [10, 10, 20, 10],
 				zoomType: 'x'
 			},
-			colors: chartColors,
+			colors: this.colors,
 			rangeSelector : {
 				selected : 3,
 				buttonTheme: {
@@ -961,10 +984,7 @@ function Graph()
 				}]
 			},
 			title: {
-				style: {
-					color: '#636363'
-				},
-				text: 'Количество игроков online'
+				enabled: false
 			},
 			legend:{
 				enabled: false
@@ -996,6 +1016,9 @@ function Graph()
 			},
 			plotOptions: {
 				series:{
+					dataGrouping: {
+						groupPixelWidth: 5
+					},
 					lineWidth: 1,
 					shadow: false,
 					marker: {
@@ -1012,7 +1035,7 @@ function Graph()
 		};
 
 
-		var chart = new Highcharts.StockChart(options);
+		this.chart = new Highcharts.StockChart(options);
 	};
 }
 
@@ -1502,8 +1525,7 @@ function printGraphError(container, text)
 }
 
 //выводит load.gif графика
-function printGraphLoad(container)
-{
+function printGraphLoad(container){
 	container.html(loadImage);
 }
 
