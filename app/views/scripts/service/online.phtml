@@ -1,11 +1,9 @@
-<?php $this->addGraph('online'); ?>
-
 <h2 class=" mrg-left-21 mrg-right-21 mrg-top--7 small-title mrg-bottom-8 float-left"><?php echo $this->escape($this->description); ?></h2>
 
 <div class="js-graph-menu-online text-right" selectclass="color-psol bold no-underline">
 	<ul class="justify-blocks mrg-top-7 mrg-right-21 mrg-bottom-8">
 		<?php foreach($this->menu as $item): ?>
-			<li class="inline-block mrg-top-13" version="<?php echo $item['name']; ?>">
+			<li class="inline-block mrg-top-13" data-version="<?php echo $item['name']; ?>">
 				<h4 class='bold text-center mrg-bottom-3'>
 					<a href="#<?php echo $item['name']; ?>" class="hover-no-underline"><?php echo $item['name']; ?></a>
 				</h4>
@@ -14,7 +12,7 @@
 </ul>
 </div>
 
-<div id="graph-container" class="mrg-top-21 text-center">
+<div id="graph-container" class="mrg-top-21 text-center js-graph-init" data-init-type='online'>
 </div>
 
 

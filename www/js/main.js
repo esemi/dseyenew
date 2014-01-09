@@ -60,16 +60,6 @@ jQuery(document).ready(function()
 			});
 		});
 
-	/**статистика онлайна***************************************************************/
-		//меню по графикам статистики онлайна
-		jQuery('.js-graph-menu-online a').click(function()
-		{
-			var g = new Graph();
-			g.loadAndDrawOnlineGraph(jQuery(this));
-
-			return true;
-		});
-
 	/**страница аддона*******************************************************************/
 		//выбор ссылки по умолчанию
 		if( jQuery(".js-addon-selector").length >0){
@@ -288,8 +278,6 @@ jQuery(document).ready(function()
 			},200);
 
 		});
-
-
 
 		//toggle быстрый
 		jQuery(".js-fast-search-slider").click(function()
@@ -637,6 +625,16 @@ jQuery(document).ready(function()
 		});
 
 
+	/** вся работа с графиками на сайте **************************************************************/
+
+	if( jQuery('.js-graph-init').length > 0 ){
+		var g = new Graph(jQuery('.js-graph-init').attr('data-init-type'));
+		g.init();
+	}
+
+
+
+
 }); //end of document.ready
 
 
@@ -872,16 +870,45 @@ function Carousel(container, infobox, playerinfo, len, scroll, worldId, ring, ma
 
 }
 
-/*
+/**
  * Весь функционал графиков
+ *
+ * @param {string} type
+ * @returns void
  */
-function Graph()
+function Graph(type)
 {
+	this.type = type;
+
 	this.chart;
 
 	this.loadImage = loadImage;
 
-	this.colors = chartColors;
+	this.raseColors = chartColors;
+
+	this.pieColors = [
+		'#ca4e74',/**/
+		'#cc5472',
+		'#d3666d',
+		'#da7968',
+		'#e08864',
+		'#e89a5f',/**/
+		'#c59657',
+		'#af9352',
+		'#838d48',
+		'#6a8a43',
+		'#4b863c',/**/
+		'#497e42',
+		'#46714c',
+		'#415d5b',
+		'#3f5362',
+		'#383678',/**/
+		'#573b77',
+		'#6b3e77',
+		'#854376',
+		'#984675',
+		'#ab4975'
+	];
 
 	this.showLoading = function(container){
 		container.html(this.loadImage);
@@ -895,41 +922,59 @@ function Graph()
 		container.html('<div class="mrg-top-34 mrg-bottom-44 mrg-left-70"><img src="/img/eye_big.gif" alt="глазик">'+text+'</div>');
 	};
 
+	this.init = function(){
+		switch(this.type){
+			case 'online':
+				this._initOnline();
+				break;
+			case 'index':
+				this._initIndex();
+				break;
+
+		}
+	};
+
+	this._initIndex = function(){
+		this._loadAndDrawIndexPieGraph();
+	};
+
+	this._initOnline = function(){
+		var this_ = this;
+		jQuery('.js-graph-menu-online a').click(function(){
+			var selectClass = jQuery('.js-graph-menu-online').attr('selectclass');
+			jQuery('.js-graph-menu-online a').removeClass(selectClass);
+			jQuery(this).addClass(selectClass);
+			this_._loadAndDrawOnlineGraph(jQuery(this).parents('li:first').attr('data-version'));
+			return true;
+		});
+
+		var hash = this._getHashString();
+		var version;
+		switch(hash) {
+			case 'classic':
+			case 'unlim':
+			case 'alpha':
+			case 'de':
+			case 'pulsar':
+				version = hash;
+				break;
+			default:
+				version = 'classic';
+				break;
+		}
+		jQuery('.js-graph-menu-online li[data-version="' + version + '"] a').trigger('click');
+	};
+
+	this._getHashString = function(){
+		return location.hash.substring(1);
+	};
+
 	this._prepareGraphDataDate = function(series){
 		prepareGraphDataDate(series);
 	};
 
-	/*
-	 * грузит и рисует график онлайна
-	 * если пункт меню не указан - пытается взять тип из хеша урла. По дефолту classic
-	 */
-	this.loadAndDrawOnlineGraph = function( target )
+	this._loadAndDrawOnlineGraph = function( version )
 	{
-		var selectClass = jQuery('.js-graph-menu-online').attr('selectclass');
-		var version;
-
-		if( typeof target !== 'undefined' ){
-			version = target.parents('li:first').attr('version');
-		}else{
-			var hash = location.hash.substring(1);
-			switch(hash) {
-				case 'classic':
-				case 'unlim':
-				case 'alpha':
-				case 'de':
-				case 'pulsar':
-					version = hash;
-					break;
-				default:
-					version = 'classic';
-					break;
-			}
-			target = jQuery('.js-graph-menu-online li[version="' + version + '"] a');
-		}
-
-		jQuery('.js-graph-menu-online a').removeClass(selectClass);
-		target.addClass(selectClass);
-
 		var container = jQuery('#graph-container');
 		this.showLoading(container);
 
@@ -960,7 +1005,7 @@ function Graph()
 				margin: [10, 10, 20, 10],
 				zoomType: 'x'
 			},
-			colors: this.colors,
+			colors: this.raseColors,
 			rangeSelector : {
 				selected : 3,
 				buttonTheme: {
@@ -1037,6 +1082,82 @@ function Graph()
 
 		this.chart = new Highcharts.StockChart(options);
 	};
+
+	this._loadAndDrawIndexPieGraph = function(){
+		var container = jQuery('#graph-container');
+		this.showLoading(container);
+
+		var this_ = this;
+		jQuery.post(
+			'/ajax/graph-current-players-count/',
+			{
+				'format': 'json'
+			},
+			function(res){
+				if( typeof res.error !== 'undefined' ){
+					this_.showGraphError(container, res.error);
+				}else{
+					this_.hideLoading(container);
+					this_._drawIndexPieGraph(res.series);
+				}
+			}
+			,'json');
+	};
+
+	this._drawIndexPieGraph = function(series){
+		var options = {
+			chart: {
+				renderTo: 'graph-container',
+				plotBackgroundColor: null,
+				plotBorderWidth: null,
+				plotShadow: false,
+				defaultSeriesType: 'pie'
+			},
+			colors: this.pieColors,
+			legend:{
+				enabled: false,
+				itemStyle:{
+					font: '12px'
+				}
+			},
+			credits:{
+				enabled: false
+			},
+			title: {
+				style: {
+					color: '#636363'
+				},
+				text: 'Количество игроков в мирах (всего ' + series.total + ')'
+			},
+			tooltip: {
+				formatter: function(){
+					return '<b>' + this.point.name + '</b>: ' + this.y + ' (' + Math.round(this.percentage*100)/100 + '%)';
+				}
+			},
+			plotOptions: {
+				pie: {
+					allowPointSelect: false,
+					cursor: 'pointer',
+					shadow: false,
+					size: '62%',
+					innerSize: '14%',
+					dataLabels: {
+						enabled: true,
+						connectorColor: '#000000',
+						softConnector: false,
+						crop: false,
+						connectorWidth: 0.5,
+						formatter: function() {
+							return '<b>'+ this.point.name +'</b>';
+						}
+					}
+				}
+			},
+			series: [series]
+		};
+
+		this.chart = new Highcharts.Chart(options);
+	}
 }
 
 /*
@@ -1132,32 +1253,6 @@ function toggleNews(node, action)
 		jQuery(node).removeClass('color-logo bold');
 		jQuery(node).parent().children('p').slideUp("normal");
 	}
-}
-
-/*
- * График количества игроков в мирах на главной
-*/
-function loadAndDrawIndexPieGraph()
-{
-	var container = jQuery('#graph-container-pie');
-	printGraphLoad(container);
-
-	jQuery.post(
-		'/ajax/graph-current-players-count/',
-		{
-			'format': 'json'
-		},
-		function(res)
-		{
-			if( typeof res.error !== 'undefined' )
-			{
-				printGraphError(container, res.error );
-			}else{
-				container.html();
-				drawIndexPieGraph(res.series);
-			}
-		}
-		,'json');
 }
 
 /*
@@ -1848,86 +1943,6 @@ function drawSingleGraphPlayer(series)
 	chart = new Highcharts.Chart(options);
 }
 
-//Рисует пай чарт на главной стртанице
-function drawIndexPieGraph(series)
-{
-	var options = {
-		chart: {
-			renderTo: 'graph-container-pie',
-			plotBackgroundColor: null,
-			plotBorderWidth: null,
-			plotShadow: false,
-			defaultSeriesType: 'pie'
-		},
-		colors: [
-			'#ca4e74',/**/
-			'#cc5472',
-			'#d3666d',
-			'#da7968',
-			'#e08864',
-			'#e89a5f',/**/
-			'#c59657',
-			'#af9352',
-			'#838d48',
-			'#6a8a43',
-			'#4b863c',/**/
-			'#497e42',
-			'#46714c',
-			'#415d5b',
-			'#3f5362',
-			'#383678',/**/
-			'#573b77',
-			'#6b3e77',
-			'#854376',
-			'#984675',
-			'#ab4975'
-		],
-		legend:{
-			enabled: false,
-			itemStyle:{
-				font: '12px'
-			}
-		},
-		credits:{
-			enabled: false
-		},
-		title: {
-			style: {
-				color: '#636363'
-			},
-			text: 'Количество игроков в мирах (всего ' + series.total + ')'
-		},
-		tooltip: {
-			formatter: function()
-			{
-				return '<b>' + this.point.name + '</b>: ' + this.y + ' (' + Math.round(this.percentage*100)/100 + '%)';
-			}
-		},
-		plotOptions: {
-			pie: {
-				allowPointSelect: false,
-				cursor: 'pointer',
-				shadow: false,
-				size: '62%',
-				innerSize: '14%',
-				dataLabels: {
-					enabled: true,
-					connectorColor: '#000000',
-					softConnector: false,
-					crop: false,
-					connectorWidth: 0.5,
-					formatter: function() {
-						return '<b>'+ this.point.name +'</b>';
-					}
-				}
-			}
-		},
-		series: [series]
-	};
-
-	chart = new Highcharts.Chart(options);
-}
-
 //Рисует бар-чарты пришли/ушли по миру/альянсу
 function drawInOutGraph(series, title, allowDay)
 {
@@ -1939,6 +1954,10 @@ function drawInOutGraph(series, title, allowDay)
 			margin: [30, 10, 45, 60],
 			type: 'column'
 		},
+		colors: [
+			'#4572a7',
+			'#aa4643'
+		],
 		credits:{
 			enabled: false
 		},

@@ -1,3 +1,4 @@
+- new world stats charts appearance
 - new online stats charts appearance
 - new position of "premium" and "Hide untouchable" into world search
 - page-proof of messages about not found data
