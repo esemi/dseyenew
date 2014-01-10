@@ -1322,33 +1322,48 @@
 
 		/* 5.11 ALIANCE PAGE
 	--------------------------------------------------*/
-		.aliance-grafic-menu li{
-			text-align: center;
-			margin-right: 10px;
-			vertical-align: middle;
-		}
+			.aliance-grafic-menu li{
+				text-align: center;
+				margin-right: 10px;
+				vertical-align: middle;
+			}
 
-		.aliance-grafic-menu a{
-			display: block;
-			margin-top: 3px;
-			text-decoration: none;
-		}
-		.aliance-grafic-menu a:hover{
-			text-decoration: underline;
-		}
-		.aliance-grafic-menu div{
-			margin-top: 5px;
-		}
+			.aliance-grafic-menu a{
+				display: block;
+				margin-top: 3px;
+				text-decoration: none;
+			}
+			.aliance-grafic-menu a:hover{
+				text-decoration: underline;
+			}
+			.aliance-grafic-menu div{
+				margin-top: 5px;
+			}
 
 		/* 5.12 PLAYER PAGE
 	--------------------------------------------------*/
-		.premium-icon{
-			display: inline-block;
-			width: 26px;
-			height: 26px;
-			margin-left: 8px;
-			background: url('/img/sprite_2.png')  -26px -198px no-repeat;
-		}
+			.premium-icon{
+				display: inline-block;
+				width: 26px;
+				height: 26px;
+				margin-left: 8px;
+				background: url('/img/sprite_2.png')  -26px -198px no-repeat;
+			}
+
+		/* 5.13 PLAYERS ONLINE PAGE
+	--------------------------------------------------*/
+			.menu-online-version {
+				display: inline-block;
+				margin-right: 42px;
+
+			}
+			.menu-online-version li {
+				margin-left: 42px;
+			}
+			.menu-online-version li:first-child{
+				margin-left: 0px;
+			}
+
 /*End 5. PAGES*/
 
 /* COLORS & colors links

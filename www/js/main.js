@@ -612,17 +612,6 @@ jQuery(document).ready(function()
 }); //end of document.ready
 
 
-//цвета для графиков
-//@TODO Убрать зависимость
-var colorRed = 'color:#e90000;';
-var colorGreen = 'color: #7f881d';
-var colorGray = 'color: #a5a5a5;';
-var chart = null;
-var chartColors =['#3d261f','#ff6f00','#136100','#050094'];
-
-
-
-
 /**functions************************************************************************/
 
 /*
@@ -1320,7 +1309,7 @@ function Graph(type)
 		};
 
 		this.chart = new Highcharts.Chart(options);
-	}
+	};
 
 	this._loadAndDrawWorldGraph = function(type){
 		var container = jQuery('#graph-container');
@@ -1575,10 +1564,8 @@ function Graph(type)
 					this_.hideLoading(container);
 					if(!!res.url){
 						this_._drawExternalGraphDshelp(container, res.url);
-					}else if(res.series.length === 1){
-						this_._drawStockGraphSinglePlayer(res.series, res.decimal);
 					}else{
-						drawSumGraphPlayer( res.series, res.borders );
+						this_._drawStockGraphSinglePlayer(res.series, res.decimal);
 					}
 				}
 			}
@@ -1751,7 +1738,6 @@ function drawSlider(node)
 	});
 }
 
-
 /*
  * открываем/закрываем новость и меняем цвет заголовка
  */
@@ -1774,209 +1760,9 @@ function toggleNews(node, action)
 	}
 }
 
-//выводит ошибку графика в контейнер
-function printGraphError(container, text)
-{
-	container.html('<div class="mrg-top-34 mrg-bottom-44 mrg-left-70"><img src="/img/eye_big.gif" alt="глазик">'+text+'</div>');
-}
-
-//выводит load.gif графика
-function printGraphLoad(container){
-	container.html(loadImage);
-}
-
-//подготовка данных для графика дата-число
-function prepareGraphDataDate( data )
-{
-	var parseDate = function( str ){
-		var tmp = str.split('.');
-		if( tmp.length === 2){ //месяцы
-			tmp[0] = tmp[0]-1;
-			return Date.UTC( tmp[1], tmp[0], 01, 00, 00);
-		}else if( tmp.length === 3){ //дни
-			tmp[1] = tmp[1]-1;
-			return Date.UTC( tmp[2], tmp[1], tmp[0], 00, 00);
-		}else if( tmp.length === 4){ // +часы
-			tmp[2] = tmp[2]-1;
-			return Date.UTC( tmp[3], tmp[2], tmp[1], tmp[0], 00);
-		}else{ // +минуты
-			tmp[3] = tmp[3]-1;
-			return Date.UTC( tmp[4], tmp[3], tmp[2],  tmp[1], tmp[0] );
-		}
-	};
-
-	for( var i in data )
-	{
-		for( var j in data[i].data )
-		{
-			data[i].data[j][0] = parseDate(data[i].data[j][0]);
-			data[i].data[j][1] = Math.round(parseFloat(data[i].data[j][1]) * 100) / 100;
-		}
-	}
-}
-
-//вычисляет индексный словарь дельт значений графика
-function _getGraphDelta( data )
-{
-	var out = {};
-
-	for( var i in data )
-		for( var j = 1; j < data[i].data.length; j++ )
-			out[i + '_' + data[i].data[j][0]] = Math.round(parseFloat(data[i].data[j][1] - data[i].data[j-1][1]) * 100) / 100;
-
-	return out;
-}
-
-//вычисляет индексный словарь исходных значений графика (для нормированных тултипсов)
-function _getGraphSource( data )
-{
-	var out = {};
-
-	for( var i in data )
-	{
-		for( var j in data[i].data )
-			out[i + '_' + data[i].data[j][0]] = data[i].data[j][1];
-	}
-
-	return out;
-}
-
-//рисуем сводный график игрока
-function drawSumGraphPlayer(series, borders)
-{
-	prepareGraphDataDate( series );
-
-	var delta = _getGraphDelta( series );
-
-	var source = _getGraphSource( series )
-
-	//нормирование серий
-	for( var i in series )
-	{
-		for( var j in series[i].data )
-		{
-			if(borders[series[i].realname]['max'] == 0.0 || (borders[series[i].realname]['min'] == borders[series[i].realname]['max']) )
-				series[i].data[j][1] = 0.0;
-			else
-				series[i].data[j][1] = ( (series[i].data[j][1] - borders[series[i].realname]['min']) / (borders[series[i].realname]['max'] - borders[series[i].realname]['min']) ) * 100;
-		}
-	}
-
-	var options = {
-		chart: {
-			renderTo: 'graph-container',
-			zoomType: 'xy',
-			margin: [10, 10, 45, 60],
-			defaultSeriesType: 'line'
-		},
-		title: {
-			text: ''
-		},
-		legend:{
-			enabled: true,
-			y:15
-		},
-		credits:{
-			enabled: false
-		},
-		xAxis: {
-			gridLineWidth: 1,
-			lineColor: '#000',
-			type: 'datetime',
-			maxZoom: 3 * 24 * 3600000,
-			title: {
-				text: null
-			}
-		},
-		yAxis: {
-			min: -5,
-			max: 105,
-			labels: {
-				style: {
-					fontSize :'10px'
-				}
-			},
-			allowDecimals: false,
-			minorTickInterval: 'auto',
-			lineColor: '#000',
-			lineWidth: 0.5,
-			title: {
-				text: 'проценты',
-				style: {
-					color: '#6e0022',
-					fontWeight: 'normal'
-				},
-				align: 'high'
-			},
-			startOnTick: false,
-			showFirstLabel: false
-		},
-		tooltip: {
-			crosshairs: false,
-			shared: false,
-			formatter: function()
-			{
-				return '<b>' + Highcharts.dateFormat('%H:%M %d.%m.%Y', this.x) + '</b><br>' +
-					'<span style="color:' + this.series.color + ';">' + this.series.name + '</span> : ' +
-					'<b>' + numFormat(source[this.series.index +'_'+ this.x]) + '</b> ' +
-					getDelta(delta, this.series.index +'_'+ this.x, (this.series.realname === 'mesto') ? true : false);
-			}
-		},
-		plotOptions: {
-			lineWidth: 1,
-			shadow: false,
-			series:{
-				marker: {
-					symbol:'circle',
-					radius: 2
-				}
-			},
-			states: {
-				hover: {
-					lineWidth: 1
-				}
-			}
-		},
-		series: series
-	};
-
-
-	chart = new Highcharts.Chart(options);
-}
-
-//форматирует большие числа в нормальный вид
-function numFormat(number)
-{
-	return number.toString().reverse().replace(/(\d{3})(?=\d)/g,'$1`').reverse();
-
-}
-
-//возвращает форматированную дельту параметра для графиков из словаря
-function getDelta( hash, index, reversed )
-{
-	var delta = '';
-	if( typeof reversed === 'undefined' )
-		reversed = false;
-
-	if( typeof hash[index] === 'undefined' || hash[index] === 0 )
-	{
-		delta = '(<span style="' + colorGray + '">Без изменений</span>)';
-	}else{
-		var color = ( reversed === (hash[index] > 0) ) ? colorRed : colorGreen;
-		if(hash[index] > 0)
-		{
-			delta = '(<span style="' + color + '">+' + numFormat(hash[index]) + '</span>)';
-		}else if(hash[index] < 0){
-			delta = '(<span style="' + color + '">' + numFormat(hash[index]) + '</span>)';
-		}
-	}
-	return delta;
-}
-
 String.prototype.reverse=function(){
 	return this.split("").reverse().join("");
 };
-
 
 function DetectBrowserForAddon(userAgent)
 {
