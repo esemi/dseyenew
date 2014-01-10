@@ -80,7 +80,8 @@ class WorldsController extends Zend_Controller_Action
 		$this->view->description = "Мир {$this->view->nameWorld}, изменения за {$selectDate}";
 		$this->view->headTitle("История изменений за {$selectDate}");
 
-		$this->view->minDate = $minDate = $this->_helper->modelLoad('StatWorlds')->getMinStatDate($this->idW);
+		$conf = $this->getFrontController()->getParam('bootstrap')->getOption('scav');
+		$this->view->minDate = $minDate = $this->_helper->modelLoad('StatWorlds')->getMinHistoryDate($this->idW, $conf['worldchanges']);
 		$this->view->maxDate = $maxDate = date('d-m-Y');
 
 		$curDate = strtotime($selectDate);

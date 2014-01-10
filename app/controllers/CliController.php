@@ -67,24 +67,24 @@ class CliController extends Zend_Controller_Action
 			$this->_log->add(sprintf('Удалено %d записей статистики миров', $count), true);
 
 			//удаляем старую статистику альянсов
-			$count = $this->_helper->modelLoad('StatAlliances')->clearOld( $conf['worldstat'] );
+			$count = $this->_helper->modelLoad('StatAlliances')->clearOld( $conf['alliancestat'] );
 			$this->_log->add(sprintf('Удалено %d записей статистики альянсов', $count), true);
 
 			//удаляем переезды-переходы
-			$countA = $this->_helper->modelLoad('PlayersTransAlliance')->clearOld( $conf['worldstat'] );
-			$countS = $this->_helper->modelLoad('PlayersTransSots')->clearOld( $conf['worldstat'] );
-			$countG = $this->_helper->modelLoad('PlayersChanges')->clearOld( $conf['worldstat'] );
-			$countL = $this->_helper->modelLoad('PlayersTransLigue')->clearOld( $conf['worldstat'] );
+			$countA = $this->_helper->modelLoad('PlayersTransAlliance')->clearOld( $conf['worldchanges'] );
+			$countS = $this->_helper->modelLoad('PlayersTransSots')->clearOld( $conf['worldchanges'] );
+			$countG = $this->_helper->modelLoad('PlayersChanges')->clearOld( $conf['worldchanges'] );
+			$countL = $this->_helper->modelLoad('PlayersTransLigue')->clearOld( $conf['worldchanges'] );
 			$this->_log->add(sprintf('Удалено %d/%d/%d/%d записей переездов игроков (соты/ал/ворота/лиги)',$countS, $countA, $countG, $countL), true);
 
 			//удаляем макс дельты игроков
-			$countR = $this->_helper->modelLoad('MaxDeltaRankOld')->clearOld($conf['worldstat']);
-			$countB = $this->_helper->modelLoad('MaxDeltaBo')->clearOld($conf['worldstat']);
+			$countR = $this->_helper->modelLoad('MaxDeltaRankOld')->clearOld($conf['worldchanges']);
+			$countB = $this->_helper->modelLoad('MaxDeltaBo')->clearOld($conf['worldchanges']);
 			$this->_log->add(sprintf('Удалено %d/%d макс дельт (рейтинг/БО)', $countR, $countB), true);
 
 			//удаляем пришли/ушли по игрокам
-			$countI = $this->_helper->modelLoad('PlayersInput')->clearOld($conf['worldstat']);
-			$countO = $this->_helper->modelLoad('PlayersOutput')->clearOld($conf['worldstat']);
+			$countI = $this->_helper->modelLoad('PlayersInput')->clearOld($conf['worldchanges']);
+			$countO = $this->_helper->modelLoad('PlayersOutput')->clearOld($conf['worldchanges']);
 			$this->_log->add(sprintf('Удалено %d/%d пришли/ушли', $countI, $countO), true);
 
 			//удаляем старую статистику игроков

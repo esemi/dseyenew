@@ -6,7 +6,6 @@
 class App_Model_DbTable_StatOnline extends Mylib_DbTable_Cached
 	implements App_Model_Interface_Clearable
 {
-
 	protected $_name = 'stat_online';
 	protected $_primary = array('id_version', 'date');
 	protected $_cacheName = 'up';
@@ -17,10 +16,10 @@ class App_Model_DbTable_StatOnline extends Mylib_DbTable_Cached
 	/*
 	 * чистим старые данные
 	 */
-	public function clearOld( $days )
-	{
-		return $this->delete( $this->_db->quoteInto( 'date < CURDATE() - INTERVAL ? DAY', $days, Zend_Db::INT_TYPE ) );
+	public function clearOld($years){
+		return $this->delete( $this->_db->quoteInto( 'date < CURDATE() - INTERVAL ? YEAR', $years, Zend_Db::INT_TYPE ) );
 	}
+
 
 
 	public function addStat($idV, $count)
@@ -47,8 +46,7 @@ class App_Model_DbTable_StatOnline extends Mylib_DbTable_Cached
 		return $this->fetchAll($select)->toArray();
 	}
 
-
-		/*
+	/*
 	 * возвращает последний замер количества онлайна
 	 * return int
 	 */

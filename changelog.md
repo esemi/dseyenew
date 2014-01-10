@@ -1,5 +1,7 @@
+devel
 - new world stats charts appearance
 - new online stats charts appearance
+- increase world and online stats period
 - new position of "premium" and "Hide untouchable" into world search
 - page-proof of messages about not found data
 - tracking of changes extended statuses gate

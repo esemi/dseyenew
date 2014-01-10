@@ -29,6 +29,9 @@ class App_Model_DbTable_StatAlliances extends App_Model_Abstract_StatGeneral
 		'getAvgScien' => array('day'),
 	);
 
+	public function clearOld($border){
+		return $this->delete( $this->_db->quoteInto( 'date_create < CURDATE() - INTERVAL ? YEAR', $border, Zend_Db::INT_TYPE ) );
+	}
 
 	protected function _addItemWhere($idI, $select)
 	{
