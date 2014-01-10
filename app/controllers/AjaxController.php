@@ -627,14 +627,36 @@ class AjaxController extends Zend_Controller_Action
 		$idW= (int) $this->_request->getPost('idW');
 		$type = $this->_request->getPost('type');
 
+		$titles = array(
+			'in_out' => 'Пришли/ушли',
+			'count_player' => 'Количество игроков',
+			'count_colony' => 'Количество колоний',
+			'count_alliance' => 'Количество альянсов',
+			'rank_old_sum' => 'Суммарный рейтинг (стар.)',
+			'rank_old_avg' => 'Средний рейтинг (стар.)',
+			'bo_sum' => 'Суммарный боевой рейтинг',
+			'bo_avg' => 'Средний боевой рейтинг',
+			'nra_sum' => 'Суммарный новый рейтинг активности',
+			'nra_avg' => 'Средний новый рейтинг активности',
+			'ra_sum' => 'Суммарный рейтинг активности',
+			'ra_avg' => 'Средний рейтинг активности',
+			'level_avg' => 'Средний уровень',
+			'rank_new_sum' => 'Суммарный рейтинг (нов.)',
+			'rank_new_avg' => 'Средний рейтинг (нов.)',
+			'arch_sum' => 'Суммарная археология',
+			'arch_avg' => 'Средняя археология',
+			'build_sum' => 'Суммарное строительство',
+			'build_avg' => 'Среднее строительство',
+			'scien_sum' => 'Суммарная наука',
+			'scien_avg' => 'Средняя наука',
+			'premium' => 'Количество премиум аккаунтов',
+			'gate_not_avaliable' => 'Количество недоступных игроков (щит, бан, новичок, ...)',
+		);
+
 		switch( $type )
 		{
-			case 'in_out_day':
-				$data = $this->_helper->modelLoad('StatWorlds')->getIOByMonth($idW);
-				$series = $this->_prepareIOWorldGraph($data);
-				break;
-			case 'in_out_all':
-				$data = $this->_helper->modelLoad('StatWorlds')->getIOByAllTime($idW);
+			case 'in_out':
+				$data = $this->_helper->modelLoad('StatWorlds')->getIO($idW);
 				$series = $this->_prepareIOWorldGraph($data);
 				break;
 			case 'count_player':
@@ -736,6 +758,7 @@ class AjaxController extends Zend_Controller_Action
 			$this->view->error = 'Данные отсутствуют';
 		}else{
 			$this->view->series = $series;
+			$this->view->title = $titles[$type];
 		}
 
 	}

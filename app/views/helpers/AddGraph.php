@@ -15,9 +15,6 @@ class Zend_View_Helper_AddGraph extends Zend_View_Helper_Abstract
 			case 'player':
 				echo "loadAndDrawPlayerGraph();";
 				break;
-			case 'world':
-				echo "loadAndDrawWorldGraph();";
-				break;
 			case 'alliance':
 				echo "loadAndDrawAllianceGraph();";
 				break;

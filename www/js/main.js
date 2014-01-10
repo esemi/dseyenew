@@ -179,17 +179,6 @@ jQuery(document).ready(function()
 			'json');
 		});
 
-
-
-	/**статистика мира***************************************************************/
-		//меню по графикам статистики миров
-		jQuery('.js-graph-menu-world a').click(function()
-		{
-			loadAndDrawWorldGraph(jQuery(this));
-			return true;
-		});
-
-
 	/**статистика альянса***************************************************************/
 		//меню по графикам статистики альянсов
 		jQuery('.js-graph-menu-alliance a').click(function()
@@ -884,7 +873,13 @@ function Graph(type)
 
 	this.loadImage = loadImage;
 
-	this.raseColors = chartColors;
+	this.raseColors = ['#3d261f','#ff6f00','#136100','#050094'];
+
+	this.redColor = '#e90000';
+	this.greenColor = '#7f881d';
+	this.grayColor = '#a5a5a5';
+
+	this.barColors = [this.greenColor, this.redColor];
 
 	this.pieColors = [
 		'#ca4e74',/**/
@@ -922,6 +917,10 @@ function Graph(type)
 		container.html('<div class="mrg-top-34 mrg-bottom-44 mrg-left-70"><img src="/img/eye_big.gif" alt="глазик">'+text+'</div>');
 	};
 
+	this.numFormat = function(number, decimals){
+		return Highcharts.numberFormat(number, decimals, '.', '`');
+	};
+
 	this.init = function(){
 		switch(this.type){
 			case 'online':
@@ -930,12 +929,61 @@ function Graph(type)
 			case 'index':
 				this._initIndex();
 				break;
+			case 'world':
+				this._initWorld();
+				break;
 
 		}
 	};
 
 	this._initIndex = function(){
 		this._loadAndDrawIndexPieGraph();
+	};
+
+	this._initWorld = function(){
+		var this_ = this;
+
+		jQuery('.js-graph-menu-world a').click(function(){
+			var selectClass = jQuery('.js-graph-menu-world').attr('selectclass');
+			jQuery('.js-graph-menu-world a').removeClass(selectClass);
+			jQuery(this).addClass(selectClass);
+			this_._loadAndDrawWorldGraph(jQuery(this).attr('href').substring(1));
+			return true;
+		});
+
+		var hash = this._getHashString();
+		var type;
+		switch(hash) {
+			case 'in_out':
+			case 'count_player':
+			case 'count_colony':
+			case 'count_alliance':
+			case 'rank_old_sum':
+			case 'rank_old_avg':
+			case 'bo_sum':
+			case 'bo_avg':
+			case 'nra_sum':
+			case 'nra_avg':
+			case 'ra_sum':
+			case 'ra_avg':
+			case 'level_avg':
+			case 'rank_new_sum':
+			case 'rank_new_avg':
+			case 'arch_sum':
+			case 'arch_avg':
+			case 'build_sum':
+			case 'build_avg':
+			case 'scien_sum':
+			case 'scien_avg':
+			case 'premium':
+			case 'gate_not_avaliable':
+				type = hash;
+				break;
+			default:
+				type = 'count_player';
+				break;
+		}
+		jQuery('.js-graph-menu-world a[href=#'+type+']').trigger('click');
 	};
 
 	this._initOnline = function(){
@@ -973,8 +1021,22 @@ function Graph(type)
 		prepareGraphDataDate(series);
 	};
 
-	this._loadAndDrawOnlineGraph = function( version )
-	{
+	this._findDelta = function(data, xVal){
+		var delta = '(<span style="color: ' + this.grayColor + ';">Без изменений</span>)';
+		var curIndex = data.processedXData.indexOf(xVal);
+		if( curIndex > 0 ){
+			var deltaVal = Math.round(data.processedYData[curIndex]) - Math.round(data.processedYData[curIndex - 1]);
+			var color = (deltaVal < 0) ? this.redColor : this.greenColor;
+			if(deltaVal > 0){
+				delta = '(<span style="color: ' + color + '">+' + this.numFormat(deltaVal, 0) + '</span>)';
+			}else if(deltaVal < 0){
+				delta = '(<span style="color: ' + color + '">' + this.numFormat(deltaVal, 0) + '</span>)';
+			}
+		}
+		return delta;
+	};
+
+	this._loadAndDrawOnlineGraph = function( version ){
 		var container = jQuery('#graph-container');
 		this.showLoading(container);
 
@@ -998,12 +1060,15 @@ function Graph(type)
 
 	this._drawStockGraphOnline = function(series){
 		this._prepareGraphDataDate(series);
+		var this_ = this;
 
 		var options = {
 			chart: {
 				renderTo: 'graph-container',
 				margin: [10, 10, 20, 10],
-				zoomType: 'x'
+				zoomType: 'x',
+				height: 500,
+				type: 'area'
 			},
 			colors: this.raseColors,
 			rangeSelector : {
@@ -1056,10 +1121,13 @@ function Graph(type)
 			tooltip: {
 				formatter: function(){
 					return '<b>' + Highcharts.dateFormat('%H:00 %d.%m.%Y', this.x) + '</b><br>' +
-							this.points[0].series.name + ': ' + '<b>' + Highcharts.numberFormat(this.y, 0) + '</b>';
+							this.points[0].series.name + ': ' + '<b>' + this_.numFormat(this.y, 0) + '</b>';
 				}
 			},
 			plotOptions: {
+				area:{
+					fillOpacity: 0.50
+				},
 				series:{
 					dataGrouping: {
 						groupPixelWidth: 5
@@ -1158,6 +1226,215 @@ function Graph(type)
 
 		this.chart = new Highcharts.Chart(options);
 	}
+
+	this._loadAndDrawWorldGraph = function(type){
+		var container = jQuery('#graph-container');
+		this.showLoading(container);
+
+		var this_ = this;
+		jQuery.post(
+			'/ajax/graph-world/',
+			{
+				'format': 'json',
+				'type': type,
+				'idW' : parseInt( container.attr('iditem'),10 )
+			},
+			function(res)
+			{
+				if( typeof res.error !== 'undefined' ){
+					this_.showGraphError(container, res.error);
+					return;
+				}
+
+				this_.hideLoading(container);
+				switch(type) {
+					case 'in_out':
+						this_._drawInOutGraphWorld(res.series,  res.title);
+						break;
+					default:
+						this_._drawStockGraphWorld(res.series,  res.title);
+						break;
+				}
+			}
+			,'json');
+	};
+
+	this._drawInOutGraphWorld = function(series, title){
+		this._prepareGraphDataDate(series);
+		var this_ = this;
+		var options = {
+			chart:{
+				renderTo: 'graph-container',
+				margin: [30, 10, 45, 10],
+				zoomType: 'x',
+				height: 500
+			},
+			rangeSelector : {
+				selected : 0,
+				buttonTheme: {
+					width: 85
+				},
+				buttons: [{
+					type: 'month',
+					count: 1,
+					text: 'месяц'
+				}, {
+					type: 'year',
+					count: 1,
+					text: 'год'
+				}, {
+					type: 'all',
+					text: 'всё время'
+				}]
+			},
+			colors: this.barColors,
+			credits:{
+				enabled: false
+			},
+			legend:{
+				enabled: true
+			},
+			tooltip:{
+				formatter: function(){
+					var out = '<b>' + Highcharts.dateFormat('%d.%m.%Y', this.x) + '</b>';
+					for( var i in this.points ){
+						out += '<br/>' + this.points[i].series.name + ': <b>' + this_.numFormat(this.points[i].y, 0) + '</b>';
+					}
+					return out;
+				}
+			},
+			title: {
+				text: title,
+				y: 7
+			},
+			xAxis: {
+				gridLineWidth: 1,
+				lineColor: '#000'
+			},
+			yAxis: {
+				allowDecimals: false,
+				labels: {
+					style: {
+						fontSize :'10px'
+					}
+				},
+				lineColor: '#000',
+				lineWidth: 0.5,
+				startOnTick: false,
+				showFirstLabel: false
+			},
+			plotOptions: {
+				series:{
+					dataGrouping: {
+						approximation: 'sum',
+						groupPixelWidth: 10
+					},
+					lineWidth: 1,
+					shadow: false,
+					marker: {
+						radius: 1
+					},
+					states: {
+						hover: {
+							lineWidth: 1
+						}
+					}
+				}
+			},
+			series: series
+		};
+
+		this.chart = new Highcharts.StockChart(options);
+	};
+
+	this._drawStockGraphWorld = function(series, title){
+		this._prepareGraphDataDate(series);
+		var this_ = this;
+
+		var options = {
+			chart:{
+				renderTo: 'graph-container',
+				margin: [30, 10, 45, 10],
+				zoomType: 'x',
+				height: 500
+			},
+			rangeSelector : {
+				selected : 0,
+				buttonTheme: {
+					width: 85
+				},
+				buttons: [{
+					type: 'month',
+					count: 1,
+					text: 'месяц'
+				}, {
+					type: 'year',
+					count: 1,
+					text: 'год'
+				}, {
+					type: 'all',
+					text: 'всё время'
+				}]
+			},
+			colors: this.raseColors,
+			credits:{
+				enabled: false
+			},
+			legend:{
+				enabled: (series.length > 1)
+			},
+			tooltip:{
+				formatter: function(){
+					var out = '<b>' + Highcharts.dateFormat('%d.%m.%Y', this.x) + '</b>';
+					for( var i in this.points ){
+						out += '<br/>' + this.points[i].series.name + ': <b>' + this_.numFormat(this.points[i].y, 0) + '</b>';
+						out += this_._findDelta(this.points[i].series, this.x);
+					}
+					return out;
+				}
+			},
+			title: {
+				text: title,
+				y: 7
+			},
+			xAxis: {
+				gridLineWidth: 1,
+				lineColor: '#000'
+			},
+			yAxis: {
+				allowDecimals: false,
+				labels: {
+					style: {
+						fontSize :'10px'
+					}
+				},
+				lineColor: '#000',
+				lineWidth: 0.5,
+				startOnTick: false,
+				showFirstLabel: false
+			},
+			plotOptions: {
+				series:{
+					dataGrouping: {
+						groupPixelWidth: 10
+					},
+					lineWidth: 1,
+					shadow: false,
+					marker: {
+						radius: 1
+					},
+					states: {
+						hover: {
+							lineWidth: 1
+						}
+					}
+				}
+			},
+			series: series
+		};
+
+		this.chart = new Highcharts.StockChart(options);
+	};
 }
 
 /*
@@ -1319,161 +1596,6 @@ function loadAndDrawPlayerGraph(target)
 					drawSingleGraphPlayer( res.series );
 				else
 					drawSumGraphPlayer( res.series, res.borders );
-			}
-		}
-		,'json');
-}
-
-
-/*
- * грузит и рисует график мира
- * если пункт меню не указан - пытается взять тип из хеша урла. По дефолту in_out_day
- */
-function loadAndDrawWorldGraph(target)
-{
-	var selectClass = jQuery('.js-graph-menu-world').attr('selectclass');
-
-	var type = 'in_out_day';
-	if( typeof target !== 'undefined' )
-	{
-		type = target.attr('href').substring(1);
-	}else{
-		var hash = location.hash.substring(1);
-		switch(hash) {
-			case 'in_out_day':
-			case 'in_out_all':
-			case 'count_player':
-			case 'count_colony':
-			case 'count_alliance':
-			case 'rank_old_sum':
-			case 'rank_old_avg':
-			case 'bo_sum':
-			case 'bo_avg':
-			case 'nra_sum':
-			case 'nra_avg':
-			case 'ra_sum':
-			case 'ra_avg':
-			case 'level_avg':
-			case 'rank_new_sum':
-			case 'rank_new_avg':
-			case 'arch_sum':
-			case 'arch_avg':
-			case 'build_sum':
-			case 'build_avg':
-			case 'scien_sum':
-			case 'scien_avg':
-			case 'premium':
-			case 'gate_not_avaliable':
-				type = hash;
-				break;
-			default:
-				type = 'in_out_day';
-				break;
-		}
-		target = jQuery('.js-graph-menu-world a[href=#'+type+']');
-	}
-
-	jQuery('.js-graph-menu-world a').removeClass(selectClass);
-	target.addClass(selectClass);
-
-	var container = jQuery('#graph-container');
-
-	printGraphLoad(container);
-
-	jQuery.post(
-		'/ajax/graph-world/',
-		{
-			'format': 'json',
-			'type': type,
-			'idW' : parseInt( container.attr('iditem'),10 )
-		},
-		function(res)
-		{
-			if( typeof res.error !== 'undefined' )
-			{
-				printGraphError(container, res.error );
-				return;
-			}
-
-			container.html();
-			switch(type) {
-				case 'in_out_day':
-					drawInOutGraph(res.series, 'Пришли/ушли за месяц', true);
-					break;
-				case 'in_out_all':
-					drawInOutGraph(res.series, 'Пришли/ушли за всё время', false);
-					break;
-				case 'count_player':
-					drawStatWorldGraph(res.series, 'Количество игроков');
-					break;
-				case 'count_colony':
-					drawStatWorldGraph(res.series, 'Количество колоний');
-					break;
-				case 'count_alliance':
-					drawStatWorldGraph(res.series, 'Количество альянсов');
-					break;
-				case 'rank_old_sum':
-					drawStatWorldGraph(res.series, 'Суммарный рейтинг (стар.)');
-					break;
-				case 'rank_old_avg':
-					drawStatWorldGraph(res.series, 'Средний рейтинг (стар.)');
-					break;
-				case 'bo_sum':
-					drawStatWorldGraph(res.series, 'Суммарный боевой рейтинг');
-					break;
-				case 'bo_avg':
-					drawStatWorldGraph(res.series, 'Средний боевой рейтинг');
-					break;
-				case 'nra_sum':
-					drawStatWorldGraph(res.series, 'Суммарный новый рейтинг активности');
-					break;
-				case 'nra_avg':
-					drawStatWorldGraph(res.series, 'Средний новый рейтинг активности');
-					break;
-				case 'ra_sum':
-					drawStatWorldGraph(res.series, 'Суммарный рейтинг активности');
-					break;
-				case 'ra_avg':
-					drawStatWorldGraph(res.series, 'Средний рейтинг активности');
-					break;
-				case 'level_avg':
-					drawStatWorldGraph(res.series, 'Средний уровень');
-					break;
-				case 'rank_new_sum':
-					drawStatWorldGraph(res.series, 'Суммарный рейтинг (нов.)');
-					break;
-				case 'rank_new_avg':
-					drawStatWorldGraph(res.series, 'Средний рейтинг (нов.)');
-					break;
-				case 'arch_sum':
-					drawStatWorldGraph(res.series, 'Суммарная археология');
-					break;
-				case 'arch_avg':
-					drawStatWorldGraph(res.series, 'Средняя археология');
-					break;
-				case 'build_sum':
-					drawStatWorldGraph(res.series, 'Суммарное строительство');
-					break;
-				case 'build_avg':
-					drawStatWorldGraph(res.series, 'Среднее строительство');
-					break;
-				case 'scien_sum':
-					drawStatWorldGraph(res.series, 'Суммарная наука');
-					break;
-				case 'scien_avg':
-					drawStatWorldGraph(res.series, 'Средняя наука');
-					break;
-					break;
-				case 'premium':
-					drawStatWorldGraph(res.series, 'Количество премиум аккаунтов');
-					break;
-					break;
-				case 'gate_not_avaliable':
-					drawStatWorldGraph(res.series, 'Количество недоступных игроков (щит, бан, новичок, ...)');
-					break;
-				default:
-					return;
-					break;
 			}
 		}
 		,'json');
@@ -1943,77 +2065,6 @@ function drawSingleGraphPlayer(series)
 	chart = new Highcharts.Chart(options);
 }
 
-//Рисует бар-чарты пришли/ушли по миру/альянсу
-function drawInOutGraph(series, title, allowDay)
-{
-	prepareGraphDataDate(series);
-
-	var options = {
-		chart:{
-			renderTo: 'graph-container',
-			margin: [30, 10, 45, 60],
-			type: 'column'
-		},
-		colors: [
-			'#4572a7',
-			'#aa4643'
-		],
-		credits:{
-			enabled: false
-		},
-		title:{
-			style: {
-				color: '#636363'
-			},
-			text: title,
-			y: 7
-		},
-		xAxis:{
-			type: 'datetime',
-			gridLineWidth: 1,
-			lineColor: '#000'
-		},
-		yAxis:{
-			allowDecimals: false,
-			min: 0,
-			title:{
-				text: null
-			},
-			labels: {
-				style: {
-					fontSize :'12px'
-				}
-			}
-		},
-		legend:{
-			enabled: true,
-			y:15
-
-		},
-		tooltip:{
-			formatter: function()
-			{
-				return '<b>' + Highcharts.dateFormat((allowDay) ? '%d.%m.%Y':'%m.%Y', this.x) + '</b><br>' + this.series.name + ': ' + this.y;
-			}
-		},
-		plotOptions: {
-			column:{
-				pointPadding: 0,
-				minPointLength: 5,
-				dataLabels: {
-					enabled: true,
-					style: {
-						fontWeight: 'normal',
-                        fontSize :'10px'
-					}
-				}
-			}
-		},
-		series: series
-	};
-
-	chart = new Highcharts.Chart(options);
-}
 
 //форматирует большие числа в нормальный вид
 function numFormat(number)

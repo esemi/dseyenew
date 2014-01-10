@@ -1,16 +1,11 @@
 <?php
 
-$this->addGraph('world');
-
 $this->breadCrumb( array( sprintf('<a href="%s">%s</a>', $this->url(array( 'idW' => $this->idWorld ), 'worldIndex', true), $this->nameWorld), 'Статистика') );
 
 ?>
 
 <div class=" inline-block text-right text-top mrg-top-75" style="width:30%;">
 	<ul class="indicators inline-block text-left js-graph-menu-world" selectclass="color-voran bold no-underline">
-		<li>
-			<strong class="bold">Пришли/ушли:</strong><a href="#in_out_day">за месяц</a>/<a href="#in_out_all">за всё время</a>
-		</li>
 		<li>
 			<strong class="bold">Количество:</strong><a href="#count_player">игроков</a>/<a href="#count_colony">колоний</a>/<a href="#count_alliance">альянсов</a>
 		</li>
@@ -25,6 +20,9 @@ $this->breadCrumb( array( sprintf('<a href="%s">%s</a>', $this->url(array( 'idW'
 		</li>
 		<li>
 			<strong class="bold"><acronym title="Рейтинг активности">РА</acronym>:</strong><a href="#ra_sum">общий</a>/<a href="#ra_avg">средний</a>
+		</li>
+		<li>
+			<a href="#in_out">Пришли/ушли</a>
 		</li>
 		<li>
 			<a href="#level_avg">Средний уровень</a>
@@ -52,7 +50,7 @@ $this->breadCrumb( array( sprintf('<a href="%s">%s</a>', $this->url(array( 'idW'
 	</ul>
 </div>
 
-<div id="graph-container" class="inline-block text-center" style="width:68%;" iditem="<?php echo $this->idWorld; ?>">
+<div id="graph-container" class="inline-block text-center js-graph-init" data-init-type='world' style="width:68%;" iditem="<?php echo $this->idWorld; ?>">
 
 </div>
 

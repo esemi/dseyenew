@@ -267,7 +267,7 @@ abstract class App_Model_Abstract_StatGeneral extends Mylib_DbTable_Cached
 							'liens' => 'IFNULL( ROUND(archeology_liens / count_liens), 0)',
 							'psol' => 'IFNULL( ROUND(archeology_psol / count_psol), 0)',
 							'date' => "DATE_FORMAT( `date_create` , '%d.%m.%Y' )" ))
-						->order('date_create DESC');
+						->order('date_create ASC');
 		$this->_addItemWhere($idI, $select);
 		return $this->fetchAll($select)->toArray();
 	}

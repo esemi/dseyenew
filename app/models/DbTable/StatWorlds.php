@@ -10,8 +10,7 @@ class App_Model_DbTable_StatWorlds extends App_Model_Abstract_StatGeneral
 	protected $_primary = array('id_world','date_create');
 	protected $_tagsMap = array(
 		'getMinStatDate' => array('day'),
-		'getIOByMonth' => array('day'),
-		'getIOByAllTime' => array('day'),
+		'getIO' => array('day'),
 		'getCountPlayers' => array('day'),
 		'getCountColonies' => array('day'),
 		'getCountAlliances' => array('day'),
@@ -63,9 +62,9 @@ class App_Model_DbTable_StatWorlds extends App_Model_Abstract_StatGeneral
 	}
 
 	/*
-	 * пришли/ушли за последний месяц (по дням)
+	 * пришли/ушли
 	 */
-	protected function notcached_getIOByMonth( $idW )
+	protected function notcached_getIO( $idW )
 	{
 		$select = $this->select();
 		$this->_addItemWhere($idW, $select);
@@ -73,24 +72,6 @@ class App_Model_DbTable_StatWorlds extends App_Model_Abstract_StatGeneral
 		$select->from($this, array(
 			'input','output',
 			'date' => "DATE_FORMAT( `date_create` , '%d.%m.%Y' )" ))
-				->where('`date_create` >= CURRENT_DATE - INTERVAL 1 MONTH')
-				->order('date_create ASC');
-
-		return $this->fetchAll($select)->toArray();
-	}
-
-	/*
-	 * пришли/ушли за всё время (по месяцам)
-	 */
-	protected function notcached_getIOByAllTime( $idW )
-	{
-		$select = $this->select();
-		$this->_addItemWhere($idW, $select);
-
-		$select->from($this, array(
-			'input' => 'SUM(input)', 'output' => 'SUM(output)',
-			'date' => "DATE_FORMAT( `date_create` , '%m.%Y' )" ))
-				->group("DATE_FORMAT( `date_create` , '%m.%Y' )")
 				->order('date_create ASC');
 
 		return $this->fetchAll($select)->toArray();
