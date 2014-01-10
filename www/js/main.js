@@ -1055,7 +1055,6 @@ function Graph(type)
 			case 'archeology':
 			case 'building':
 			case 'science':
-			case 'summary':
 			case 'dshelp':
 				type = hash;
 				break;

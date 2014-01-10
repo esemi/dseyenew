@@ -1,4 +1,5 @@
 devel
+- remove overview player graph
 - new stats charts appearance
 - increase world and online stats period
 - new position of "premium" and "Hide untouchable" into world search

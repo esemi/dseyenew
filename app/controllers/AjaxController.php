@@ -393,46 +393,6 @@ class AjaxController extends Zend_Controller_Action
 	{
 		$idP = (int) $this->_request->getPost('idP');
 		$type = $this->_request->getPost('type');
-
-		//особая обработка сводного графика игрока
-		if( $type === 'summary' )
-		{
-			$conf = array('rank_old', 'bo', 'nra', 'ra','rank_new', 'archeology', 'building', 'science','mesto', 'level');
-			$series = array();
-			$borders = array();
-			foreach( $conf as $localType )
-			{
-				list($data, $decimal) = $this->_getPlayerStatData($localType, $idP);
-				if( is_null($data) ){
-					$this->view->error = 'Некорректный тип графика';
-					$this->_helper->Logger()->customError($this->view->error);
-					return;
-				}
-
-				if( count($data) > 0 ){
-					$borders[$localType] = $this->_getGraphBorders($data);
-					$ser = $this->_prepareStandartSingleGraph($localType, $data, false);
-					$ser->decimal = $decimal;
-					
-					//manual visible
-					if( count($series) >= 2 )
-						$ser->visible = false;
-
-					$series[] = $ser;
-				}
-			}
-
-			if( count($series) === 0 ){
-				$this->view->error = 'Данные отсутствуют';
-				return;
-			}
-
-			$this->view->series = $series;
-			$this->view->borders = $borders;
-
-			return;
-		}
-
 		//особая обработка графика с хелпера
 		if( $type === 'dshelp' )
 		{
@@ -474,16 +434,6 @@ class AjaxController extends Zend_Controller_Action
 			$this->view->series = $this->_prepareStandartSingleGraph($type, $data);
 			$this->view->decimal = $decimal;
 		}
-	}
-
-	/*
-	 * Нахождение минимального и максимального значения в данных для графика
-	 * @return array
-	 */
-	protected function _getGraphBorders($data)
-	{
-		$d = array_map(function($i){return floatval($i['value']);}, $data);
-		return array('min' => min($d), 'max' => max($d));
 	}
 
 	/*
