@@ -190,10 +190,10 @@ abstract class App_Model_Abstract_StatGeneral extends Mylib_DbTable_Cached
 	{
 		$select = $this->select()
 						->from($this, array(
-							'all' => 'IFNULL( ROUND((ra_voran + ra_liens + ra_psol) / (count_voran + count_liens + count_psol), 1), 0)',
-							'voran' => 'IFNULL( ROUND(ra_voran / count_voran, 1), 0)',
-							'liens' => 'IFNULL( ROUND(ra_liens / count_liens, 1), 0)',
-							'psol' => 'IFNULL( ROUND(ra_psol / count_psol, 1), 0)',
+							'all' => 'IFNULL( ROUND((ra_voran + ra_liens + ra_psol) / (count_voran + count_liens + count_psol)), 0)',
+							'voran' => 'IFNULL( ROUND(ra_voran / count_voran), 0)',
+							'liens' => 'IFNULL( ROUND(ra_liens / count_liens), 0)',
+							'psol' => 'IFNULL( ROUND(ra_psol / count_psol), 0)',
 							'date' => "DATE_FORMAT( `date_create` , '%d.%m.%Y' )" ))
 						->order('date_create ASC');
 		$this->_addItemWhere($idI, $select);
@@ -207,10 +207,10 @@ abstract class App_Model_Abstract_StatGeneral extends Mylib_DbTable_Cached
 	{
 		$select = $this->select()
 						->from($this, array(
-							'all' => 'IFNULL( ROUND((nra_voran + nra_liens + nra_psol) / (count_voran + count_liens + count_psol), 1), 0)',
-							'voran' => 'IFNULL( ROUND(nra_voran / count_voran, 1), 0)',
-							'liens' => 'IFNULL( ROUND(nra_liens / count_liens, 1), 0)',
-							'psol' => 'IFNULL( ROUND(nra_psol / count_psol, 1), 0)',
+							'all' => 'IFNULL( ROUND((nra_voran + nra_liens + nra_psol) / (count_voran + count_liens + count_psol)), 0)',
+							'voran' => 'IFNULL( ROUND(nra_voran / count_voran), 0)',
+							'liens' => 'IFNULL( ROUND(nra_liens / count_liens), 0)',
+							'psol' => 'IFNULL( ROUND(nra_psol / count_psol), 0)',
 							'date' => "DATE_FORMAT( `date_create` , '%d.%m.%Y' )" ))
 						->order('date_create ASC');
 		$this->_addItemWhere($idI, $select);
@@ -224,10 +224,10 @@ abstract class App_Model_Abstract_StatGeneral extends Mylib_DbTable_Cached
 	{
 		$select = $this->select()
 						->from($this, array(
-							'all' => 'IFNULL( ROUND((level_voran + level_liens + level_psol) / (count_voran + count_liens + count_psol), 1), 0)',
-							'voran' => 'IFNULL( ROUND(level_voran / count_voran, 1), 0)',
-							'liens' => 'IFNULL( ROUND(level_liens / count_liens, 1), 0)',
-							'psol' => 'IFNULL( ROUND(level_psol / count_psol, 1), 0)',
+							'all' => 'IFNULL( ROUND((level_voran + level_liens + level_psol) / (count_voran + count_liens + count_psol)), 0)',
+							'voran' => 'IFNULL( ROUND(level_voran / count_voran), 0)',
+							'liens' => 'IFNULL( ROUND(level_liens / count_liens), 0)',
+							'psol' => 'IFNULL( ROUND(level_psol / count_psol), 0)',
 							'date' => "DATE_FORMAT( `date_create` , '%d.%m.%Y' )" ))
 						->order('date_create ASC');
 		$this->_addItemWhere($idI, $select);

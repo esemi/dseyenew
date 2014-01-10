@@ -1,4 +1,5 @@
 devel
+- new alliance stats charts appearance
 - new world stats charts appearance
 - new online stats charts appearance
 - increase world and online stats period

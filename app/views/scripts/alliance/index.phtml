@@ -1,7 +1,4 @@
 <?php
-
-$this->addGraph('alliance');
-
 $this->breadCrumb( array(
 			sprintf('<a href="%s">%s</a>', $this->url(array( 'idW' => $this->idWorld ), 'worldIndex', true), $this->nameWorld),
 			$this->allianceLink($this->idWorld, $this->idAlliance, $this->nameAlliance, false, false),
@@ -154,7 +151,7 @@ $this->breadCrumb( array(
 					</div>
 			</li>
 	</ul>
-	<div id="graph-container" class=" mrg-top-13 text-center text-top " iditem="<?php echo $this->idAlliance; ?>">
+	<div id="graph-container" class=" mrg-top-13 text-center text-top js-graph-init" data-init-type='alliance' iditem="<?php echo $this->idAlliance; ?>">
 	</div>
 </div>
 

@@ -179,14 +179,6 @@ jQuery(document).ready(function()
 			'json');
 		});
 
-	/**статистика альянса***************************************************************/
-		//меню по графикам статистики альянсов
-		jQuery('.js-graph-menu-alliance a').click(function()
-		{
-			loadAndDrawAllianceGraph(jQuery(this));
-			return true;
-		});
-
 
 	/**изменения мира*******************************************************************/
 		//создаём датапикер для быстрого перехода
@@ -932,6 +924,10 @@ function Graph(type)
 			case 'world':
 				this._initWorld();
 				break;
+				break;
+			case 'alliance':
+				this._initAlliance();
+				break;
 
 		}
 	};
@@ -1011,6 +1007,48 @@ function Graph(type)
 				break;
 		}
 		jQuery('.js-graph-menu-online li[data-version="' + version + '"] a').trigger('click');
+	};
+
+	this._initAlliance = function(){
+		var this_ = this;
+
+		jQuery('.js-graph-menu-alliance a').click(function(){
+			var selectClass = jQuery('.js-graph-menu-alliance').attr('selectclass');
+			jQuery('.js-graph-menu-alliance a').removeClass(selectClass);
+			jQuery(this).addClass(selectClass);
+			this_._loadAndDrawAllianceGraph(jQuery(this).attr('href').substring(1));
+			return true;
+		});
+
+		var hash = this._getHashString();
+		var type;
+		switch(hash) {
+			case 'count_player':
+			case 'count_colony':
+			case 'rank_old_sum':
+			case 'rank_old_avg':
+			case 'bo_sum':
+			case 'bo_avg':
+			case 'ra_sum':
+			case 'ra_avg':
+			case 'nra_sum':
+			case 'nra_avg':
+			case 'level_avg':
+			case 'rank_new_sum':
+			case 'rank_new_avg':
+			case 'arch_sum':
+			case 'arch_avg':
+			case 'build_sum':
+			case 'build_avg':
+			case 'scien_sum':
+			case 'scien_avg':
+				type = hash;
+				break;
+			default:
+				type = 'count_player';
+				break;
+		}
+		jQuery('.js-graph-menu-alliance a[href=#'+type+']').trigger('click');
 	};
 
 	this._getHashString = function(){
@@ -1252,7 +1290,7 @@ function Graph(type)
 						this_._drawInOutGraphWorld(res.series,  res.title);
 						break;
 					default:
-						this_._drawStockGraphWorld(res.series,  res.title);
+						this_._drawStockGraphGeneralStat(res.series,  res.title);
 						break;
 				}
 			}
@@ -1347,7 +1385,7 @@ function Graph(type)
 		this.chart = new Highcharts.StockChart(options);
 	};
 
-	this._drawStockGraphWorld = function(series, title){
+	this._drawStockGraphGeneralStat = function(series, title){
 		this._prepareGraphDataDate(series);
 		var this_ = this;
 
@@ -1359,7 +1397,7 @@ function Graph(type)
 				height: 500
 			},
 			rangeSelector : {
-				selected : 0,
+				selected : 2,
 				buttonTheme: {
 					width: 85
 				},
@@ -1434,6 +1472,29 @@ function Graph(type)
 		};
 
 		this.chart = new Highcharts.StockChart(options);
+	};
+
+	this._loadAndDrawAllianceGraph = function(type){
+		var container = jQuery('#graph-container');
+		this.showLoading(container);
+
+		var this_ = this;
+		jQuery.post(
+			'/ajax/graph-alliance/',
+			{
+				'format': 'json',
+				'type': type,
+				'idA' : parseInt( container.attr('iditem'),10 )
+			},
+			function(res){
+				if( typeof res.error !== 'undefined' ){
+					this_.showGraphError(container, res.error);
+				}else{
+					this_.hideLoading(container);
+					this_._drawStockGraphGeneralStat(res.series,  res.title);
+				}
+			}
+			,'json');
 	};
 }
 

@@ -10,13 +10,9 @@ class Zend_View_Helper_AddGraph extends Zend_View_Helper_Abstract
 		$this->view->headScript()->captureStart();
 		echo "jQuery(document).ready(function(){";
 
-		switch( $type )
-		{
+		switch( $type ){
 			case 'player':
 				echo "loadAndDrawPlayerGraph();";
-				break;
-			case 'alliance':
-				echo "loadAndDrawAllianceGraph();";
 				break;
 		}
 
