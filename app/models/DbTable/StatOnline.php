@@ -63,8 +63,8 @@ class App_Model_DbTable_StatOnline extends Mylib_DbTable_Cached
 	public function prepareForHourGraph($data)
 	{
 		$out = new stdClass();
-		$out->name = 'Всего';
-		$out->realname = 'count';
+		$out->name = 'В среднем';
+		$out->realname = 'average';
 		$out->visible = true;
 		$out->data = array();
 

@@ -400,21 +400,20 @@ class AjaxController extends Zend_Controller_Action
 			$conf = array('rank_old', 'bo', 'nra', 'ra','rank_new', 'archeology', 'building', 'science','mesto', 'level');
 			$series = array();
 			$borders = array();
-			foreach( $conf as $type )
+			foreach( $conf as $localType )
 			{
-				$data = $this->_getPlayerStatData($type, $idP);
-				if( is_null($data) )
-				{
+				list($data, $decimal) = $this->_getPlayerStatData($localType, $idP);
+				if( is_null($data) ){
 					$this->view->error = 'Некорректный тип графика';
 					$this->_helper->Logger()->customError($this->view->error);
 					return;
 				}
 
-				if( count($data) > 0 )
-				{
-					$borders[$type] = $this->_getGraphBorders($data);
-					$ser = $this->_prepareStandartSingleGraph($type, $data, false);
-
+				if( count($data) > 0 ){
+					$borders[$localType] = $this->_getGraphBorders($data);
+					$ser = $this->_prepareStandartSingleGraph($localType, $data, false);
+					$ser->decimal = $decimal;
+					
 					//manual visible
 					if( count($series) >= 2 )
 						$ser->visible = false;
@@ -465,15 +464,15 @@ class AjaxController extends Zend_Controller_Action
 		}
 
 		//рядовые графики статистики по одному парамметру
-		$data = $this->_getPlayerStatData($type, $idP);
-		if( is_null($data) )
-		{
+		list($data, $decimal) = $this->_getPlayerStatData($type, $idP);
+		if( is_null($data) ){
 			$this->view->error = 'Не выбран тип графика';
 			$this->_helper->Logger()->customError($this->view->error);
 		}elseif( count($data) === 0 ){
 			$this->view->error = 'Данные отсутствуют';
 		}else{
 			$this->view->series = $this->_prepareStandartSingleGraph($type, $data);
+			$this->view->decimal = $decimal;
 		}
 	}
 
@@ -494,25 +493,29 @@ class AjaxController extends Zend_Controller_Action
 	protected function _getPlayerStatData($type, $idP)
 	{
 		$data = null;
+		$decimals = false;
 		switch( $type )
 		{
 			case 'rank_old':
 				$data = $this->_helper->modelLoad('StatRankOld')->getStat($idP);
-				break;
-			case 'mesto':
-				$data = $this->_helper->modelLoad('StatMesto')->getStat($idP);
 				break;
 			case 'rank_new':
 				$data = $this->_helper->modelLoad('StatRankNew')->getStat($idP);
 				break;
 			case 'bo':
 				$data = $this->_helper->modelLoad('StatBo')->getStat($idP);
+				$decimals = true;
 				break;
 			case 'ra':
 				$data = $this->_helper->modelLoad('StatRa')->getStat($idP);
+				$decimals = true;
 				break;
 			case 'nra':
 				$data = $this->_helper->modelLoad('StatNra')->getStat($idP);
+				$decimals = true;
+				break;
+			case 'mesto':
+				$data = $this->_helper->modelLoad('StatMesto')->getStat($idP);
 				break;
 			case 'level':
 				$data = $this->_helper->modelLoad('StatLevel')->getStat($idP);
@@ -527,7 +530,7 @@ class AjaxController extends Zend_Controller_Action
 				$data = $this->_helper->modelLoad('StatScien')->getStat($idP);
 				break;
 		}
-		return $data;
+		return array($data, $decimals);
 	}
 
 

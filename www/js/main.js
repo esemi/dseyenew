@@ -539,13 +539,6 @@ jQuery(document).ready(function()
 
 	/**страница игрока**********************************************************************/
 
-		//меню по графикам игрока
-		jQuery('.js-graph-menu-player a').click( function()
-		{
-			loadAndDrawPlayerGraph(jQuery(this));
-			return true;
-		});
-
 		//добавление игрока в мониторинг
 		jQuery(".js-monitor-add-player").live('click', function()
 		{
@@ -909,10 +902,6 @@ function Graph(type)
 		container.html('<div class="mrg-top-34 mrg-bottom-44 mrg-left-70"><img src="/img/eye_big.gif" alt="глазик">'+text+'</div>');
 	};
 
-	this.numFormat = function(number, decimals){
-		return Highcharts.numberFormat(number, decimals, '.', '`');
-	};
-
 	this.init = function(){
 		switch(this.type){
 			case 'online':
@@ -928,7 +917,9 @@ function Graph(type)
 			case 'alliance':
 				this._initAlliance();
 				break;
-
+			case 'player':
+				this._initPlayer();
+				break;
 		}
 	};
 
@@ -1051,24 +1042,89 @@ function Graph(type)
 		jQuery('.js-graph-menu-alliance a[href=#'+type+']').trigger('click');
 	};
 
+	this._initPlayer = function(){
+		var this_ = this;
+
+		jQuery('.js-graph-menu-player a').click(function(){
+			var selectClass = jQuery('.js-graph-menu-player').attr('selectclass');
+			jQuery('.js-graph-menu-player a').removeClass(selectClass);
+			jQuery(this).addClass(selectClass);
+			this_._loadAndDrawPlayerGraph(jQuery(this).attr('href').substring(1));
+			return true;
+		});
+
+		var hash = this._getHashString();
+		var type;
+		switch(hash) {
+			case 'rank_old':
+			case 'bo':
+			case 'nra':
+			case 'ra':
+			case 'level':
+			case 'mesto':
+			case 'rank_new':
+			case 'archeology':
+			case 'building':
+			case 'science':
+			case 'summary':
+			case 'dshelp':
+				type = hash;
+				break;
+			default:
+				type = 'rank_old';
+				break;
+		}
+		jQuery('.js-graph-menu-player a[href=#'+type+']').trigger('click');
+	};
+
 	this._getHashString = function(){
 		return location.hash.substring(1);
 	};
 
 	this._prepareGraphDataDate = function(series){
-		prepareGraphDataDate(series);
+		var parseDate = function( str ){
+			var tmp = str.split('.');
+			if( tmp.length === 2){ //месяцы
+				tmp[0] = tmp[0]-1;
+				return Date.UTC( tmp[1], tmp[0], 01, 00, 00);
+			}else if( tmp.length === 3){ //дни
+				tmp[1] = tmp[1]-1;
+				return Date.UTC( tmp[2], tmp[1], tmp[0], 00, 00);
+			}else if( tmp.length === 4){ // +часы
+				tmp[2] = tmp[2]-1;
+				return Date.UTC( tmp[3], tmp[2], tmp[1], tmp[0], 00);
+			}else{ // +минуты
+				tmp[3] = tmp[3]-1;
+				return Date.UTC( tmp[4], tmp[3], tmp[2],  tmp[1], tmp[0] );
+			}
+		};
+
+		for( var i in series ){
+			for( var j in series[i].data ){
+				series[i].data[j][0] = parseDate(series[i].data[j][0]);
+				series[i].data[j][1] = Math.round(parseFloat(series[i].data[j][1]) * 100) / 100;
+			}
+		}
 	};
 
-	this._findDelta = function(data, xVal){
+	this._findDelta = function(data, xVal, decimalsNum){
+		if( typeof decimalsNum === 'undefined' ){
+			decimalsNum = 0;
+		}
+
 		var delta = '(<span style="color: ' + this.grayColor + ';">Без изменений</span>)';
 		var curIndex = data.processedXData.indexOf(xVal);
 		if( curIndex > 0 ){
-			var deltaVal = Math.round(data.processedYData[curIndex]) - Math.round(data.processedYData[curIndex - 1]);
+			if( decimalsNum === 0 ){
+				var deltaVal = Math.round(data.processedYData[curIndex]) - Math.round(data.processedYData[curIndex - 1]);
+			}else{
+				var deltaVal = data.processedYData[curIndex] - data.processedYData[curIndex - 1];
+			}
 			var color = (deltaVal < 0) ? this.redColor : this.greenColor;
 			if(deltaVal > 0){
-				delta = '(<span style="color: ' + color + '">+' + this.numFormat(deltaVal, 0) + '</span>)';
+				delta = '(<span style="color: ' + color + '">+' + Highcharts.numberFormat(deltaVal, decimalsNum) + '</span>)';
 			}else if(deltaVal < 0){
-				delta = '(<span style="color: ' + color + '">' + this.numFormat(deltaVal, 0) + '</span>)';
+				delta = '(<span style="color: ' + color + '">' + Highcharts.numberFormat(deltaVal, decimalsNum) + '</span>)';
 			}
 		}
 		return delta;
@@ -1153,13 +1209,14 @@ function Graph(type)
 				},
 				lineColor: '#000',
 				lineWidth: 0.5,
+				minorTickInterval: 'auto',
 				startOnTick: false,
 				showFirstLabel: false
 			},
 			tooltip: {
 				formatter: function(){
 					return '<b>' + Highcharts.dateFormat('%H:00 %d.%m.%Y', this.x) + '</b><br>' +
-							this.points[0].series.name + ': ' + '<b>' + this_.numFormat(this.y, 0) + '</b>';
+							this.points[0].series.name + ': ' + '<b>' + Highcharts.numberFormat(this.y, 0) + '</b>';
 				}
 			},
 			plotOptions: {
@@ -1336,7 +1393,7 @@ function Graph(type)
 				formatter: function(){
 					var out = '<b>' + Highcharts.dateFormat('%d.%m.%Y', this.x) + '</b>';
 					for( var i in this.points ){
-						out += '<br/>' + this.points[i].series.name + ': <b>' + this_.numFormat(this.points[i].y, 0) + '</b>';
+						out += '<br/>' + this.points[i].series.name + ': <b>' + Highcharts.numberFormat(this.points[i].y, 0) + '</b>';
 					}
 					return out;
 				}
@@ -1358,6 +1415,7 @@ function Graph(type)
 				},
 				lineColor: '#000',
 				lineWidth: 0.5,
+				minorTickInterval: 'auto',
 				startOnTick: false,
 				showFirstLabel: false
 			},
@@ -1425,7 +1483,7 @@ function Graph(type)
 				formatter: function(){
 					var out = '<b>' + Highcharts.dateFormat('%d.%m.%Y', this.x) + '</b>';
 					for( var i in this.points ){
-						out += '<br/>' + this.points[i].series.name + ': <b>' + this_.numFormat(this.points[i].y, 0) + '</b>';
+						out += '<br/>' + this.points[i].series.name + ': <b>' + Highcharts.numberFormat(this.points[i].y, 0) + '</b>';
 						out += this_._findDelta(this.points[i].series, this.x);
 					}
 					return out;
@@ -1448,6 +1506,7 @@ function Graph(type)
 				},
 				lineColor: '#000',
 				lineWidth: 0.5,
+				minorTickInterval: 'auto',
 				startOnTick: false,
 				showFirstLabel: false
 			},
@@ -1495,6 +1554,128 @@ function Graph(type)
 				}
 			}
 			,'json');
+	};
+
+	this._loadAndDrawPlayerGraph = function(type){
+		var container = jQuery('#graph-container');
+		this.showLoading(container);
+
+		var this_ = this;
+		jQuery.post(
+			'/ajax/graph-player/',
+			{
+				'format': 'json',
+				'type': type,
+				'idP' : parseInt( container.attr('iditem'),10 )
+			},
+			function(res){
+				if( typeof res.error !== 'undefined' ){
+					this_.showGraphError(container, res.error);
+				}else{
+					this_.hideLoading(container);
+					if(!!res.url){
+						this_._drawExternalGraphDshelp(container, res.url);
+					}else if(res.series.length === 1){
+						this_._drawStockGraphSinglePlayer(res.series, res.decimal);
+					}else{
+						drawSumGraphPlayer( res.series, res.borders );
+					}
+				}
+			}
+			,'json');
+	};
+
+	this._drawExternalGraphDshelp = function(container, url){
+		container.html('<img src=' + url + ' alt="График РА игрока с dshelp.info" />');
+	};
+
+	this._drawStockGraphSinglePlayer = function(series, decimals){
+		this._prepareGraphDataDate(series);
+		var this_ = this;
+
+		var options = {
+			chart:{
+				renderTo: 'graph-container',
+				margin: [10, 10, 20, 10],
+				zoomType: 'x',
+				height: 450
+			},
+			rangeSelector : {
+				selected : 1,
+				buttonTheme: {
+					width: 85
+				},
+				buttons: [{
+					type: 'week',
+					count: 1,
+					text: 'неделя'
+				}, {
+					type: 'month',
+					count: 1,
+					text: 'месяц'
+				}, {
+					type: 'all',
+					text: 'всё время'
+				}]
+			},
+			colors: this.raseColors,
+			credits:{
+				enabled: false
+			},
+			legend:{
+				enabled: false
+			},
+			tooltip:{
+				formatter: function(){
+					var out = '<b>' + Highcharts.dateFormat('%H:%M %d.%m.%Y', this.x) + '</b>';
+					for( var i in this.points ){
+						out += '<br/>' + this.points[i].series.name + ': <b>' + Highcharts.numberFormat(this.points[i].y, (decimals) ? 2 : 0) + '</b>';
+						out += this_._findDelta(this.points[i].series, this.x, (decimals) ? 2 : 0);
+					}
+					return out;
+				}
+			},
+			title: {
+				enabled: false
+			},
+			xAxis: {
+				gridLineWidth: 1,
+				lineColor: '#000'
+			},
+			yAxis: {
+				allowDecimals: false,
+				labels: {
+					style: {
+						fontSize :'10px'
+					}
+				},
+				lineColor: '#000',
+				lineWidth: 0.5,
+				minorTickInterval: 'auto',
+				startOnTick: false,
+				showFirstLabel: false
+			},
+			plotOptions: {
+				series:{
+					dataGrouping: {
+						enabled: false
+					},
+					lineWidth: 1,
+					shadow: false,
+					marker: {
+						radius: 1
+					},
+					states: {
+						hover: {
+							lineWidth: 1
+						}
+					}
+				}
+			},
+			series: series
+		};
+
+		this.chart = new Highcharts.StockChart(options);
 	};
 }
 
@@ -1593,209 +1774,6 @@ function toggleNews(node, action)
 	}
 }
 
-/*
- * грузит и рисует график игрока
- * если пункт меню не указан - пытается взять тип из хеша урла. По дефолту rank_old
- */
-function loadAndDrawPlayerGraph(target)
-{
-	var selectClass = jQuery('.js-graph-menu-player').attr('selectclass');
-
-	var type = 'rank_old';
-	if( typeof target !== 'undefined' )
-	{
-		type = target.parent().attr('graph');
-	}else{
-		var hash = location.hash.substring(1);
-		switch(hash) {
-			case 'rank_old':
-			case 'bo':
-			case 'nra':
-			case 'ra':
-			case 'level':
-			case 'mesto':
-			case 'rank_new':
-			case 'archeology':
-			case 'building':
-			case 'science':
-			case 'summary':
-			case 'dshelp':
-				type = hash;
-				break;
-			default:
-				type = 'rank_old';
-				break;
-		}
-		target = jQuery('.js-graph-menu-player li[graph='+type+'] a');
-	}
-
-	jQuery('.js-graph-menu-player a').removeClass(selectClass);
-	target.addClass(selectClass);
-
-	var container = jQuery('#graph-container');
-
-	printGraphLoad(container);
-
-	jQuery.post(
-		'/ajax/graph-player/',
-		{
-			'format': 'json',
-			'type': type,
-			'idP' : parseInt( container.attr('iditem'),10 )
-		},
-		function(res)
-		{
-			if( typeof res.error !== 'undefined' )
-			{
-				printGraphError(container, res.error );
-			}else{
-				container.html();
-
-				if(!!res.url)
-					container.html('<img src='+res.url+' alt="График РА игрока с dshelp.info" />');
-				else if(res.series.length === 1)
-					drawSingleGraphPlayer( res.series );
-				else
-					drawSumGraphPlayer( res.series, res.borders );
-			}
-		}
-		,'json');
-}
-
-
-/*
- * грузит и рисует график мира
- * если пункт меню не указан - пытается взять тип из хеша урла. По дефолту in_out_day
- */
-function loadAndDrawAllianceGraph(target)
-{
-	var selectClass = jQuery('.js-graph-menu-alliance').attr('selectclass');
-
-	var type = 'count_player';
-	if( typeof target !== 'undefined' )
-	{
-		type = target.attr('href').substring(1);
-	}else{
-		var hash = location.hash.substring(1);
-		switch(hash) {
-			case 'count_player':
-			case 'count_colony':
-			case 'rank_old_sum':
-			case 'rank_old_avg':
-			case 'bo_sum':
-			case 'bo_avg':
-			case 'ra_sum':
-			case 'ra_avg':
-			case 'nra_sum':
-			case 'nra_avg':
-			case 'level_avg':
-			case 'rank_new_sum':
-			case 'rank_new_avg':
-			case 'arch_sum':
-			case 'arch_avg':
-			case 'build_sum':
-			case 'build_avg':
-			case 'scien_sum':
-			case 'scien_avg':
-				type = hash;
-				break;
-			default:
-				type = 'count_player';
-				break;
-		}
-		target = jQuery('.js-graph-menu-alliance a[href=#'+type+']');
-	}
-
-	jQuery('.js-graph-menu-alliance a').removeClass(selectClass);
-	target.addClass(selectClass);
-
-	var container = jQuery('#graph-container');
-
-	printGraphLoad(container);
-
-	jQuery.post(
-		'/ajax/graph-alliance/',
-		{
-			'format': 'json',
-			'type': type,
-			'idA' : parseInt( container.attr('iditem'),10 )
-		},
-		function(res)
-		{
-			if( typeof res.error !== 'undefined' )
-			{
-				printGraphError(container, res.error );
-				return;
-			}
-
-			container.html();
-			switch(type) {
-				case 'count_player':
-					drawStatWorldGraph(res.series, 'Количество игроков');
-					break;
-				case 'count_colony':
-					drawStatWorldGraph(res.series, 'Количество колоний');
-					break;
-				case 'rank_old_sum':
-					drawStatWorldGraph(res.series, 'Суммарный рейтинг (стар.)');
-					break;
-				case 'rank_old_avg':
-					drawStatWorldGraph(res.series, 'Средний рейтинг (стар.)');
-					break;
-				case 'bo_sum':
-					drawStatWorldGraph(res.series, 'Суммарный боевой рейтинг');
-					break;
-				case 'bo_avg':
-					drawStatWorldGraph(res.series, 'Средний боевой рейтинг');
-					break;
-				case 'ra_sum':
-					drawStatWorldGraph(res.series, 'Суммарный рейтинг активности');
-					break;
-				case 'ra_avg':
-					drawStatWorldGraph(res.series, 'Средний рейтинг активности');
-					break;
-				case 'nra_sum':
-					drawStatWorldGraph(res.series, 'Суммарный новый рейтинг активности');
-					break;
-				case 'nra_avg':
-					drawStatWorldGraph(res.series, 'Средний новый рейтинг активности');
-					break;
-				case 'level_avg':
-					drawStatWorldGraph(res.series, 'Средний уровень');
-					break;
-				case 'rank_new_sum':
-					drawStatWorldGraph(res.series, 'Суммарный рейтинг (нов.)');
-					break;
-				case 'rank_new_avg':
-					drawStatWorldGraph(res.series, 'Средний рейтинг (нов.)');
-					break;
-				case 'arch_sum':
-					drawStatWorldGraph(res.series, 'Суммарная археология');
-					break;
-				case 'arch_avg':
-					drawStatWorldGraph(res.series, 'Средняя археология');
-					break;
-				case 'build_sum':
-					drawStatWorldGraph(res.series, 'Суммарное строительство');
-					break;
-				case 'build_avg':
-					drawStatWorldGraph(res.series, 'Среднее строительство');
-					break;
-				case 'scien_sum':
-					drawStatWorldGraph(res.series, 'Суммарная наука');
-					break;
-				case 'scien_avg':
-					drawStatWorldGraph(res.series, 'Средняя наука');
-					break;
-				default:
-					return;
-					break;
-			}
-		}
-		,'json');
-}
-
-
 //выводит ошибку графика в контейнер
 function printGraphError(container, text)
 {
@@ -1861,85 +1839,6 @@ function _getGraphSource( data )
 	}
 
 	return out;
-}
-
-//рисуем график мира по рассам
-function drawStatWorldGraph(series, title)
-{
-	prepareGraphDataDate( series );
-	var delta = _getGraphDelta( series );
-
-	var options = {
-		chart: {
-			renderTo: 'graph-container',
-			zoomType: 'xy',
-			margin: [30, 10, 45, 60],
-			defaultSeriesType: 'line'
-		},
-		title: {
-			text: title,
-			y: 7
-		},
-		legend:{
-			enabled: (series.length > 1),
-			y:15
-		},
-		credits:{
-			enabled: false
-		},
-		xAxis: {
-			gridLineWidth: 1,
-			lineColor: '#000',
-			type: 'datetime',
-			maxZoom: 7 * 24 * 3600000,
-			title: {
-				text: null
-			}
-		},
-		yAxis: {
-			labels: {
-				style: {
-					fontSize :'10px'
-				}
-			},
-			allowDecimals: false,
-			minorTickInterval: 'auto',
-			lineColor: '#000',
-			lineWidth: 0.5,
-			title: {
-				text: null
-			},
-			startOnTick: false,
-			showFirstLabel: false
-		},
-		tooltip: {
-			formatter: function()
-			{
-				return '<b>' + Highcharts.dateFormat('%d.%m.%Y', this.x) + '</b><br>' +
-					this.series.name + ': ' +'<b>' + numFormat(this.y) + '</b> ' +
-					getDelta(delta, this.series.index +'_'+ this.x);
-			}
-		},
-		colors: chartColors,
-		plotOptions: {
-			lineWidth: 1,
-			shadow: false,
-			series:{
-				marker: {
-					symbol:'circle',
-					radius: 1
-				}
-			},
-			states: {
-				hover: {
-					lineWidth: 1
-				}
-			}
-		},
-		series: series
-	};
-
-	chart = new Highcharts.Chart(options);
 }
 
 //рисуем сводный график игрока
@@ -2045,88 +1944,6 @@ function drawSumGraphPlayer(series, borders)
 	chart = new Highcharts.Chart(options);
 }
 
-//рисуем одиночный график игрока
-function drawSingleGraphPlayer(series)
-{
-	prepareGraphDataDate( series );
-
-	var delta = _getGraphDelta( series );
-
-	var reversed = (series[0].realname === 'mesto');
-
-	var options = {
-		chart: {
-			renderTo: 'graph-container',
-			zoomType: 'xy',
-			margin: [10, 10, 20, 60],
-			defaultSeriesType: 'line'
-		},
-		title: {
-			text: ''
-		},
-		legend:{
-			enabled: false
-		},
-		credits:{
-			enabled: false
-		},
-		xAxis: {
-			gridLineWidth: 1,
-			lineColor: '#000',
-			type: 'datetime',
-			maxZoom: 3 * 24 * 3600000,
-			title: {
-				text: null
-			}
-		},
-		yAxis: {
-			labels: {
-				style: {
-					fontSize :'10px'
-				}
-			},
-			allowDecimals: false,
-			minorTickInterval: 'auto',
-			lineColor: '#000',
-			lineWidth: 0.5,
-			title: {
-				text: null
-			},
-			startOnTick: false,
-			showFirstLabel: false,
-			reversed: reversed
-		},
-		tooltip: {
-			formatter: function()
-			{
-				return '<b>' + Highcharts.dateFormat('%H:%M %d.%m.%Y', this.x) + '</b><br>' +
-					'<span style="color:' + this.series.color + ';">' + this.series.name + '</span> : ' +
-					'<b>' + numFormat(this.y) + '</b> ' +
-					getDelta(delta, this.series.index +'_'+ this.x, reversed);
-			}
-		},
-		plotOptions: {
-			lineWidth: 1,
-			shadow: false,
-			series:{
-				marker: {
-					symbol:'circle',
-					radius: 2
-				}
-			},
-			states: {
-				hover: {
-					lineWidth: 1
-				}
-			}
-		},
-		series: series
-	};
-
-	chart = new Highcharts.Chart(options);
-}
-
-
 //форматирует большие числа в нормальный вид
 function numFormat(number)
 {
@@ -2177,3 +1994,15 @@ function DetectBrowserForAddon(userAgent)
 
 	return result;
 }
+
+Highcharts.setOptions({
+	lang: {
+		thousandsSep: '`',
+		months: ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+		shortMonths: ['Янв', 'Фев', 'Мар', 'Апр', 'Май', 'Июн', 'Июл', 'Авг', 'Сен', 'Окт', 'Ноя', 'Дек'],
+		rangeSelectorFrom: 'От',
+		rangeSelectorTo: 'До',
+		rangeSelectorZoom: 'Приблизить',
+		weekdays: ['Воскресенье', 'Понедельник', 'Вторник', 'Среда', 'Четверг', 'Пятница', 'Суббота']
+	}
+});

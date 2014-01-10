@@ -1,6 +1,4 @@
 <?php
-$this->addGraph('player');
-
 $data = $this->mainProperty;
 
 $premiumIcon = ( $this->extendedStatus && $data['premium'] == 1 )
@@ -84,17 +82,17 @@ $this->breadCrumb( array(
 
 <div class="mrg-left-271">
 	<ul class="horiz-menu text-center mrg-bottom-8 js-graph-menu-player" selectclass="<?php echo $this->RaseColor($data['id_rase']); ?>" >
-		<li graph="rank_old" class="finger"><a href="#rank_old">Рейтинг (стар.)</a></li>
-		<li graph="bo" class="finger"><a href="#bo"><acronym title="Боевой рейтинг">БО</acronym></a></li>
-		<li graph="nra" class="finger"><a href="#nra"><acronym title="Новый рейтинг активности">НРА</acronym></a></li>
-		<li graph="ra" class="finger"><a href="#ra"><acronym title="Рейтинг активности">РА</acronym></a></li>
-		<li graph="level" class="finger"><a href="#level">Уровень</a></li>
-		<li graph="mesto" class="finger"><a href="#mesto">Место</a></li>
-		<li graph="rank_new" class="finger"><a href="#rank_new">Рейтинг (нов.)</a></li>
-		<li graph="archeology" class="finger"><a href="#archeology">Археология</a></li>
-		<li graph="building" class="finger"><a href="#building">Строительство</a></li>
-		<li graph="science" class="finger"><a href="#science">Наука</a></li>
-		<li graph="summary" class="finger"><a href="#summary">Сводный график</a></li>
+		<li class="finger"><a href="#rank_old">Рейтинг (стар.)</a></li>
+		<li class="finger"><a href="#bo"><acronym title="Боевой рейтинг">БО</acronym></a></li>
+		<li class="finger"><a href="#nra"><acronym title="Новый рейтинг активности">НРА</acronym></a></li>
+		<li class="finger"><a href="#ra"><acronym title="Рейтинг активности">РА</acronym></a></li>
+		<li class="finger"><a href="#level">Уровень</a></li>
+		<li class="finger"><a href="#mesto">Место</a></li>
+		<li class="finger"><a href="#rank_new">Рейтинг (нов.)</a></li>
+		<li class="finger"><a href="#archeology">Археология</a></li>
+		<li class="finger"><a href="#building">Строительство</a></li>
+		<li class="finger"><a href="#science">Наука</a></li>
+		<li class="finger"><a href="#summary">Сводный график</a></li>
 		<?php if( $this->dshelp ): ?>
 			<li graph="dshelp" class="finger">
 				<a href="#dshelp"><acronym title="Рейтинг активности">РА</acronym> (<acronym title="dshelp.info">dshelp</acronym>)</a>
@@ -102,7 +100,7 @@ $this->breadCrumb( array(
 		<?php endif; ?>
 	</ul>
 	<!--для вывода графиков-->
-	<div id="graph-container" class="text-center" iditem="<?php echo $this->idPlayer; ?>"></div>
+	<div id="graph-container" class="text-center js-graph-init" data-init-type='player' iditem="<?php echo $this->idPlayer; ?>"></div>
 </div>
 
  </div>
