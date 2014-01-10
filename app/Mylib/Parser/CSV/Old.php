@@ -31,7 +31,6 @@ class Mylib_Parser_CSV_Old extends Mylib_Parser_CSV_Abstract
 		if( !is_null($this->getErr()) )
 			return false;
 
-		$this->_data->setParam('mesto', intval($arr[0]));
 		$this->_uniqNiks[] = $tmp = trim($arr[1]);
 		$this->_data->setParam('nik', $tmp);
 		if( !is_null($this->findPlayer($tmp)) )

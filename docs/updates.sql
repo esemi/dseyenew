@@ -55,3 +55,6 @@ DROP TABLE players_trans_gate;
 
 ALTER TABLE `players_changes` CHANGE `type` `type` ENUM( 'gate_open', 'gate_close', 'premium_enable', 'premium_disable', 'ban', 'unban',
 'newbee_enable', 'newbee_disable', 'shield_enable', 'shield_disable' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
+
+DROP TABLE stat_players_mesto;
+ALTER TABLE `players` DROP `mesto`;

@@ -1,4 +1,5 @@
 devel
+- parameter "player place" is completely removed (processing, storage, display)
 - remove overview player graph
 - new stats charts appearance
 - increase world and online stats period

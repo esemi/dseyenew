@@ -64,7 +64,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 	{
 		return $this->update(
 				array(
-					'gate' => ($shield) ? 1 : 0,
+					'gate' => ($gate) ? 1 : 0,
 					'gate_shield' => ($shield) ? 1 : 0,
 					'gate_newbee' => ($newbee) ? 1 : 0,
 					'gate_ban' => ($ban) ? 1 : 0,
@@ -858,7 +858,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 				->setIntegrityCheck(false)
 				->from($this, array(
 					'id', 'nik', 'dom_adr' => "CONCAT_WS('.', ring, {$this->_name}.compl, {$this->_name}.sota )",
-					'dom_name', 'mesto', 'rank_old', 'rank_new', 'bo', 'nra', 'ra', 'gate', 'level', 'liga', 'archeology', 'building', 'science',
+					'dom_name', 'rank_old', 'rank_new', 'bo', 'nra', 'ra', 'gate', 'level', 'liga', 'archeology', 'building', 'science',
 					'delta_rank_old','delta_bo', 'gate_shield', 'gate_newbee', 'gate_ban', 'premium'))
 				->joinLeft('players_colony', "{$this->_name}.id = players_colony.id_player",
 						array(
@@ -871,7 +871,7 @@ class App_Model_DbTable_Players extends Mylib_DbTable_Cached
 				->where("{$this->_name}.status = 'active'")
 				->where("{$this->_name}.id_world = ?", $idW, Zend_Db::INT_TYPE)
 				->group("{$this->_name}.id")
-				->order("{$this->_name}.mesto ASC");
+				->order("{$this->_name}.rank_old DESC");
 
 		return $this->fetchAll($select)->toArray();
 	}

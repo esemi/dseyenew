@@ -464,9 +464,6 @@ class AjaxController extends Zend_Controller_Action
 				$data = $this->_helper->modelLoad('StatNra')->getStat($idP);
 				$decimals = true;
 				break;
-			case 'mesto':
-				$data = $this->_helper->modelLoad('StatMesto')->getStat($idP);
-				break;
 			case 'level':
 				$data = $this->_helper->modelLoad('StatLevel')->getStat($idP);
 				break;
@@ -498,7 +495,6 @@ class AjaxController extends Zend_Controller_Action
 			'archeology' => 'Археология',
 			'building' => 'Строительство',
 			'science' => 'Наука',
-			'mesto' => 'Место',
 			'level' => 'Уровень',
 			'count_alliance' => 'Всего',
 			'count_premium' => 'Всего',

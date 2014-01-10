@@ -1050,7 +1050,6 @@ function Graph(type)
 			case 'nra':
 			case 'ra':
 			case 'level':
-			case 'mesto':
 			case 'rank_new':
 			case 'archeology':
 			case 'building':

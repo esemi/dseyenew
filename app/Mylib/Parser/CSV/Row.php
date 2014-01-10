@@ -34,7 +34,6 @@ class Mylib_Parser_CSV_Row
 			'id_rase' => $this->getParam('raseId'),
 			'id_alliance' => $this->getParam('allianceId'),
 			'nik' => $this->getParam('nik'),
-			'mesto' => $this->getParam('mesto'),
 			'ring' => $this->getParam('ring'),
 			'compl' => $this->getParam('compl'),
 			'sota' => $this->getParam('sota'),

@@ -25,7 +25,7 @@ class App_Model_MyCSV
 		$handle = fopen('php://temp', 'w+');
 		$params = array(
 			'id','nik','dom_adr','dom_name','gate','colony_adr',
-			'colony_name','alliance','rase','level','liga', 'mesto', 'rank_old',
+			'colony_name','alliance','rase','level','liga', 'rank_old',
 			'bo', 'rank_new', 'archeology','building','science','nra','ra', 'delta_rank_old', 'delta_bo',
 			'gate_shield', 'gate_newbee', 'gate_ban', 'premium');
 		fputcsv($handle, $params, ';', '"');

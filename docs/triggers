@@ -62,10 +62,6 @@ CREATE TRIGGER `players_increment_stat` AFTER UPDATE ON `players`
 	THEN INSERT DELAYED INTO players_trans_sots (`id_player`, `old_ring`, `old_compl`, `old_sota`, `new_ring`, `new_compl`, `new_sota`, `date`) VALUES (OLD.id, OLD.ring, OLD.`compl`, OLD.`sota`, OLD.ring, NEW.`compl`, NEW.`sota`, now() );
 	END IF;
 
-	IF OLD.`mesto` != NEW.`mesto`
-	THEN INSERT DELAYED INTO stat_players_mesto( `id_player`, `date`, `value`, `delta` ) VALUES (OLD.id, now(), NEW.mesto, CAST(NEW.mesto AS SIGNED) - CAST(OLD.mesto AS SIGNED));
-	END IF;
-
 	IF OLD.`rank_old` != NEW.`rank_old`
 	THEN INSERT INTO stat_players_rank_old( `id_player`, `date`, `value`, `delta` ) VALUES (OLD.id, now(), NEW.rank_old, CAST(NEW.rank_old AS SIGNED) - CAST(OLD.rank_old AS SIGNED));
 	END IF;

@@ -91,7 +91,6 @@ class CliController extends Zend_Controller_Action
 			$countRo = $this->_helper->modelLoad('StatRankOld')->clearOld( $conf['playerstat'] );
 			$countRn = $this->_helper->modelLoad('StatRankNew')->clearOld( $conf['playerstat'] );
 			$countBo = $this->_helper->modelLoad('StatBo')->clearOld( $conf['playerstat'] );
-			$countM  = $this->_helper->modelLoad('StatMesto')->clearOld( $conf['playerstat'] );
 			$countL  = $this->_helper->modelLoad('StatLevel')->clearOld( $conf['playerstat'] );
 			$countRa = $this->_helper->modelLoad('StatRa')->clearOld( $conf['playerstat'] );
 			$countNr = $this->_helper->modelLoad('StatNra')->clearOld( $conf['playerstat'] );
@@ -99,8 +98,8 @@ class CliController extends Zend_Controller_Action
 			$countB  = $this->_helper->modelLoad('StatBuild')->clearOld( $conf['playerstat'] );
 			$countS  = $this->_helper->modelLoad('StatScien')->clearOld( $conf['playerstat'] );
 			$this->_log->add(sprintf(
-					'Удалено %d/%d/%d/%d/%d/%d/%d/%d/%d/%d записей статистики игроков',
-					$countRo,$countRn,$countBo,$countM,$countL,$countRa,$countNr,$countA,$countB,$countS),
+					'Удалено %d/%d/%d/%d/%d/%d/%d/%d/%d записей статистики игроков',
+					$countRo,$countRn,$countBo,$countL,$countRa,$countNr,$countA,$countB,$countS),
 					true);
 
 			$db->commit();
