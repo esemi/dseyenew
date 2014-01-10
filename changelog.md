@@ -1,4 +1,5 @@
-	- world search - position of "premium" and "Hide untouchable"
+-increase world and online stats period
+- world search - position of "premium" and "Hide untouchable"
 	- page-proof of messages about not found data
 	- tracking of changes extended statuses gate
 	- merged all sot transfers to single table

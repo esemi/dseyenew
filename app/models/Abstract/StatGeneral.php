@@ -8,10 +8,7 @@ abstract class App_Model_Abstract_StatGeneral extends Mylib_DbTable_Cached
 {
     protected $_cacheName = 'up';
 
-    final public function clearOld( $days )
-    {
-        return $this->delete( $this->_db->quoteInto( 'date_create < CURDATE() - INTERVAL ? DAY', $days, Zend_Db::INT_TYPE ) );
-    }
+	abstract public function clearOld($border);
 
     abstract protected function _addItemWhere($idI,$select);
 

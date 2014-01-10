@@ -9,7 +9,7 @@ class App_Model_DbTable_StatWorlds extends App_Model_Abstract_StatGeneral
 	protected $_name = 'stat_worlds';
 	protected $_primary = array('id_world','date_create');
 	protected $_tagsMap = array(
-		'getMinStatDate' => array('day'),
+		'getMinHistoryDate' => array('day'),
 		'getIOByMonth' => array('day'),
 		'getIOByAllTime' => array('day'),
 		'getCountPlayers' => array('day'),
@@ -36,6 +36,10 @@ class App_Model_DbTable_StatWorlds extends App_Model_Abstract_StatGeneral
 		'getAvgScien' => array('day'),
 	);
 
+	public function clearOld($border){
+		return $this->delete( $this->_db->quoteInto( 'date_create < CURDATE() - INTERVAL ? YEAR', $border, Zend_Db::INT_TYPE ) );
+	}
+
 	public function addStat($idW, Array $data)
 	{
 		return $this->insert(
@@ -53,13 +57,19 @@ class App_Model_DbTable_StatWorlds extends App_Model_Abstract_StatGeneral
 	/*
 	 * максимальный отпуск для истории изменений
 	 */
-	protected function notcached_getMinStatDate($idW)
+	protected function notcached_getMinHistoryDate($idW, $scavBorder)
 	{
 		$select = $this->select()
 						->from($this, array('date' => "DATE_FORMAT(MIN(date_create), '%d-%m-%Y')"));
 		$this->_addItemWhere($idW, $select);
 		$res = $this->fetchRow($select);
-		return $res['date'];
+		$dbDate = DateTime::createFromFormat('d-m-Y', $res['date']);
+
+		$confDate = new DateTime();
+		$confDate->modify("-{$scavBorder} year");
+		$out = max(array($dbDate, $confDate));
+
+		return $out->format('d-m-Y');
 	}
 
 	/*

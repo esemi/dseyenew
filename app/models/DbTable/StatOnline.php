@@ -14,13 +14,12 @@ class App_Model_DbTable_StatOnline extends Mylib_DbTable_Cached
         'getLastVal' => array('onlinestat'),
     );
 
-    /*
-     * чистим старые данные
-     */
-    public function clearOld( $days )
-    {
-        return $this->delete( $this->_db->quoteInto( 'date < CURDATE() - INTERVAL ? DAY', $days, Zend_Db::INT_TYPE ) );
-    }
+	/*
+	 * чистим старые данные
+	 */
+	public function clearOld($years){
+		return $this->delete( $this->_db->quoteInto( 'date < CURDATE() - INTERVAL ? YEAR', $years, Zend_Db::INT_TYPE ) );
+	}
 
 
     public function addStat($idV, $count)
