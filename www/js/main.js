@@ -1410,7 +1410,7 @@ function Graph(type)
 				series:{
 					dataGrouping: {
 						approximation: 'sum',
-						groupPixelWidth: 10
+						groupPixelWidth: 15
 					},
 					lineWidth: 1,
 					shadow: false,

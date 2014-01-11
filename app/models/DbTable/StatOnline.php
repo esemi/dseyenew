@@ -64,7 +64,6 @@ class App_Model_DbTable_StatOnline extends Mylib_DbTable_Cached
 	{
 		$out = new stdClass();
 		$out->name = 'В среднем';
-		$out->realname = 'average';
 		$out->visible = true;
 		$out->data = array();
 

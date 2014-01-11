@@ -393,6 +393,7 @@ class AjaxController extends Zend_Controller_Action
 	{
 		$idP = (int) $this->_request->getPost('idP');
 		$type = $this->_request->getPost('type');
+
 		//особая обработка графика с хелпера
 		if( $type === 'dshelp' )
 		{
@@ -502,7 +503,6 @@ class AjaxController extends Zend_Controller_Action
 
 		$out = new stdClass();
 		$out->name = $items[$type];
-		$out->realname = $type;
 		$out->visible = true;
 		$out->data = array();
 
@@ -519,13 +519,11 @@ class AjaxController extends Zend_Controller_Action
 	{
 		$input = new stdClass();
 		$input->name = 'Пришли';
-		$input->realname = 'input';
 		$input->visible = true;
 		$input->data = array();
 
 		$output = new stdClass();
 		$output->name = 'Ушли';
-		$output->realname = 'output';
 		$output->visible = true;
 		$output->data = array();
 
@@ -555,7 +553,6 @@ class AjaxController extends Zend_Controller_Action
 		{
 			$$realname = new stdClass();
 			$$realname->name = $name;
-			$$realname->realname = $realname;
 			$$realname->data = array();
 			$$realname->visible = (count($result) == 0 || !$hideRase);
 			$result[] = $$realname;
