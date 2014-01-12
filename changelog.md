@@ -1,4 +1,6 @@
 devel
+
+version 2.4
 - parameter "player place" is completely removed (processing, storage, display)
 - remove overview player graph
 - new stats charts appearance
