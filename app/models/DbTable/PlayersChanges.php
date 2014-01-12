@@ -9,7 +9,8 @@ class App_Model_DbTable_PlayersChanges extends App_Model_Abstract_Trans
 	protected $_name = 'players_changes';
 	protected $_cacheName = 'up';
 	protected $_tagsMap = array(
-		'getTransByAlliance' => array('gate')
+		'getTransByAlliance' => array('gate'),
+		'getPlayerFlags' => array('gate')
 	);
 
 	/**
@@ -29,6 +30,19 @@ class App_Model_DbTable_PlayersChanges extends App_Model_Abstract_Trans
 		return (is_null($data)) ? null : $data->date;
 	}
 
+	/*
+	 * изменения игрока для флажков
+	 */
+	protected function notcached_getPlayerFlags($idP, $dateBorder){
+
+		$select = $this->select()
+				->setIntegrityCheck(false)
+				->from($this, array('type', 'date' => "DATE_FORMAT(`date`, '%i.%H.%d.%m.%Y')"))
+				->where('id_player = ?', $idP, Zend_Db::INT_TYPE)
+				->where("{$this->_name}.date >= ?", $dateBorder)
+				->order("{$this->_name}.date ASC");
+		return $this->fetchAll($select)->toArray();
+	}
 
 	/*
 	 * изменения игрока

@@ -1088,8 +1088,12 @@ function Graph(type)
 
 		for( var i in series ){
 			for( var j in series[i].data ){
-				series[i].data[j][0] = parseDate(series[i].data[j][0]);
-				series[i].data[j][1] = Math.round(parseFloat(series[i].data[j][1]) * 100) / 100;
+				if( typeof series[i].type !== 'undefined' && series[i].type === 'flags'){
+					series[i].data[j].x = parseDate(series[i].data[j].x);
+				}else{
+					series[i].data[j][0] = parseDate(series[i].data[j][0]);
+					series[i].data[j][1] = Math.round(parseFloat(series[i].data[j][1]) * 100) / 100;
+				}
 			}
 		}
 	};
@@ -1641,6 +1645,13 @@ function Graph(type)
 				showFirstLabel: false
 			},
 			plotOptions: {
+				flags: {
+					shape: 'flag',
+					width: 12,
+					height: 12,
+					useHTML: true,
+					stackDistance: 19
+				},
 				series:{
 					dataGrouping: {
 						enabled: false

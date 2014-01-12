@@ -433,6 +433,7 @@ class AjaxController extends Zend_Controller_Action
 			$this->view->error = 'Данные отсутствуют';
 		}else{
 			$this->view->series = $this->_prepareStandartSingleGraph($type, $data);
+			//$this->view->series[] = $this->_preparePlayerChangesFlagSeries($idP, DateTime::createFromFormat('i.H.d.m.Y', $data[0]['date']));
 			$this->view->decimal = $decimal;
 		}
 	}
@@ -481,6 +482,26 @@ class AjaxController extends Zend_Controller_Action
 		return array($data, $decimals);
 	}
 
+	/**
+	 * подготовка серии флажков для графиков игрока
+	 */
+	private function _preparePlayerChangesFlagSeries($idP, DateTime $dateBorder){
+		$data = $this->_helper->modelLoad('PlayersChanges')->getPlayerFlags($idP, $dateBorder->format('Y-m-d H:i:00'));
+
+		$out = new stdClass();
+		$out->type = 'flags';
+		$out->name = 'Изменения';
+		$out->data = array();
+
+		foreach( $data as $val ){
+			$tmp = new stdClass ();
+			$tmp->x = $val['date'];
+			$tmp->title = $this->view->DecodeChangeIcons($val['type'], true);
+			$out->data[] = $tmp;
+		}
+
+		return $out;
+	}
 
 	/*
 	 * преобразует данные в формат для одиночного графика игрока
