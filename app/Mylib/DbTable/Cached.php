@@ -41,7 +41,7 @@ abstract class Mylib_DbTable_Cached extends Zend_Db_Table_Abstract
 			$data = call_user_func_array(array($this, $methodDB), $args);
 			$this->_cache->save($data, $signature, $tags);
 		}elseif( APPLICATION_ENV === 'cli' ){
-			printf("Cached method by CLI %s->%s" . PHP_EOL, $this->_name, $methodDB);
+			//printf("Cached method by CLI %s->%s" . PHP_EOL, $this->_name, $methodDB);
 		}
 
 		return $data;

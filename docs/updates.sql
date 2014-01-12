@@ -29,10 +29,6 @@ INSERT INTO players_trans_sots (`id_player`, old_ring, `old_compl`, `old_sota`, 
 
 ALTER TABLE `players_trans_sots` ADD FOREIGN KEY ( `id_player` ) REFERENCES `dseye_new`.`players` (`id`) ON DELETE CASCADE ON UPDATE CASCADE ;
 
-DROP TABLE players_trans_colony;
-DROP TABLE players_trans_dom;
-
-
 CREATE TABLE IF NOT EXISTS `players_changes` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT,
   `id_player` int(10) unsigned NOT NULL,
@@ -51,10 +47,12 @@ INSERT INTO `players_changes` ( id_player, `type` , `date` )
 SELECT `id_player` , IF( `new_gate` =1, 'gate_open', 'gate_close' ) AS `type` , `date`
 FROM `players_trans_gate`;
 
-DROP TABLE players_trans_gate;
-
 ALTER TABLE `players_changes` CHANGE `type` `type` ENUM( 'gate_open', 'gate_close', 'premium_enable', 'premium_disable', 'ban', 'unban',
 'newbee_enable', 'newbee_disable', 'shield_enable', 'shield_disable' ) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL;
 
+
+DROP TABLE players_trans_colony;
+DROP TABLE players_trans_dom;
+DROP TABLE players_trans_gate;
 DROP TABLE stat_players_mesto;
 ALTER TABLE `players` DROP `mesto`;
