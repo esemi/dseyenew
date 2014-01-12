@@ -116,14 +116,19 @@ class CliController extends Zend_Controller_Action
 		$tables = $db->listTables();
 		foreach( $tables as $tableName )
 		{
-			$db->query('OPTIMIZE TABLE '. $db->quoteTableAs($tableName) );
+			try{
+				$db->query('OPTIMIZE TABLE '. $db->quoteTableAs($tableName) );
+			}catch( Exception $e ){
+				$this->_log->add('<b>Транзакция отменена</b>');
+				$this->_log->add($e->getMessage());
+			}
+
 			$this->_log->add(sprintf('%s optimized', $tableName), true);
 		}
 
 		//очистка локов крона
 		$db->query('TRUNCATE TABLE `cron_lock`');
 		$this->_log->add('cron_lock truncated');
-
 
 		//удаляем архивы csv
 		$pathGame = realpath($this->getFrontController()->getParam('bootstrap')->getOption('csv_game_archive_path'));
