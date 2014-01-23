@@ -19,7 +19,8 @@ class App_Model_GameClient
 			$_sessid = '',
 			$_ck = '',
 			$_uiid = '',
-			$_lastComplData = '';
+			$_lastComplData = '',
+			$_uniqNiks = array();
 
 
 	public function __construct($url, $log)
@@ -277,9 +278,11 @@ class App_Model_GameClient
 		foreach( $res as $compl )
 		{
 			$nik = $compl->getAttribute('uname');
-			if( empty($nik) ){
+			if( empty($nik) || in_array($nik, $this->_uniqNiks) ){
 				continue;
 			}
+			
+			$this->_uniqNiks[] = $nik;
 
 			$player = new stdClass();
 			$player->nik = $nik;
