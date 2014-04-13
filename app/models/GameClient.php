@@ -181,20 +181,6 @@ class App_Model_GameClient
 			'VERS' => $params[2],
 			'sport' => $params[3]
 		));
-		$this->_log->add($url);
-		$this->_log->add(array(
-			'ck' => $this->_ck,
-			'SIDIX' => $this->_sessid,
-			'VERS' => $params[2],
-			'sport' => $params[3]
-		));
-		$this->_log->add(http_build_query(array(
-			'ck' => $this->_ck,
-			'SIDIX' => $this->_sessid,
-			'VERS' => $params[2],
-			'sport' => $params[3]
-		)));
-
 		curl_setopt($this->_curl, CURLOPT_URL, $url);
 		curl_setopt($this->_curl, CURLOPT_CONNECTTIMEOUT, $this->_timeoutLogin);
 		curl_setopt($this->_curl, CURLOPT_TIMEOUT, $this->_timeoutLogin);
