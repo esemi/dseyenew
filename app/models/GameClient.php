@@ -53,8 +53,9 @@ class App_Model_GameClient
 
 	public function doEnter($login, $pass, $reset=false)
 	{
-		if( $reset === true )
+		if( $reset === true ){
 			$this->_curlReset();
+		}
 
 		//логинимся
 		$this->_log->add('логинимся');
@@ -142,26 +143,70 @@ class App_Model_GameClient
 		curl_setopt($this->_curl, CURLOPT_URL, $this->_getCheckinUrl());
 		curl_setopt($this->_curl, CURLOPT_CONNECTTIMEOUT, $this->_timeoutLogin);
 		curl_setopt($this->_curl, CURLOPT_TIMEOUT, $this->_timeoutLogin);
-		curl_setopt($this->_curl, CURLOPT_REFERER, $this->_getCheckinUrl() . '?ck=' . $this->_ck);
+		curl_setopt($this->_curl, CURLOPT_REFERER, $this->_getUiidUrl());
 		curl_setopt($this->_curl, CURLOPT_POSTFIELDS, array(
 			'ck' => $this->_ck,
 			'start' => 1,
 			'uiid' => $this->_uiid
 		));
+
 		$result = curl_exec($this->_curl);
 		if( $result === false ){
 			$this->_log->add(curl_error($this->_curl));
 			return false;
 		}
 
-		$res = $this->_parseCheckinResponse($result);
+		$params = $this->_parseQueueResponse($result);
+		if( ! is_array($params) ){
+			$checkinSource = $result;
+		}else{
+			$checkinSource = $this->_queueRequest($params);
+		}
+
+		$res = $this->_parseCheckinResponse($checkinSource);
 		if( $res !== true ){
 			$this->_log->add('Not parsed checkin response');
-			$this->_log->add($result);
+			$this->_log->add($checkinSource);
 			return false;
 		}
 
 		return true;
+	}
+
+	protected function _queueRequest($params){
+		$this->_log->add('process queue redirect');
+		$url = $this->_getQueueUrl() . '?' . http_build_query(array(
+			'ck' => $this->_ck,
+			'SIDIX' => $this->_sessid,
+			'VERS' => $params[2],
+			'sport' => $params[3]
+		));
+		$this->_log->add($url);
+		$this->_log->add(array(
+			'ck' => $this->_ck,
+			'SIDIX' => $this->_sessid,
+			'VERS' => $params[2],
+			'sport' => $params[3]
+		));
+		$this->_log->add(http_build_query(array(
+			'ck' => $this->_ck,
+			'SIDIX' => $this->_sessid,
+			'VERS' => $params[2],
+			'sport' => $params[3]
+		)));
+
+		curl_setopt($this->_curl, CURLOPT_URL, $url);
+		curl_setopt($this->_curl, CURLOPT_CONNECTTIMEOUT, $this->_timeoutLogin);
+		curl_setopt($this->_curl, CURLOPT_TIMEOUT, $this->_timeoutLogin);
+		curl_setopt($this->_curl, CURLOPT_REFERER, $this->_getUiidUrl());
+
+		$result = curl_exec($this->_curl);
+		if( $result === false ){
+			$this->_log->add(curl_error($this->_curl));
+			return false;
+		}else{
+			return $result;
+		}
 	}
 
 	public function viewCompl($ringNum, $complNum)
@@ -230,14 +275,27 @@ class App_Model_GameClient
 		return false;
 	}
 
+	protected function _parseQueueResponse($headers)
+	{
+		$matches = array();
+		if( preg_match('/Location:\s\.\.\/ds\/index_queue.php\?ck=([\d\w]{10})&VERS=(\w+)&sport=(\d+)/iu', $headers, $matches) )
+		{
+			$this->_log->add('found queue matches');
+			$this->_log->add($matches);
+			$this->_ck = $matches[1];
+			return $matches;
+		}
+		return false;
+	}
+
 	protected function _parseCheckinResponse($headers)
 	{
 		$matches = array();
-		if( preg_match('/Location:\s\.\.\/ds\/index.php\?ck=([\d\w]{10})&/iu', $headers, $matches) )
+		if( preg_match('/Location:\s(\.\.\/ds\/)?index.php\?ck=([\d\w]{10})&/iu', $headers, $matches) )
 		{
 			$this->_log->add('checkin matches');
 			$this->_log->add($matches);
-			$this->_ck = $matches[1];
+			$this->_ck = $matches[2];
 			return true;
 		}
 		return false;
@@ -281,7 +339,7 @@ class App_Model_GameClient
 			if( empty($nik) || in_array($nik, $this->_uniqNiks) ){
 				continue;
 			}
-			
+
 			$this->_uniqNiks[] = $nik;
 
 			$player = new stdClass();
@@ -331,6 +389,11 @@ class App_Model_GameClient
 	{
 		return "{$this->_url}ds/index_start.php";
 	}
+
+	protected function _getQueueUrl(){
+		return "{$this->_url}ds/index_queue.php";
+	}
+
 	protected function _getViewComplUrl()
 	{
 		return "{$this->_url}ds/useraction.php?SIDIX={$this->_sessid}";
