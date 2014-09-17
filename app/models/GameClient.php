@@ -372,6 +372,7 @@ class App_Model_GameClient
 
 			$data[] = $player;
 		}
+		
 		return $data;
 	}
 
