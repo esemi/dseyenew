@@ -16,7 +16,7 @@ class App_Model_NewRanks extends App_Model_Abstract_RemoteRanks
 			$tmpData[] = trim($item->nodeValue);
 
 		//не битая ли строка
-		if( count($tmpData) != 15 )
+		if( count($tmpData) < 14 )
 		{
 			$result->error[] = "строка битая";
 		}else{
