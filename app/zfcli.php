@@ -5,8 +5,9 @@ define('APPLICATION_ENV','cli');
 define('APPLICATION_PATH', realpath(__DIR__));
 
 define('ZEND_PATH', realpath(__DIR__ . '/../../Zend'));
-
-define('LOG_PATH', realpath(__DIR__ . '/../../logs/dseye'));
+define('LOG_PATH', realpath(dirname(__FILE__) . '/../logs'));
+define('CACHE_PATH', realpath(dirname(__FILE__) . '/../cache'));
+define('SESSIONS_PATH', realpath(dirname(__FILE__) . '/../sessions'));
 
 set_include_path(implode(PATH_SEPARATOR, array(
 	ZEND_PATH,
