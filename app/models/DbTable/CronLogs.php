@@ -22,7 +22,7 @@ class App_Model_DbTable_CronLogs extends Mylib_DbTable_Cached
 	/*
 	 * получить последние логи по типу
 	 */
-	public function getLogsByType( $type, $limit=10 )
+	public function getLogsByType( $type, $limit=50 )
 	{
 		$select = $this->select()
 				->from($this, array('id', 'date', 'size' => 'ROUND(LENGTH(`text`) / 1024)') )

@@ -47,3 +47,5 @@ def deploy():
 
 	for folder in FOLDERS:
 		put(os.path.join(LOCAL_PATH, folder), APP_PATH)
+
+	run('crontab %s' % os.path.join(APP_PATH, 'conf', 'crontab'))
