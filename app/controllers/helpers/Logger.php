@@ -43,11 +43,6 @@ class Action_Helper_Logger extends Zend_Controller_Action_Helper_Abstract
 		$this->_log->csrf($this->_ip. ' '. $this->_uri. ' '. $this->_referer. ' '. serialize($this->_request->getPost()). ' '. $this->_agent);
 	}
 
-	public function ajaxAccess()
-	{
-		$this->_log->ajax($this->_ip. ' '. $this->_uri. ' '. $this->_referer. ' '. serialize($this->_request->getPost()). ' '. $this->_agent);
-	}
-
 	public function direct()
 	{
 		return $this;

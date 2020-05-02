@@ -273,7 +273,6 @@ class Bootstrap extends Zend_Application_Bootstrap_Bootstrap
 		$this->bootstrap('log');
 		$log = $this->getResource('log');
 
-		$log->addPriority('ajax', 8);
 		$log->addPriority('csrf', 9);
 		$log->addPriority('error', 10);
 	}

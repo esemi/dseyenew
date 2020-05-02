@@ -22,9 +22,6 @@ class AjaxController extends Zend_Controller_Action
 		if( $url !== substr($this->_request->getServer('HTTP_REFERER', ''), 0, strlen($url) ) )
 			throw new Exception('AJAX referer');
 
-		//логирование всех запросов, кроме секурных
-		$this->_helper->Logger()->ajaxAccess();
-
 
 		$this->_helper->getHelper('AjaxContext')
 							->addActionContext('map', 'json')
