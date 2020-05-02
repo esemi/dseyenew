@@ -9,4 +9,4 @@ deploy:
   provider: script
   script: fab -H dseye.esemi.ru deploy -p $SSH_PASS
   on:
-    branch: master
+    branch: ci_cd
