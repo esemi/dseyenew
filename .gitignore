@@ -1,6 +1,3 @@
 www/csv
 app/configs/config.secure.ini
 *.pyc
-cache/*
-logs/*
-sessions/*
