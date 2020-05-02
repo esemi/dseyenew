@@ -28,7 +28,7 @@ try
 	$opts = new Zend_Console_Getopt(
 		array(
 			'help|h' => 'Displays usage information.',
-			'action|a=s' => 'onlinestat | dshelpra | oldranks | newranks | csv | scavenger | up | day | nra | gate',
+			'action|a=s' => 'onlinestat | oldranks | newranks | csv | scavenger | up | day | nra | gate',
 		)
 	);
 	$opts->parse();
@@ -54,8 +54,6 @@ switch( $opts->a )
 
 	//обновление старых рейтингов игроков одного мира
 	case 'oldranks':
-	//обновление РА игроков одного мира
-	case 'dshelpra':
 	//обновление основных рейтингов
 	case 'up':
 	//обновление новых рейтингов игроков одного мира

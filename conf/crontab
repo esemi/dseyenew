@@ -11,6 +11,5 @@ MAILTO=""
 * 0-3,5-23 * * * php ~/dseye/app/zfcli.php -a up >> ~/logs/dseye/cron.log
 * 0-3,5-23 * * * php ~/dseye/app/zfcli.php -a oldranks >> ~/logs/dseye/cron.log
 * 0-3,5-23 * * * php ~/dseye/app/zfcli.php -a newranks >> ~/logs/dseye/cron.log
-*/3 0-3,5-23 * * * php ~/dseye/app/zfcli.php -a dshelpra>> ~/logs/dseye/cron.log
 */2 0-3,5-23 * * * php ~/dseye/app/zfcli.php -a nra>> ~/logs/dseye/cron.log
 */3 0-3,5-23 * * * php ~/dseye/app/zfcli.php -a gate >> ~/logs/dseye/cron.log
