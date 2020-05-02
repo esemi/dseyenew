@@ -7,14 +7,6 @@
 class AuthController extends Zend_Controller_Action
 {
 
-	protected $_recaptcha = null; //объект капчи
-
-	public function init()
-	{
-		$conf = $this->getFrontController()->getParam('bootstrap')->getOption('recaptcha');
-		$this->_recaptcha = new Zend_Service_ReCaptcha($conf['pubkey'],$conf['privkey']);
-	}
-
 	/*
 	 * вход
 	 */
@@ -34,33 +26,15 @@ class AuthController extends Zend_Controller_Action
 		$this->_helper->Messenger();
 
 		$ip = $this->_request->getClientIp(false);
-		if( true !== $this->_helper->modelLoad('Antibrut')->checkIP('login', $ip) )
-			$this->view->recaptcha = $recaptcha = $this->_recaptcha;
 
 		if( $this->_request->isPost() )
 		{
 			$this->view->login = $login = $this->_request->getPost('login');
 			$pass = $this->_request->getPost('pass');
 
-			//проверяем капчу (если надо)
-			if( isset($recaptcha) )
-			{
-				if( !$this->_helper->checkCaptcha($recaptcha) )
-				{
-					$this->view->messType = 'error';
-					$this->view->messText = 'Текст с изображения введён неверно';
-					return;
-				}
-			}
-
 			$dbUser = $this->_helper->modelLoad('Users')->findByLogin( $login );
 			if( false === $this->_loginUser($login, $pass) )
 			{
-				$this->_helper->modelLoad('Antibrut')->addIP( 'login', $ip );
-
-				if( true !== $this->_helper->modelLoad('Antibrut')->checkIP('login', $ip) )
-					$this->view->recaptcha = $this->_recaptcha;
-
 				$this->view->messType = 'error';
 				$this->view->messText = 'Неверная пара логин/пароль';
 				if( !is_null($dbUser) )
@@ -110,18 +84,10 @@ class AuthController extends Zend_Controller_Action
 
 		$this->view->helpLink = $this->view->url( array('id'=>'register'), 'helpView', true );
 
-		$ip = $this->_request->getClientIp(false);
-
-		if( true !== $this->_helper->modelLoad('Antibrut')->checkIP('register', $ip) )
-			$this->view->recaptcha = $recaptcha = $this->_recaptcha;
-
 		if ( $this->_request->isPost() )
 		{
-			//добавляем попытку регистрации в антибрут
-			$this->_helper->modelLoad('Antibrut')->addIP( 'register', $ip );
-
 			$this->view->post = $post = $this->_request->getPost();
-			$result = $this->_helper->modelLoad('Users')->validateNewUser( $post, isset($recaptcha) ? $recaptcha : null );
+			$result = $this->_helper->modelLoad('Users')->validateNewUser($post);
 
 			if( $result === true )
 			{
@@ -254,29 +220,8 @@ class AuthController extends Zend_Controller_Action
 			$this->_helper->redirector->gotoRouteAndExit(array(), 'userProfile',true);
 		}
 
-		$ip = $this->_request->getClientIp(false);
-
-		if( true !== $this->_helper->modelLoad('Antibrut')->checkIP('registerretry', $ip) )
-			$this->view->recaptcha = $recaptcha = $this->_recaptcha;
-
 		if( $this->_request->isPost() )
 		{
-			$this->_helper->modelLoad('Antibrut')->addIP( 'registerretry', $ip );
-
-			if( true !== $this->_helper->modelLoad('Antibrut')->checkIP('registerretry', $ip) )
-				$this->view->recaptcha = $this->_recaptcha;
-
-			//проверяем капчу (если надо)
-			if( isset($recaptcha) )
-			{
-				if( !$this->_helper->checkCaptcha($recaptcha) )
-				{
-					$this->view->messType = 'error';
-					$this->view->messText = 'Текст с изображения введён неверно';
-					return;
-				}
-			}
-
 			$token = $this->_helper->modelLoad('UsersApproved')->add( $user['id'] );
 			$this->_helper->modelLoad('UsersHistory')->add( $user['id'], 'Повторный запрос подтверждения email адреса', $this->_request);
 
@@ -313,21 +258,10 @@ class AuthController extends Zend_Controller_Action
 
 		$this->view->helpLink = $this->view->url( array('id'=>'password_remember'), 'helpView', true );
 
-		$ip = $this->_request->getClientIp(false);
-		$this->view->recaptcha = $recaptcha = $this->_recaptcha;
-
 		if ( $this->_request->isPost() )
 		{
 			$this->view->login = $login = $this->_request->getPost('login');
 			$this->view->email = $email = $this->_request->getPost('email');
-
-			//проверяем капчу
-			if( !$this->_helper->checkCaptcha($recaptcha) )
-			{
-				$this->view->messType = 'error';
-				$this->view->messText = 'Текст с изображения введён неверно';
-				return;
-			}
 
 			$user = $this->_helper->modelLoad('Users')->findForRemember( $login, $email );
 

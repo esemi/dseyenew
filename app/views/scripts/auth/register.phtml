@@ -37,11 +37,6 @@
 	<?php $this->printWarning(); ?><br>
 	<p class="mrg-left-13">Не указывайте в качестве пароля свой пароль от игры &mdash; это не безопасно.</p>
 </div>
-	<?php if(isset($this->recaptcha)): ?>
-	<div style="margin-bottom: 15px; margin-top: 10px; width: 400px;">
-		<?php echo $this->recaptcha->getHTML(); ?>
-	</div>
-	<?php endif; ?>
 </form>
 
 
