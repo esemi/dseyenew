@@ -49,7 +49,6 @@ class LogsController extends Zend_Controller_Action
         $this->view->log = $log->text;
     }
 
-
 }
 
 
