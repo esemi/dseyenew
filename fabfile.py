@@ -9,7 +9,7 @@ from fabric.contrib.files import exists
 env.user = 'dseye'
 
 REMOTE_PATH = os.path.join('/home', env.user)
-FOLDERS = ('www', 'app', 'cache', 'logs', 'sessions', 'conf')
+FOLDERS = ('www', 'app', 'conf')
 LOCAL_PATH = os.path.dirname(__file__)
 APP_PATH = os.path.join(REMOTE_PATH, 'app')
 LOGS_PATH = os.path.join(APP_PATH, 'logs')
@@ -35,7 +35,7 @@ def deploy():
 	if not exists(LOGS_PATH):
 		run('mkdir -p %s' % LOGS_PATH)
 		run('chgrp www-data %s' % LOGS_PATH)
-	run('chmod 774 -R %s' % LOGS_PATH)
+	# run('chmod 774 -R %s' % LOGS_PATH)
 
 	if not exists(CACHE_PATH):
 		run('mkdir -p %s' % CACHE_PATH)
