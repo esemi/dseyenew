@@ -7,6 +7,6 @@ script:
   fab tests
 deploy:
   provider: script
-  script: fab -H dseye.esemi.ru deploy -p $SSH_PASS
+  script: fab -H dseye.ru deploy -p $SSH_PASS
   on:
     branch: ci_cd

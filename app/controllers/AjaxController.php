@@ -402,7 +402,6 @@ class AjaxController extends Zend_Controller_Action
 			$this->view->error = 'Данные отсутствуют';
 		}else{
 			$this->view->series = $this->_prepareStandartSingleGraph($type, $data);
-			//$this->view->series[] = $this->_preparePlayerChangesFlagSeries($idP, DateTime::createFromFormat('i.H.d.m.Y', $data[0]['date']));
 			$this->view->decimal = $decimal;
 		}
 	}
