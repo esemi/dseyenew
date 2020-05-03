@@ -13,11 +13,6 @@
 	</p>
 
 	<form class="mrg-top-34 mrg-left-13" name="loginform" action="" method="post">
-		<?php if(isset($this->recaptcha)): ?>
-		<div style="margin-bottom: 15px; margin-top: 10px; width: 400px;">
-			<?php echo $this->recaptcha->getHTML(); ?>
-		</div>
-		<?php endif; ?>
 		<input class="inline-block text-bottom" type="submit" value="Отправить запрос" />
 	</form>
 </div>

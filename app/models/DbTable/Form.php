@@ -25,7 +25,7 @@ class App_Model_DbTable_Form extends Mylib_DbTable_Cached
 
     public function validate( $contact )
     {
-        return ( preg_match('/^[\w\s\-\+@\.\,А-ЯЁа-яё]{5,150}$/u', $contact) ) 
+        return ( preg_match('/^[\w\s\-+@.,А-ЯЁа-яё]{5,150}$/u', $contact) )
                 ? true : false;
     }
 

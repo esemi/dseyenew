@@ -16,17 +16,8 @@ class App_Model_DbTable_Users extends Mylib_DbTable_Cached
 	public function validateNewUser( $data, $captcha = null )
 	{
 		//обязательные поля
-		if( empty($data['login']) || empty($data['pass']) || empty($data['email']) ||
-			( !is_null($captcha) && (empty($data['recaptcha_challenge_field']) || empty($data['recaptcha_response_field']) ) )
-		)
+		if (empty($data['login']) || empty($data['pass']) || empty($data['email'])) {
 			return 'Не переданны одно или несколько обязательных полей';
-
-		//капча
-		if(!is_null($captcha))
-		{
-			$captchaRes = $captcha->verify($data['recaptcha_challenge_field'], $data['recaptcha_response_field']);
-			if( !$captchaRes->isValid() )
-				return 'Текст с изображения введён неверно';
 		}
 
 		//логин неверен

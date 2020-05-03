@@ -31,9 +31,6 @@ class PlayerController extends Zend_Controller_Action
 		if( $this->_helper->modelLoad('Players')->validate($this->idP, $this->idW) !== true )
 			throw new Mylib_Exception_NotFound('Player not found');
 
-		//если не false - доступен график с хелпера
-		$this->view->dshelp = $this->_helper->modelLoad('WorldsDshelp')->graphAvailable( $this->idW );
-
 		//доступны ли расширенные статусы ворот
 		$this->view->extendedStatus = $this->_helper->modelLoad('WorldsGameParse')->statusAvaliable( $this->idW );
 

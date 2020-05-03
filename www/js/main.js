@@ -1054,7 +1054,6 @@ function Graph(type)
 			case 'archeology':
 			case 'building':
 			case 'science':
-			case 'dshelp':
 				type = hash;
 				break;
 			default:
@@ -1564,18 +1563,10 @@ function Graph(type)
 					this_.showGraphError(container, res.error);
 				}else{
 					this_.hideLoading(container);
-					if(!!res.url){
-						this_._drawExternalGraphDshelp(container, res.url);
-					}else{
-						this_._drawStockGraphSinglePlayer(res.series, res.decimal);
-					}
+					this_._drawStockGraphSinglePlayer(res.series, res.decimal);
 				}
 			}
 			,'json');
-	};
-
-	this._drawExternalGraphDshelp = function(container, url){
-		container.html('<img src=' + url + ' alt="График РА игрока с dshelp.info" />');
 	};
 
 	this._drawStockGraphSinglePlayer = function(series, decimals){

@@ -91,11 +91,6 @@ $this->breadCrumb( array(
 		<li class="finger"><a href="#archeology">Археология</a></li>
 		<li class="finger"><a href="#building">Строительство</a></li>
 		<li class="finger"><a href="#science">Наука</a></li>
-		<?php if( $this->dshelp ): ?>
-			<li graph="dshelp" class="finger">
-				<a href="#dshelp"><acronym title="Рейтинг активности">РА</acronym> (<acronym title="dshelp.info">dshelp</acronym>)</a>
-			</li>
-		<?php endif; ?>
 	</ul>
 	<!--для вывода графиков-->
 	<div id="graph-container" class="text-center js-graph-init" data-init-type='player' iditem="<?php echo $this->idPlayer; ?>"></div>

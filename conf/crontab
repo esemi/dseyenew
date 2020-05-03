@@ -1,0 +1,11 @@
+MAILTO="exception@dseye.ru"
+
+00 * * * *   php7.2 ~/app/app/zfcli.php -a onlinestat >> ~/app/logs/cron.log
+05 04 * * *   php7.2 ~/app/app/zfcli.php -a scavenger >> ~/app/logs/cron.log
+05 */2 * * *   php7.2 ~/app/app/zfcli.php -a csv >> ~/app/logs/cron.log
+* 0-3,5-23 * * * php7.2 ~/app/app/zfcli.php -a up >> ~/app/logs/cron.log
+* 0-3,5-23 * * * php7.2 ~/app/app/zfcli.php -a oldranks >> ~/app/logs/cron.log
+* 0-3,5-23 * * * php7.2 ~/app/app/zfcli.php -a newranks >> ~/app/logs/cron.log
+55 23 * * *  php7.2 ~/app/app/zfcli.php -a day >> ~/app/logs/cron.log
+* 0-3,5-23 * * * php7.2 ~/app/app/zfcli.php -a nra>> ~/app/logs/cron.log
+*/3 0-3,5-23 * * * php7.2 ~/app/app/zfcli.php -a gate >> ~/app/logs/cron.log

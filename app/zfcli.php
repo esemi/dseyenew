@@ -5,8 +5,9 @@ define('APPLICATION_ENV','cli');
 define('APPLICATION_PATH', realpath(__DIR__));
 
 define('ZEND_PATH', realpath(__DIR__ . '/../../Zend'));
-
-define('LOG_PATH', realpath(__DIR__ . '/../../logs/dseye'));
+define('LOG_PATH', realpath(dirname(__FILE__) . '/../logs'));
+define('CACHE_PATH', realpath(dirname(__FILE__) . '/../cache'));
+define('SESSIONS_PATH', realpath(dirname(__FILE__) . '/../sessions'));
 
 set_include_path(implode(PATH_SEPARATOR, array(
 	ZEND_PATH,
@@ -28,7 +29,7 @@ try
 	$opts = new Zend_Console_Getopt(
 		array(
 			'help|h' => 'Displays usage information.',
-			'action|a=s' => 'onlinestat | dshelpra | oldranks | newranks | csv | scavenger | up | day | nra | gate',
+			'action|a=s' => 'onlinestat | oldranks | newranks | csv | scavenger | up | day | nra | gate',
 		)
 	);
 	$opts->parse();
@@ -54,8 +55,6 @@ switch( $opts->a )
 
 	//обновление старых рейтингов игроков одного мира
 	case 'oldranks':
-	//обновление РА игроков одного мира
-	case 'dshelpra':
 	//обновление основных рейтингов
 	case 'up':
 	//обновление новых рейтингов игроков одного мира

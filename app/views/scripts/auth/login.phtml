@@ -23,9 +23,4 @@
 		</tbody>
 	</table>
 	<input class="inline-block text-bottom" type="submit" value="Вход" />
-	<?php if(isset($this->recaptcha)): ?>
-	<div style="margin-bottom: 15px; margin-top: 10px; width: 400px;">
-		<?php echo $this->recaptcha->getHTML(); ?>
-	</div>
-	<?php endif; ?>
 </form>

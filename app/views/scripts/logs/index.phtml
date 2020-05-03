@@ -20,30 +20,6 @@
 	?>
 </pre>
 
-<h3 class="subtitle">Cron log</h3>
-<pre>
-	<?php
-	foreach ($this->cronLog as $str)
-		echo $this->escape($str);
-	?>
-</pre>
-
-<h3 class="subtitle">Apache log</h3>
-<pre>
-	<?php
-	foreach ($this->httpLog as $str)
-		echo $this->escape($str);
-	?>
-</pre>
-
-<h3 class="subtitle">Nginx log</h3>
-<pre>
-	<?php
-	foreach ($this->nginxLog as $str)
-		echo $this->escape($str);
-	?>
-</pre>
-
 <?php
 echo $this->partial(
         'Partials/logTable.phtml',
@@ -60,10 +36,6 @@ echo $this->partial(
 echo $this->partial(
         'Partials/logTable.phtml',
         array( 'data' => $this->scav, 'name' => 'scav log' ) );
-
-echo $this->partial(
-        'Partials/logTable.phtml',
-        array( 'data' => $this->dshelp, 'name' => 'dshelp log' ) );
 
 echo $this->partial(
 		'Partials/logTable.phtml',

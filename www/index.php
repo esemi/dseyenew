@@ -2,11 +2,11 @@
 
 define('APPLICATION_ENV', (getenv('APPLICATION_ENV')) ? getenv('APPLICATION_ENV') : 'production');
 
-define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../app'));
-
 define('ZEND_PATH', realpath(dirname(__FILE__) . '/../../Zend'));
-
-define('LOG_PATH', realpath(dirname(__FILE__) . '/../../logs/dseye'));
+define('APPLICATION_PATH', realpath(dirname(__FILE__) . '/../app'));
+define('LOG_PATH', realpath(dirname(__FILE__) . '/../logs'));
+define('CACHE_PATH', realpath(dirname(__FILE__) . '/../cache'));
+define('SESSIONS_PATH', realpath(dirname(__FILE__) . '/../sessions'));
 
 //временная заглушка
 /*if( APPLICATION_ENV == 'production' )

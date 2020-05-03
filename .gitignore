@@ -1,4 +1,3 @@
-www/clusters
-
-www/csv
+www/csv/*
 app/configs/config.secure.ini
+*.pyc

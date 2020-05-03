@@ -7,10 +7,6 @@
 class AjaxController extends Zend_Controller_Action
 {
 
-	protected
-		$_onlineMap = null,
-		$_dshelpMap = null;
-
 	public function init()
 	{
 		//только аякс запросы
@@ -21,9 +17,6 @@ class AjaxController extends Zend_Controller_Action
 		$url = $this->view->serverUrl();
 		if( $url !== substr($this->_request->getServer('HTTP_REFERER', ''), 0, strlen($url) ) )
 			throw new Exception('AJAX referer');
-
-		//логирование всех запросов, кроме секурных
-		$this->_helper->Logger()->ajaxAccess();
 
 
 		$this->_helper->getHelper('AjaxContext')
@@ -305,7 +298,7 @@ class AjaxController extends Zend_Controller_Action
 		$term = $this->_request->getPost('term','');
 		$idW = $this->_request->getPost('idW', 0);
 
-		if( ($this->_helper->modelLoad('Worlds')->validate( (int)$idW ) === true || $idW == 0  ) && preg_match('/^[\wА-ЯЁа-яё.-\s]{3,100}$/ui', $term) )
+		if( ($this->_helper->modelLoad('Worlds')->validate( (int)$idW ) === true || $idW == 0  ) && preg_match('/^[\wА-ЯЁа-яё.\-\s]{3,100}$/ui', $term) )
 		{
 			$conf = $this->getFrontController()->getParam('bootstrap')->getOption('limits');
 			$limit = ($this->_helper->checkAccess('others','fast_search_limit_x2')) ? 2 * $conf['fastSearch'] : $conf['fastSearch'];
@@ -395,32 +388,8 @@ class AjaxController extends Zend_Controller_Action
 		$type = $this->_request->getPost('type');
 
 		//особая обработка графика с хелпера
-		if( $type === 'dshelp' )
-		{
-			$info = $this->_helper->modelLoad('Players')->getInfo( $idP );
-			if( $info === false )
-			{
-				$this->view->error = 'Игрок не найден';
-				$this->_helper->Logger()->customError($this->view->error);
-				return;
-			}
-
-			if( !$this->_helper->modelLoad('WorldsDshelp')->graphAvailable( $info['id_world'] ) )
-			{
-				$this->view->error = 'Данный график недоступен для выбранного мира';
-				$this->_helper->Logger()->customError($this->view->error);
-				return;
-			}
-
-			$nameHelp = $this->_helper->modelLoad('WorldsDshelp')->getName( $info['id_world']);
-			$this->_dshelpMap = new App_Model_Dshelp($nameHelp);
-			$url = $this->_dshelpMap->getUrl( $info['nik'], $idP );
-			if( $url === false )
-			{
-				$this->view->error = 'График временно недоступен';
-				return;
-			}
-			$this->view->url = $url;
+		if( $type === 'dshelp' ) {
+			$this->view->error = 'График недоступен';
 			return;
 		}
 
@@ -433,7 +402,6 @@ class AjaxController extends Zend_Controller_Action
 			$this->view->error = 'Данные отсутствуют';
 		}else{
 			$this->view->series = $this->_prepareStandartSingleGraph($type, $data);
-			//$this->view->series[] = $this->_preparePlayerChangesFlagSeries($idP, DateTime::createFromFormat('i.H.d.m.Y', $data[0]['date']));
 			$this->view->decimal = $decimal;
 		}
 	}
