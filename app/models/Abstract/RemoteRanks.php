@@ -100,7 +100,7 @@ abstract class App_Model_Abstract_RemoteRanks
 
 	protected function _checkNik($str)
 	{
-		return preg_match('/^[\wА-Яа-яёЁ\s.-]{3,50}$/ui',$str);
+		return preg_match('/^[\wА-Яа-яёЁ\s.\-]{3,50}$/ui',$str);
 	}
 	protected function _checkRankOld($str)
 	{

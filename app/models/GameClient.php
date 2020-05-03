@@ -247,7 +247,7 @@ class App_Model_GameClient
 		$matchesCk = array();
 		if(
 				mb_strpos($content, 'name="uiid"') !== false &&
-				preg_match('/value="(\d{1,7}\_\d{1,4}\_\d{1,4})"/iu', $content, $matchesUiid) &&
+				preg_match('/value="(\d{1,7}_\d{1,4}_\d{1,4})"/iu', $content, $matchesUiid) &&
 				preg_match('/name="ck"\svalue="([\d\w]{10})"/iu', $content, $matchesCk)
 		){
 			$this->_log->add('uiid and ck matches');

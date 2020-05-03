@@ -15,7 +15,7 @@ class Mylib_Parser_CSV_Old extends Mylib_Parser_CSV_Abstract
 			$this->_addErr('count cols < 8');
 		elseif( strlen($arr[1]) < 3 )
 			$this->_addErr('short nik');
-		elseif( !preg_match('/^[\wА-Яа-яёЁ\s.-]{3,50}$/ui',$arr[1]) )
+		elseif( !preg_match('/^[\wА-Яа-яёЁ\s.\-]{3,50}$/ui',$arr[1]) )
 			$this->_addErr('invalid nik');
 		elseif( count(explode('.', $arr[3])) < 3 )
 			$this->_addErr('invalid adresses');

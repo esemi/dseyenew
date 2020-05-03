@@ -298,7 +298,7 @@ class AjaxController extends Zend_Controller_Action
 		$term = $this->_request->getPost('term','');
 		$idW = $this->_request->getPost('idW', 0);
 
-		if( ($this->_helper->modelLoad('Worlds')->validate( (int)$idW ) === true || $idW == 0  ) && preg_match('/^[\wА-ЯЁа-яё.-\s]{3,100}$/ui', $term) )
+		if( ($this->_helper->modelLoad('Worlds')->validate( (int)$idW ) === true || $idW == 0  ) && preg_match('/^[\wА-ЯЁа-яё.\-\s]{3,100}$/ui', $term) )
 		{
 			$conf = $this->getFrontController()->getParam('bootstrap')->getOption('limits');
 			$limit = ($this->_helper->checkAccess('others','fast_search_limit_x2')) ? 2 * $conf['fastSearch'] : $conf['fastSearch'];
