@@ -1,0 +1,43 @@
+name: deploy
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  on-success:
+    runs-on: ubuntu-latest
+    steps:
+      - name: checkout
+        uses: actions/checkout@v2
+      - uses: actions/setup-python@v3
+        with:
+          python-version: '3.9'
+
+      - name: deploy
+        uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.4
+        env:
+          TARGET_DIR: /home/${{ secrets.SSH_USERNAME }}
+          VENV_BIN: venv/bin
+        with:
+          host: ${{ secrets.SSH_HOST }}
+          user: ${{ secrets.SSH_USERNAME }}
+          pass: ${{ secrets.SSH_PASSWORD }}
+          port: 22
+          connect_timeout: 10s
+          first_ssh: |-
+            mkdir -p Zend
+            mkdir -p app/logs && chgrp www-data app/logs
+            mkdir -p app/sessions && chgrp www-data app/sessions
+            mkdir -p app/cache && chgrp www-data app/cache
+
+          scp: |-
+            './www/*' => $TARGET_DIR/app/www/
+            './app/*' => $TARGET_DIR/app/app/
+            './conf/*' => $TARGET_DIR/app/conf/
+
+          last_ssh: |-
+            test -d Zend/Zend || tar -xzf app/conf/Zend.tar.gz -C Zend
+            crontab app/conf/crontab
+
