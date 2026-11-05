@@ -4,40 +4,41 @@ on:
   push:
     branches:
       - master
+  workflow_dispatch:
 
 jobs:
   on-success:
     runs-on: ubuntu-latest
+    env:
+      SSHPASS: ${{ secrets.SSH_PASSWORD }}
+      REMOTE: ${{ secrets.SSH_USERNAME }}@${{ secrets.SSH_HOST }}
+      TARGET_DIR: /home/${{ secrets.SSH_USERNAME }}
+      SSH_OPTS: -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -o ConnectTimeout=10 -o LogLevel=ERROR
     steps:
       - name: checkout
-        uses: actions/checkout@v2
-      - uses: actions/setup-python@v3
-        with:
-          python-version: '3.9'
+        uses: actions/checkout@v4
 
-      - name: deploy
-        uses: cross-the-world/ssh-scp-ssh-pipelines@v1.1.4
-        env:
-          TARGET_DIR: /home/${{ secrets.SSH_USERNAME }}
-          VENV_BIN: venv/bin
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          user: ${{ secrets.SSH_USERNAME }}
-          pass: ${{ secrets.SSH_PASSWORD }}
-          port: 22
-          connect_timeout: 10s
-          first_ssh: |-
-            mkdir -p Zend
-            mkdir -p app/logs && chgrp www-data app/logs
-            mkdir -p app/sessions && chgrp www-data app/sessions
-            mkdir -p app/cache && chgrp www-data app/cache
+      - name: install sshpass
+        run: sudo apt-get update -qq && sudo apt-get install -y -qq sshpass
 
-          scp: |-
-            './www/*' => $TARGET_DIR/app/www/
-            './app/*' => $TARGET_DIR/app/app/
-            './conf/*' => $TARGET_DIR/app/conf/
+      - name: first ssh
+        run: |
+          sshpass -e ssh $SSH_OPTS "$REMOTE" '
+            mkdir -p Zend &&
+            mkdir -p app/logs && chgrp www-data app/logs &&
+            mkdir -p app/sessions && chgrp www-data app/sessions &&
+            mkdir -p app/cache && chgrp www-data app/cache &&
+            mkdir -p app/www app/app app/conf'
 
-          last_ssh: |-
-            test -d Zend/Zend || tar -xzf app/conf/Zend.tar.gz -C Zend
-            crontab app/conf/crontab
+      # -O: legacy scp protocol (as the old paramiko-based action did), no sftp-server required
+      - name: scp
+        run: |
+          sshpass -e scp -O -r $SSH_OPTS ./www/* "$REMOTE:$TARGET_DIR/app/www/"
+          sshpass -e scp -O -r $SSH_OPTS ./app/* "$REMOTE:$TARGET_DIR/app/app/"
+          sshpass -e scp -O -r $SSH_OPTS ./conf/* "$REMOTE:$TARGET_DIR/app/conf/"
 
+      - name: last ssh
+        run: |
+          sshpass -e ssh $SSH_OPTS "$REMOTE" '
+            (test -d Zend/Zend || tar -xzf app/conf/Zend.tar.gz -C Zend) &&
+            crontab app/conf/crontab'
