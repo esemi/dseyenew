@@ -400,6 +400,7 @@ class App_Model_GameClient
 		curl_setopt($this->_curl, CURLOPT_USERAGENT, $this->_userAgent);
 		curl_setopt($this->_curl, CURLOPT_COOKIEFILE, $this->_cookieFilename);
 		curl_setopt($this->_curl, CURLOPT_COOKIEJAR, $this->_cookieFilename);
+		Mylib_Utils::curlSetProxy($this->_curl);
 	}
 	protected function _curlClose()
 	{

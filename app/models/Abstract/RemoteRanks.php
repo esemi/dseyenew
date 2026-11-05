@@ -45,6 +45,7 @@ abstract class App_Model_Abstract_RemoteRanks
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $this->_prop['conn']);
 		curl_setopt($ch, CURLOPT_TIMEOUT, $this->_prop['wait']);
 		curl_setopt($ch, CURLOPT_USERAGENT, $this->_userAgent);
+		Mylib_Utils::curlSetProxy($ch);
 		$response = iconv("Windows-1251", "UTF-8",curl_exec($ch));
 		$err = curl_error($ch);
 		curl_close($ch);

@@ -44,6 +44,7 @@ class App_Model_Online
 		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, $prop['online']['conn']);
 		curl_setopt($ch, CURLOPT_TIMEOUT, $prop['online']['wait']);
 		curl_setopt($ch, CURLOPT_USERAGENT, $this->_userAgent);
+		Mylib_Utils::curlSetProxy($ch);
 		$response = curl_exec($ch);
 		$err = curl_error($ch);
 		curl_close($ch);

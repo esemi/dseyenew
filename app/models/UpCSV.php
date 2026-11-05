@@ -38,6 +38,7 @@ class App_Model_UpCSV
 		curl_setopt($ch, CURLOPT_FILETIME, true);
 		curl_setopt($ch, CURLOPT_DNS_USE_GLOBAL_CACHE, false);
 		curl_setopt($ch, CURLOPT_DNS_CACHE_TIMEOUT, 2);
+		Mylib_Utils::curlSetProxy($ch);
 
 		curl_exec($ch);
 		$err = curl_error($ch);

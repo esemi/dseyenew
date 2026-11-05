@@ -7,6 +7,16 @@
 class Mylib_Utils
 {
 
+	/*
+	 * проксирование запросов к игре, если задан curl.proxy (только в config.secure.ini)
+	 */
+	public static function curlSetProxy($ch)
+	{
+		$prop = Zend_Controller_Front::getInstance()->getParam('bootstrap')->getOption('curl');
+		if( !empty($prop['proxy']) )
+			curl_setopt($ch, CURLOPT_PROXY, $prop['proxy']);
+	}
+
 	public static function getDateDeltaFromMysql($date, DateTime $nowDate)
 	{
 		$sourceDate = DateTime::createFromFormat('Y-m-d H:i:s', $date);
