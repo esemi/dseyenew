@@ -70,8 +70,8 @@ class App_Model_DbTable_Worlds extends Mylib_DbTable_Cached
 
 	protected function _sortWorld($select)
 	{
-		//$select->order('Field(id, "31", "8", "10", "11", "18", "20", "7", "21" ,"16" ,"3", "30") DESC')
-		$select->order('Field(id, "30", "3", "16", "21", "7", "20", "18", "11", "10", "8", "31") DESC')
+		//$select->order('Field(id, "16", "11", "31", "28", "32", "10", "8", "3", "18", "7", "19", "33", "23", "20", "21", "22", "27") DESC')
+		$select->order('Field(id, "27", "22", "21", "20", "23", "33", "19", "7", "18", "3", "8", "10", "32", "28", "31", "11", "16") DESC')
 				->order('id_version')
 				->order('id');
 	}

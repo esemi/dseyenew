@@ -19,10 +19,24 @@ class Action_Helper_WorldsListing extends Zend_Controller_Action_Helper_Abstract
 	}
 
 
+	private function _getHiddenWorlds()
+	{
+		$conf = $this->getFrontController()->getParam('bootstrap')->getOption('worldListing');
+		return ( empty($conf['hiddenWorld']) ) ? array() : $conf['hiddenWorld'];
+	}
+
 	private function _setWorldListIntoView()
 	{
+		$hidden = $this->_getHiddenWorlds();
+		$worlds = array();
+		foreach( $this->getActionController()->getHelper('ModelLoad')->load('Worlds')->listing() as $world )
+		{
+			if( !in_array($world->id, $hidden) )
+				$worlds[] = $world;
+		}
+
 		$viewRenderer = Zend_Controller_Action_HelperBroker::getStaticHelper('viewRenderer');
-		$viewRenderer->view->listWorlds = $this->getActionController()->getHelper('ModelLoad')->load('Worlds')->listing();
+		$viewRenderer->view->listWorlds = $worlds;
 	}
 
 	public function direct()
